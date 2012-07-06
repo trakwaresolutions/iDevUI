@@ -32,4 +32,5 @@ Please visit [http://www.idevui.com](http://www.idevui.com "iDevUI") for details
 2. Extract it to a folder of your choice.
 3. Open index.html in your favourite browser to see your app.
 4. Open app.js (in the js folder) in your favourite code editor to start creating your application.
+
 ----------
