@@ -1,0 +1,11 @@
+#container {
+    width:480;
+    height:640;
+}
+.pageCls {
+    background-image:url(../images/background.jpg);
+}
+
+.headerCls {
+    background-image:url(../images/default.png);
+}
