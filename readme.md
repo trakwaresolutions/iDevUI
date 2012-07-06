@@ -27,3 +27,9 @@ Please note that iDevUI includes other open source code and therefore you need t
 Please visit [http://www.idevui.com](http://www.idevui.com "iDevUI") for details on commercial licensing for this product.
     
 ----------
+## Installation Steps
+1. Download the latest zip file from [here](https://github.com/trakwaresolutions/iDevUI/zipball/master).
+2. Extract it to a folder of your choice.
+3. Open index.html in your favourite browser to see your app.
+4. Open app.js (in the js folder) in your favourite code editor to start creating your application.
+----------
