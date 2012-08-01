@@ -6,7 +6,7 @@
     Do not remove this copyright message
 
     version    : 1.0.1
-    build      : 120609.1
+    build      : 120801.1
 
     Started    : 5th March 2011
 
@@ -17,60 +17,12 @@
     History:
         1.0.0   2011-11-23  First release
         1.0.1   2012-04-04  Milestone release
+        1.0.2   2012-08-01  Milestone release
 
 
     iDevUI is distributed under the terms of the MIT license for non-commercial
     For more information visit http://www.idevui.com/
     
-    120613.1
-    - Fixed scroll bug in richtext widget
-
-    120615.1
-    
-    - Fixed for tbar & bbar widgets which were not getting the page property set
-    
-    120618.1
-    
-    - Added cls property to dataview widget
-    - Added itemCls to list widget
-    - Added ie9gradient styling to remove filter CSS if using IE9
-    
-    120619.1
-    
-    - Updates all widgets to add ie9gradient if the cls properties are passed
-    - Fixed issued with round corners in Chrome when a gradient is apply to panel
-      title and bottom bar.
-      
-    120621.1
-    
-    - Added $round macro function
-    
-    120622.1
-    
-    - Added some ui message defaults properties to the idev object. These and then
-      be overwritten by the application
-      
-    120623.1
-    
-    - Added the ability to add a new record to top of data store
-    - Added cls property to composite widget
-    
-    120626.1
-    
-    - Updated uploader widget to allow button image
-    - Added autoFocus and focusID properties to panel widget and window widget
-    - Added data array to list widget for custom data in template
-    - Added beforeRefresh and afterRefresh to list, dataview and grid widgets
-    
-    120630.1
-    
-    - Added title option to icon widget for popup tooltip
-
-    120704.1
-
-    - Added autoClose property to widgetWindow. Allowing the user to set the outside of the area as closable onClick.
-	- Added beforeClose and afterClose events to windows. Allowing the user to detect when a window gets closed.
-
 */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1445,11 +1397,15 @@ var baseWidget = idevObject.extend(
         {
             $('#' + this.id).animate({height: h + 'px'},this.expandTime);
             this.expanded = false;
+            $('#'+this.id+"-expand").addClass("ui-panel-btn-expand");
+            $('#'+this.id+"-expand").removeClass("ui-panel-btn-collapse");
         },
         expand : function()
         {
             $('#' + this.id).animate({height: this.height + 'px'},this.expandTime);
             this.expanded = true;
+            $('#'+this.id+"-expand").removeClass("ui-panel-btn-expand");
+            $('#'+this.id+"-expand").addClass("ui-panel-btn-collapse");
         },
         collapseWidth : function(w)
         {
@@ -1657,6 +1613,9 @@ var idevCore = idevObject.extend({
         this.defaultMTbarCls = "ui-message-tbar";
         this.defaultMBbarCls = "ui-message-bbar";
         this.defaultMShadow = false;
+        
+        this.focusHighlight = false,
+        this.highlightCSS = "0px 0px 8px #336699";
     },
     ///////////////////////////////////////////////////////////////////////////
     // Extend Functions Declaration
@@ -2553,6 +2512,7 @@ var idevCore = idevObject.extend({
                         wgt.setValue("");
                     }
                 }
+                if (idev.focusHighlight) idev.dom("#"+wgt.id).css("box-shadow","");
                 if (wgt.events.lostfocus) wgt.events.lostfocus(wgt,e);
             }
         },
@@ -2570,6 +2530,7 @@ var idevCore = idevObject.extend({
                         $('#'+wgt.id+"-input").css("color","");
                     }
                 }
+                if (idev.focusHighlight) idev.dom("#"+wgt.id).css("box-shadow",idev.highlightCSS);
                 if (wgt.events.focus) wgt.events.focus(wgt,e);
             }
         },
@@ -6012,15 +5973,37 @@ var idevCore = idevObject.extend({
 					bbarHeight:config.bbarHeight
                 });
             win.callback = config.callback;
+			if (config.popup && !config.animate)
+				config.animate = "moveto";
             if (config.animate)
             {
                 if (config.animSpeed == null) config.animSpeed = 500;
                 if (config.animate == "fadein")
+				{
                     win.fadeIn(config.animSpeed);
+					if(config.delay)
+					{
+						$delay(config.delay,function()
+						{
+							win.fadeOut(config.animSpeed,null,function(){
+								win.close();
+							});
+						},config);
+					}
+				}
                 else if (config.animate == "moveto" && config.ax != null && config.ay != null)
                 {
                     win.show();
                     win.moveTo(config.ax,config.ay,config.animSpeed);
+					if(config.delay)
+					{
+						$delay(config.delay,function()
+						{
+							win.moveTo(config.x,config.y,config.animSpeed, null, function(){
+								win.close();
+							});
+						},config);
+					}
                 }
                 else
                     win.show();
@@ -6164,7 +6147,7 @@ var idevCore = idevObject.extend({
                 this.backgroundStyle = this.config.backgroundStyle || "";
                 this.backgroundCls = this.config.backgroundCls || "";
 
-                if (this.layout == "accordion") this.autoScroll = false;
+                if (this.layout == "accordion" ||this.layout == "frame" ) this.autoScroll = false;
                 if (this.expandable && !this.title && this.area != "center")
                 {
                     this.title = "   ";
@@ -6199,7 +6182,7 @@ var idevCore = idevObject.extend({
                         var sb = new idev.ui.widgetStatusbar(this.bbarConfig);
                         sb.widgets = this.bbar;
                         this.bbar = sb;
-                        this.bbar.height = this.bbarHeight;
+                        this.bbar.height = this.bbarHeight; 
                         this.bbar.width = this.width;
                         this.bbCreated = true;
                     }
@@ -6335,7 +6318,10 @@ var idevCore = idevObject.extend({
                         }
                         else
                         {
-                            buttons += "<div id='" + this.id + "-expand' class='ui-panel-btn-collapse'>&nbsp;</div>";
+                            if (this.collapsed)
+                                buttons += "<div id='" + this.id + "-expand' class='ui-panel-btn-expand'>&nbsp;</div>";
+                            else
+                                buttons += "<div id='" + this.id + "-expand' class='ui-panel-btn-collapse'>&nbsp;</div>";
                             buttonWidth += 16;
                         }
                     }
@@ -6413,7 +6399,6 @@ var idevCore = idevObject.extend({
                     $("#" + this.id).css("border-radius",this.radius + "px");
                     $("#" + this.id).css("-moz-border-radius",this.radius + "px");
                     var r = this.radius;
-                    if (this.border) r--;
                     DD_roundies.addRule('#' + this.id + "-background" , r + 'px',false);
                     $("#" + this.id + "-background").css("border-radius",r + "px");
 					if (this.title)
@@ -6460,7 +6445,7 @@ var idevCore = idevObject.extend({
                     this.bbar.page = this.page;
                     this.bbar.parent = this;
                     this.bbar.columnAlign = "center";
-                    this.bbar.rowHeight = this.bbar.bbarHeight - 2;
+                    this.bbar.rowHeight = this.bbarHeight - 2;
                     this.bbar.renderTo = this.id + "-bbar";
                     this.bbar.render();
                 }
@@ -6486,7 +6471,11 @@ var idevCore = idevObject.extend({
                 }
                 if (this.expandable)
                 {
-                    if (this.expandable && this.collapsed ) this.oncollapse();
+                    if (this.expandable && this.collapsed ) 
+                    {
+                        $('#' + this.id).css({height: this.titleHeight + 'px'});
+                        this.expanded = false;
+                    }
                     $("#" + this.id + "-expand" ).click( function()
                     {
                         var wgt = idev.get(this.id.replace("-expand",""));
@@ -6940,6 +6929,7 @@ var idevCore = idevObject.extend({
                             return false;
                         }
                     }
+					if(wgt.events.keyup) wgt.events.keyup(wgt,event);
                 });
                 if (this.events.keypress) $( '#' +  this.id ).keypress(idev.internal.onKeypress);
                 this.rendered = true;
@@ -7107,6 +7097,7 @@ var idevCore = idevObject.extend({
                 this.ds = config.ds;
                 this.listTpl = config.listTpl;
                 this.displayField = config.displayField || "";
+                this.inputStyle = config.inputStyle || "";
                 this.valueField = config.valueField || "";
                 this.listEntryHeight = config.listEntryHeight || 18;
                 this.visibleEntrys = config.visibleEntrys || 4;
@@ -7221,6 +7212,7 @@ var idevCore = idevObject.extend({
                 var text = "";
                 var inputstyle = this.inputStyle;
                 var btnWidth = this.height+2;
+                var style = this.style + (this.roundCorners ? "" : ";border-radius: 0px;");
 
                 if (idev.isIPad())
                 {
@@ -7231,12 +7223,13 @@ var idevCore = idevObject.extend({
                     text = this.watermark;
                     inputstyle += "color:" + this.watermarkColor + ";";
                 }
+                if (this.borderStyle != "") style += ";border:" + this.borderStyle;
                 var data = new Array();
 
                 data['id'] = this.id;
                 data['cls'] = this.cls;
                 data['elementstyle'] = this.elementStyle;
-                data['style'] = this.style + (this.roundCorners ? "" : ";border-radius: 0px;");
+                data['style'] = style;
                 data['value'] = text;
                 data['width'] = this.width - btnWidth- 4;
                 data['height'] = this.height - 4;
@@ -7286,7 +7279,7 @@ var idevCore = idevObject.extend({
                                     var h =  $("#" + btn.parent.id).height();
                                     var pos = $("#" + btn.parent.id).offset();
                                     var x =  pos.left;
-                                    var y =  pos.top + h + 1;
+                                    var y =  pos.top + h;
                                     if (btn.parent.roundCorners) x += 4;
                                     
                                     var pos = btn.parent.list.getScrollPos();
@@ -7323,6 +7316,7 @@ var idevCore = idevObject.extend({
                         autoScroll:true,
                         autoSelect:widget.autoSelect,
                         ds:widget.ds,
+                        border:true,
                         tpl:widget.listTpl,
                         itemStyle:'border:0px solid #fff;',
                         metaData: data,
@@ -7340,6 +7334,7 @@ var idevCore = idevObject.extend({
                                 wgt.parent.setValue(sValue);
                                 idev.hideWidget = null;
                                 if (wgt.parent.events.selected) wgt.parent.events.selected(wgt.parent);
+                                if (wgt.parent.events.change && index != oldIndex) wgt.parent.events.change(wgt.parent);
                             },
                             hover:function(enter,wgt,index,selected)
                             {
@@ -7362,7 +7357,7 @@ var idevCore = idevObject.extend({
                     $( '#' +  widget.id + "-input").focus(idev.internal.onFocus);
                     if (widget.events.change)
                     {
-                        $( '#' +  widget.id ).dblclick(idev.internal.onChange);
+                        $( '#' +  widget.id ).change(idev.internal.onChange);
                     }
                     $( '#' +  widget.id ).keydown(function(event)
                     {
@@ -7824,6 +7819,8 @@ var idevCore = idevObject.extend({
                 this.iconColor = this.config.iconColor == null ? iconColor : this.config.iconColor;
                 this.iconRotation = this.config.iconRotation == null ? 0 : this.config.iconRotation;
                 this.iconScale = this.config.iconScale == null ? 0.6 : this.config.iconScale;
+                this.toggle = this.config.toggle == null ? false : this.config.toggle;
+                this.down = false;
                 this.ix = this.config.ix == null ? 0 : this.config.ix ;
                 this.iy = this.config.iy == null ? 0 : this.config.iy ;
                 if (this.color != "") 
@@ -7846,6 +7843,8 @@ var idevCore = idevObject.extend({
                 this.image = this.config.image;
                 this.imageFill = this.config.imageFill;
                 this.title = this.config.title || "";
+                this.startTColor = this.config.startTColor == null ? this.endColor : this.config.startTColor;
+                this.endTColor = this.config.endTColor == null ? this.startColor : this.config.endTColor;
 
                 if (this.image != null)
                 {
@@ -7915,7 +7914,7 @@ var idevCore = idevObject.extend({
                         return;
                     }
                     widget.paper = Raphael(widget.id,widget.width, widget.height);
-//                    widget.paper.safari();
+                    widget.paper.safari();
                     if (!widget.transparent)
                     {
                         var borderOffset = widget.border ? 3 : 2;
@@ -8057,7 +8056,31 @@ var idevCore = idevObject.extend({
                 idev.internal.afterRender(this);
                 if (typeof this.events.click == "function")
                 {
-                    $( '#' +  this.id ).click(idev.internal.onClick);
+                    $( '#' +  this.id ).click(function(e)
+                    {
+                        var wgt = idev.get(this.id);
+                        if (wgt.toggle)
+                        {
+                            var ok = true;
+                            if (wgt.events.canToggle) ok = wgt.events.canToggle(wgt);
+                            if (ok)
+                            {
+                                if (wgt.down)
+                                {
+                                    wgt.down = false;
+                                    wgt.object.attr({ fill:"90-" + wgt.startColor.toLowerCase() + "-" + wgt.endColor.toLowerCase() });
+                                }
+                                else
+                                {
+                                    wgt.down = true;
+                                    wgt.object.attr({ fill:"90-" + wgt.startTColor.toLowerCase() + "-" + wgt.endTColor.toLowerCase() });
+                                }
+                                idev.internal.onClick.call(this,e);
+                            }
+                        }
+                        else
+                            idev.internal.onClick.call(this,e);
+                    });
                 }
                 this.rendered = true;
             },
@@ -8075,6 +8098,22 @@ var idevCore = idevObject.extend({
             getText : function()
             {
                 return this.text;
+            },
+            isDown:function()
+            {
+                return his.down;
+            },
+            toggleButton: function(down)
+            {
+                this.down = down;
+                if (down)
+                {
+                    this.object.attr({ fill:"90-" + this.startTColor.toLowerCase() + "-" + this.endTColor.toLowerCase() });
+                }
+                else
+                {
+                    this.object.attr({ fill:"90-" + this.startColor.toLowerCase() + "-" + this.endColor.toLowerCase() });
+                }
             },
             reColor : function(startColor, endColor)
             {
@@ -10336,7 +10375,7 @@ var idevCore = idevObject.extend({
                         "<div id='{id}' class='ui-element' style='{elementstyle};'>",
                         "<div id='{id}-background' style='position:absolute;left:0px;top:0px;width:{width}px;max-width:{width}px;height:{height}px;max-height:{height}px;{backgroundstyle}'>",
                         "</div>",
-                        "<div id='{id}-wrapper' class='ui-list {cls}' style='position:absolute;left:0px;top:0px;width:{width}px;max-width:{width}px;height:{height}px;max-height:{height}px;{style};'>",
+                        "<div id='{id}-wrapper' class='ui-list {cls}' style='position:absolute;left:0px;top:0px;width:{wwidth}px;max-width:{wwidth}px;height:{height}px;max-height:{height}px;{style};'>",
                         "<div id='{id}-scroller'>",
                         "{items}",
                         "</div>",
@@ -10345,7 +10384,7 @@ var idevCore = idevObject.extend({
                     );
 
                 this.itemtpl = new idev.wTemplate(
-                        "<div id='{id}' class='ui-listentry {itemcls}' style='width:{width}px;{itemstyle}'>",
+                        "<div id='{id}' class='ui-listentry {itemcls}' style='width:{width}px;max-width:{width}px;{itemstyle}'>",
                         "{entry}",
                         "</div>"
                     );
@@ -10454,7 +10493,7 @@ var idevCore = idevObject.extend({
 
                 if (this.autoScroll && !idev.isTouch())
                 {
-                     style += "overflow:auto;overflow-x:hidden; overflow-y:scroll;";
+                     style += "overflow:auto;overflow-x:hidden; overflow-y:auto;";
                 }
                 var data = new Array();
 
@@ -10463,7 +10502,8 @@ var idevCore = idevObject.extend({
                 data['cls'] = this.cls;
                 data['elementstyle'] = this.elementStyle;
                 data['backgroundstyle'] = this.backgroundStyle;
-                data['width'] = this.width - (this.border ? 2 : 0);
+                data['width'] = this.width;
+                data['wwidth'] = this.width - (this.border ? 2 : 0);
                 data['height'] = this.height - (this.border ? 2 : 0) - 2;
                 data['items'] =  "";
 
@@ -10636,11 +10676,14 @@ var idevCore = idevObject.extend({
                         }
                         if (this.data)
                         {
-                            for (var f = 0;f < this.data.length;f++)
+                            for(key in this.data)
                             {
-                                sEntry = idev.utils.replaceAll(sEntry,"{" + f + "}",this.data[f]);
-                            }
-                        }
+                                var f = this.data[key];
+                                
+                                if (typeof f == "string" || typeof f == "number")
+                                    sEntry = idev.utils.replaceAll(sEntry,"{" + key + "}",this.data[key]);
+                            }  
+                        }                        
                         sHTML += "<td valign=top><div id='" + this.id + "_" + i + "' class='ui-dataview-wrapper' style='"+cellstyle+"'>" + sEntry + "</div></td>";
                         col++;
                         if (col == this.columns)
@@ -11021,7 +11064,7 @@ var idevCore = idevObject.extend({
 
 $debug = function(x) { try { if (console) console.log(x);}catch(e){} };
 $msg = function(x) { return idev.ui.message({ text:x, type:'ok'}); };
-$popup = function(t,i,x,y,a,ax,ay) { return idev.ui.message({ text:t, icon:i, x:x, y:y, animate:a, ax:ax, ay:ay, type:''}); };
+$popup = function(t,i,x,y,a,ax,ay,d) { return idev.ui.message({ text:t, icon:i, x:x, y:y, animate:a, ax:ax, ay:ay, type:'', delay:d}); };
 $error = function(x) { return idev.ui.message( { text:x, icon:'error'} ); };
 $warning = function(x) { return idev.ui.message( { text:x, icon:'warning' } ); };
 $info = function(x) { return idev.ui.message( { text:x, icon:'information' } ); };
