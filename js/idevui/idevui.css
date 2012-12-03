@@ -3,7 +3,9 @@ body{
     font-size:12pt;
     font-family: tahoma, Helvetica, Arial, sans-serif;
     padding:0px;
+    background:#fff;
 }
+
 
 #container {
     width:100%;
@@ -17,9 +19,20 @@ body{
     position: absolute;
     z-index:9999;
     width:48px;
-    height:15px;
+    height:48px;
     background:url(images/busy.gif);
     overflow: hidden;
+}
+
+td {
+    font-family: tahoma, Helvetica, Arial, sans-serif;
+    color:#2b2b2b;
+}
+textarea { 
+    overflow: auto;
+}
+img {
+    border:0px;
 }
 
 .ui-app-toolbar {
@@ -54,7 +67,6 @@ body{
 .ui-body {
     left:0px;
     top:0px;
-    background-image:url(images/bg.jpg); 
     text-align:left;
     padding: 0px;  
     font-size:20pt;
@@ -67,14 +79,18 @@ body{
     border:0;
     padding:0;
     margin:0;
-    overflow: hidden;
+    overflow: none;
+}
+
+.ui-nofoat{
+    float:none;
 }
 
 .ui-page {
     font-family: tahoma, Helvetica, Arial, sans-serif;
     float:left;
     position: absolute;
-    display:none;
+    visibility:hidden;
 }
 
 .ui-page-header  {
@@ -101,7 +117,6 @@ body{
 
 .ui-frame{
     border:1px solid #ddd;
-    padding:2;
     border-radius: 4px;
 }
 
@@ -129,8 +144,7 @@ body{
 .ui-grid-separator {
     border-left: 1px solid #ddd;
 }
-.ui-cell{
-    border-left: 1px solid #ddd;
+.ui-grid-cell{
     border-bottom: 1px solid #ddd;
     border-right: 1px solid #ddd;
     padding:2px;
@@ -139,8 +153,7 @@ body{
     font-size:10pt;
 }
                         
-.ui-cell-alt{
-    border-left: 1px solid #ddd;
+.ui-grid-cell-alt{
     border-bottom: 1px solid #ddd;
     border-right: 1px solid #ddd;
     padding:2px;
@@ -149,8 +162,7 @@ body{
     font-size:10pt;
 }
 
-.ui-cell-select{
-    border-left: 1px solid #ddd;
+.ui-grid-cell-select{
     border-bottom: 1px solid #ddd;
     border-right: 1px solid #ddd;
     padding:2px;
@@ -161,9 +173,10 @@ body{
 
 .ui-panel {
     position:relative;
-    font-family: san-serif;
+    font-family: tahoma, Helvetica, Arial, sans-serif;
     font-size:14px;
     color:#000;
+    overflow:hidden;
 }
 
 .ui-panel-frame {
@@ -171,6 +184,7 @@ body{
 }
 .ui-panel-background{
     background:transparent;
+    filter:none;
 }
 
 .ui-panel-frame-table {
@@ -181,7 +195,7 @@ body{
 }
 
 .ui-panel-title {
-    font-family:sans-serif;
+    font-family: tahoma, Helvetica, Arial, sans-serif;
     font-size:10pt;
     height:18px;
 }
@@ -285,10 +299,7 @@ body{
     cursor:pointer;
 } 
 
-.ui-panel-filler{
-    background: #eee; 
-}
-
+s
 .ui-panel-tbar {
     background: #e0e0e0; 
 }
@@ -307,7 +318,6 @@ body{
 }
 
 .ui-message{
-    border: 1px solid #555;
     z-index:99999;
     background-color: #fff;
     font-size:12pt;
@@ -434,13 +444,13 @@ body{
 
 .ui-label {
     color:#222;
-    font-family:verdana;
+    font-family: tahoma, Helvetica, Arial, sans-serif;
     font-size:16pt; 
 }
 
 .ui-labeltext{
     color:#222;
-    font-family: verdana, Helvetica, Arial, sans-serif;
+    font-family: tahoma, Helvetica, Arial, sans-serif;
     font-size:12pt;
 }
 .ui-spacer {
@@ -448,6 +458,9 @@ body{
 
 .ui-form{
 }
+
+/*----------------------------------------------------------------------------*/
+/* RADIO                                                                     */
 
 .ui-radio-off {
     background-image:url(images/radiooff.png);
@@ -457,6 +470,8 @@ body{
     background-image:url(images/radioon.png);
     cursor:pointer;
 }
+/*----------------------------------------------------------------------------*/
+/* CHECKBOX                                                                     */
 
 .ui-checkbox {
     background-image:url(images/checkboxoff.png);
@@ -466,6 +481,7 @@ body{
     background-image:url(images/checkboxon.png);
     cursor:pointer;
 }
+
 
 .ui-switch {
     background-image:url(images/off.png);
@@ -479,25 +495,25 @@ body{
 .ui-input {
     border:0px;
     font-size:14px;
-    font-family:sans-serif;
+    font-family: tahoma, Helvetica, Arial, sans-serif;
     padding:0;
     background: transparent;
     text-decoration: none;
     font-weight: normal; 
     overflow:hidden;
-    margin:0.2em;
+    margin:0.1em;
 }
 
 .ui-textarea {
     border:0px;
     font-size:14px;
-    font-family:sans-serif;
+    font-family: tahoma, Helvetica, Arial, sans-serif;
     padding:4;
     background: transparent;
     text-decoration: none;
     display: block; 
     font-weight: normal; 
-    margin: .3em;
+    margin:0.1em;
     -webkit-appearance: none;
 }
 
@@ -514,35 +530,32 @@ body{
 }
 
 .ui-listbox {
-    border:1px SOLID #ddd;
     background-color: #fff;
 }
 
 .ui-listbox-header {
-    font-family: sans-serif;
+    font-family: tahoma, Helvetica, Arial, sans-serif;
     font-weight: normal;
     text-decoration: none;
     background: rgb(51,153,255); /* Old browsers */
     color:#fff;
-    padding:4px;
 }
 
 .ui-listbox-select {
-    background: #f7fbfc !important; /* Old browsers */
-    color:#222 !important;
+    background: #f7fbfc; /* Old browsers */
+    color:#222;
 }
 
 .ui-listbox-body {
     background: transparent;
     color:#222;
-    font-family: sans-serif;
+    font-family: tahoma, Helvetica, Arial, sans-serif;
 }
 
 .ui-listbox-item  {
     height:60;
     text-decoration: none;
-    font-family: sans-serif;
-    text-shadow: 0 1px 1px #f6f6f6;
+    font-family: tahoma, Helvetica, Arial, sans-serif;
     color:#222;  
 }
 
@@ -550,21 +563,20 @@ body{
     height:60;
     padding-top:2;
     text-decoration: none;
-    font-family: sans-serif;
-    text-shadow: 0 1px 1px #f6f6f6;
+    font-family: tahoma, Helvetica, Arial, sans-serif;
     color:#222;  
 }
 
 .ui-list {
     float:left;
     color:#222;  
-    font-family: verdana;   
+    font-family: tahoma, Helvetica, Arial, sans-serif;
 }
 
 .ui-listentry {
     color:#222;  
     font-size:14pt;
-    font-family: verdana;
+    font-family: tahoma, Helvetica, Arial, sans-serif;
     border-bottom: 1px solid #ddd;  
 }
 
@@ -576,14 +588,14 @@ body{
 .ui-dataview {
     float:left;
     color:#222;  
-    font-family: verdana;
+    font-family: tahoma, Helvetica, Arial, sans-serif;
 }
 
 .ui-dataview-wrapper {
     float:left;
     color:#222;  
     font-size:14pt;
-    font-family: verdana;
+    font-family: tahoma, Helvetica, Arial, sans-serif;
     padding:5px;
 }
 
@@ -596,11 +608,7 @@ body{
 }
 .ui-dataview-element {
     float:left;
-    background-color:#ddd;
-    color:#222;  
-    text-shadow: 0 1px 1px #f6f6f6;
-    font-size:14pt;
-    font-family: verdana;
+    font: 14pt tahoma, Helvetica, Arial, sans-serif;
 }
 
 ul.ui-tabs { 
@@ -608,10 +616,8 @@ ul.ui-tabs {
     padding: 0;
     list-style: none; 
     height: 32px; /*--Set height of tabs--*/ 
-    border-bottom: 1px solid #fff; 
     width: 100%; 
     background: #e0e0e0; 
-    border: 1px solid #999;
 } 
 
 ul.ui-tabs li { 
@@ -623,7 +629,6 @@ ul.ui-tabs li {
     margin-bottom: -2px; /*--Pull the list item down 1px--*/ 
     overflow: hidden; 
     position: relative; 
-    border-bottom: none; 
     text-decoration: none; 
     color: #000; 
     display: block; 
@@ -633,7 +638,7 @@ ul.ui-tabs li {
 } 
 
 .ui-tab-scroll{
-    font-family:tahoma;
+    font-family: tahoma, Helvetica, Arial, sans-serif;
     font-size: 12pt; 
     margin: 0; 
     padding: 0; 
@@ -642,7 +647,7 @@ ul.ui-tabs li {
 }
 
 .ui-tab-scroll-active{
-    font-family:tahoma;
+    font-family: tahoma, Helvetica, Arial, sans-serif;
     font-size: 12pt; 
     margin: 0; 
     padding: 0; 
@@ -694,24 +699,8 @@ html ul.ui-tabs li.active, html ul.ui-tabs li.active  { /*--Makes sure that the 
 /* button 
 ---------------------------------------------- */
 .ui-button {
-	display: inline-block;
-	zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
-	*display: inline;
-	vertical-align: baseline;
-	margin: 0 2px;
-	outline: none;
-	cursor: pointer;
-	text-align: center;
-	text-decoration: none;
-	font: 14px/100% Arial, Helvetica, sans-serif;
-	padding1: .5em 2em .55em;
-	text-shadow: 0 1px 1px rgba(0,0,0,.3);
-	-webkit-border-radius: .5em; 
-	-moz-border-radius: .5em;
-	border-radius: .5em;
-	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-	box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    background: #e0e0e0; 
+    color:#2b2b2b;
 }
 .ui-button:hover {
 	text-decoration: none;
@@ -935,3 +924,9 @@ html ul.ui-tabs li.active, html ul.ui-tabs li.active  { /*--Makes sure that the 
 	background: -moz-linear-gradient(top,  #f171ab,  #feb1d3);
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f171ab', endColorstr='#feb1d3');
 }
+
+.ui-modern{
+    behavior: url(PIE.htc);
+    -pie-poll:false; 
+}
+

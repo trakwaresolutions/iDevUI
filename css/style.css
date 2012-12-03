@@ -3,9 +3,86 @@
     height:640;
 }
 .pageCls {
-    background-image:url(../images/background.jpg);
+    background:url(../images/background.jpg);
 }
 
 .headerCls {
     background-image:url(../images/default.png);
 }
+.ui-panel-background{
+	background: transparent;
+}
+.ui-button {
+	-moz-box-shadow:inset 0px 1px 0px 0px #A5A5A5;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #A5A5A5;
+	box-shadow:inset 0px 1px 0px 0px #A5A5A5;
+	border:1px solid #000000;
+	background: #c9c9c9; /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2M5YzljOSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3ZjdmN2YiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top, #c9c9c9 0%, #7f7f7f 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#c9c9c9), color-stop(100%,#7f7f7f)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #c9c9c9 0%,#7f7f7f 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #c9c9c9 0%,#7f7f7f 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #c9c9c9 0%,#7f7f7f 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #c9c9c9 0%,#7f7f7f 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c9c9c9', endColorstr='#7f7f7f',GradientType=0 ); /* IE6-8 */
+}
+
+/*-----------------------------------------------------------------------------*/
+
+.lefttext{
+    text-align:left;
+}
+
+.righttext{
+    text-align:right;
+}
+
+/*-----------------------------------------------------------------------------*/
+.app-checkbox input{
+	position: absolute;
+	margin: 0;
+	top:0px;
+    z-index: 0;
+}
+
+.app-checkbox label{
+    z-index: 1;
+	display: block;
+	position: relative;
+	z-index: 1;
+	font-size: 1.0em;
+	height:24px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.app-unchecked{
+    background: url(../js/idevui/images/checkboxoff.png);
+    background-repeat: no-repeat;
+}
+
+.app-checked{
+    background: url(../js/idevui/images/checkboxon.png);
+    background-repeat: no-repeat;
+}
+
+.app-left{
+	padding-left:30px;
+}
+.app-right{
+	position: absolute;
+	right:0px;
+	top:0;
+	text-align:right;
+    background-position: top right;
+}
+.app-checkbox label.focus {
+	outline: 1px dotted #ccc;
+}
+
+.ui-checkbox-disabled{
+    color:#aaa;
+}
+/*-----------------------------------------------------------------------------*/

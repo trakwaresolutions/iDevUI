@@ -51,6 +51,15 @@ idev.ux.widgetUploader = baseWidget.extend(
         this.fontColor = config.fontColor;
         this.image = config.image;
         this.text = config.text || "Upload";
+        this.ix = config.ix;
+        this.iy = config.iy;
+        this.icon = config.icon == null ? "" : config.icon ;
+        this.textAlign = this.config.textAlign || "center";
+        this.textVAlign = this.config.textVAlign || "center";
+        this.buttonBodyStyle = this.config.buttonBodyStyle || "";
+        this.buttonTextStyle = this.config.buttonTextStyle || "";
+        this.buttonTextCls = this.config.buttonTextCls || "";
+        this.svg = this.config.svg == true ? true : false;
         this.tpl = new idev.wTemplate(
             "<div id='{id}' class='ui-element' style='{elementstyle}{style};'>",
             "<form id='{id}-form' name='{id}-form' action='{url}' method='post' enctype='multipart/form-data'>",
@@ -95,6 +104,16 @@ idev.ux.widgetUploader = baseWidget.extend(
             fontSize:this.fontSize,
             fontColor:this.fontColor,
             image:this.image,
+            icon:this.icon,
+            ix:this.ix,
+            iy:this.iy,
+            textAlign:this.textAlign,
+            textVAlign:this.textVAlign,
+            buttonBodyStyle:this.buttonBodyStyle,
+            buttonTextStyle:this.buttonTextStyle,
+            buttonTextCls:this.buttonTextCls,
+            svg:this.svg,
+            cls:this.cls,
             text:this.text
         });
         this.btn.render();

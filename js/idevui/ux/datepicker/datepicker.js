@@ -24,6 +24,7 @@ idev.ux.widgetDatePicker = baseWidget.extend(
     init: function(config)
     {
 //        config.width = nul;
+        if (config.mode == 2 && config.width < 110) config.width = 110;
         config.height = config.mode == 2 ? 250 : 200;
         this._super( config );
         this.wtype = "datepicker";
@@ -36,11 +37,12 @@ idev.ux.widgetDatePicker = baseWidget.extend(
         this.yearsRange = config.yearsRange || new Array(1971,2100);
         this.cellColorScheme = config.colorScheme || "orange";
         this.expanded = false;
+        this.buttonCls = config.buttonCls || "";
         this.inputHeight = config.inputHeight || 24;
         if (this.mode == 2)
         {
             this.tpl = new idev.wTemplate(
-                "<div id='{id}' class='ui-element' style='{style};min-width:120px;'>",
+                "<div id='{id}' class='ui-element {elementstyle}' style='{style};min-width:120px;'>",
                 "<div id='{id}-input'>",
                 "</div>",
                 "<div id='{id}-button' style='float:left;'>",
@@ -50,7 +52,7 @@ idev.ux.widgetDatePicker = baseWidget.extend(
         else
         {
             this.tpl = new idev.wTemplate(
-                "<div id='{id}' class='ui-element' style='{style};min-width:120px;'>",
+                "<div id='{id}' class='ui-element {elementstyle}' style='{style};min-width:120px;'>",
                 "<div id='{id}-input'>",
                 "</div>",
                 "<div id='{id}-button' style='float:left;'>",
@@ -88,14 +90,14 @@ idev.ux.widgetDatePicker = baseWidget.extend(
 
         var data = new Array();
         
-        if (this.x && this.y) this.style += "position:absolute;top:" + this.y + "px;left:" + this.x + "px;float:left;";
+ //       if (this.x && this.y) this.style += "position:absolute;top:" + this.y + "px;left:" + this.x + "px;float:left;";
         if (this.mode == 2 && this.width < 110) this.width = 110;
         data['id'] = this.id;
         data['width'] = this.width;
         data['height'] = this.height;
         data['elementstyle'] = this.elementStyle;
         data['style'] = this.style;
-        data['calendarstyle'] = this.mode == 1 ? "width:200px;height:200px;z-index:10;" :"display:none;width:200px;height:auot;z-index:10;";
+        data['calendarstyle'] = this.mode == 1 ? "width:200px;height:200px;z-index:10;" :"display:none;width:200px;height:auto;z-index:10;";
         
         var sHTML = this.tpl.render(data);
         var wgt = this;
@@ -110,6 +112,7 @@ idev.ux.widgetDatePicker = baseWidget.extend(
                 parent:this,
                 editable:false,
                 cls:wgt.cls,
+                roundCorners:this.roundCorners,
                 value:'',
                 events: {
                     focus: function(wgt)
@@ -122,10 +125,14 @@ idev.ux.widgetDatePicker = baseWidget.extend(
             this.btn = new idev.ui.widgetButton({
                 renderTo: this.id + "-button",
                 width:26,
-                height:26,
-                icon:'calendar',
+                height:24,
+                icon:'_calendar',
                 iconColor:wgt.iconColor,
+                ix:4,
+                iy:4,
                 parent:this,
+                border:false,           
+                cls:this.buttonCls,
                 y:(this.inputHeight-24)/2,
                 events: {
                     click: function(btn)
@@ -161,7 +168,7 @@ idev.ux.widgetDatePicker = baseWidget.extend(
                 var pos = $("#" + wgt.id).offset();
                 var x =  pos.left;
                 var y =  pos.top + h;
-                sHTML = "<div id='"+wgt.id+"-calendar' class='ui-calendar' style='position:absolute;left:"+x+"px;top:"+y+"px;display:none;width:200px;height:auto;z-index:9999;'></div>";
+                sHTML = "<div id='"+wgt.id+"-calendar' class='ui-calendar' style='position:absolute;left:"+x+"px;top:"+y+"px;display:none;width:200px;height:auto;z-index:99999;'></div>";
                 $("#container").append(sHTML);
             }
             d = 1;
@@ -227,6 +234,7 @@ idev.ux.widgetDatePicker = baseWidget.extend(
     {
         var d = { year:0, month:0, day:0 }
         
+        if (date == "")  return;
         d.year = date.substr(0,4)
         d.month = date.substr(4,2);        
         d.day = date.substr(6,2);

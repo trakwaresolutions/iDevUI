@@ -3,7 +3,9 @@ idev.ux.widgetTreeview = baseWidget.extend(
 {
     init: function(config)
     {
-        idev.ux.loadCSS("treeview/treeview.css")
+        idev.ux.loadCSS("treeview/treeview.css");
+    this.background = config.background;
+    this.color = config.color;
         this._super( config );
         this.wtype = "treeview";
         this.tpl = new idev.wTemplate(
@@ -30,13 +32,15 @@ idev.ux.widgetTreeview = baseWidget.extend(
             var child = data[t];
             var style = "cursor:pointer;";                
             if (child.icon) style +="background-image:url("+child.icon+");padding-left:20px;background-repeat: no-repeat;";
+            var spanid = this.id + "-span-" + this.node + "-" + child.id;
+            child.id = this.id + "-node-" + this.node + "-" + child.id;
             if (child.children)
             {
-                child.id = this.id + "-node-" + this.node;
+                
                 if (child.expanded)
-                    tree += "<li id='" + child.id + "'><span class='"+child.cls+"' style='"+style+"'>" + child.text + "</span>";
+                    tree += "<li id='" + child.id + "'><span id='"+spanid+"' class='"+child.cls+"' style='"+style+"'>" + child.text + "</span>";
                 else
-                    tree += "<li id='" + child.id + "' class='closed'><span class='"+child.cls+"' style='"+style+"'>" + child.text + "</span>";
+                    tree += "<li id='" + child.id + "' class='closed'><span id='"+spanid+"' class='"+child.cls+"' style='"+style+"'>" + child.text + "</span>";
                 this.node++;
                 tree += "<ul id='" + this.id + "-node-" + this.node + "-ul'>"
                 if (child.children) tree += this.buildBranch(child.children);
@@ -45,8 +49,7 @@ idev.ux.widgetTreeview = baseWidget.extend(
             }
             else
             {
-                child.id =  this.id + "-node-" + this.node;
-                tree += "<li id='" + child.id + "' ><span class='"+child.cls+"' style='"+style+"'>" + child.text + "</span></li>";
+                tree += "<li id='" + child.id + "' ><span id='"+spanid+"' class='"+child.cls+"' style='"+style+"'>" + child.text + "</span></li>";
                 this.node++;
             }
         }
@@ -109,8 +112,7 @@ idev.ux.widgetTreeview = baseWidget.extend(
             {
                 var expanding = $("#"+this.id).hasClass("collapsable");
                 var text = $("#"+this.id+" span").html();
-                
-                var id = $("#"+this.id).attr("id");
+                var id = this.id;
                 var p = id.indexOf("-",3);
                 var wid = id.substr(0,p);
                 var wgt = $get(wid);
@@ -127,23 +129,26 @@ idev.ux.widgetTreeview = baseWidget.extend(
         });
         if (this.events.click)
         {
-            $(".treeview li").filter(function(index)
+            $("#" + this.id + "-tree li span").filter(function(index)
             {
-                if ($(this).attr("id").indexOf("-folder") != -1) return false;
+                if ($(this).attr("class").indexOf("-folder") != -1) return false;
                 return true; 
                 
             }).click(function(e)
             {
-                var text = $("#"+this.id+" span").html();
+                var text = $("#"+this.id).html();
                 var id = $("#"+this.id).attr("id");
                 var p = id.indexOf("-",3);
                 var wid = id.substr(0,p);
                 var wgt = $get(wid);
                 p = id.lastIndexOf("-")
-                var index = id.substr(p+1); 
+                var nid = id.substr(p+1);
+                var w = id.substr(0,p);
+                p = w.lastIndexOf("-");
+                var index = w.substr(p+1);
                 if (wgt)
                 {
-                    if (wgt.events.click) wgt.events.click(wgt,id,index,text); 
+                    if (wgt.events.click) wgt.events.click(wgt,nid,index,text); 
                 }
                 e.preventDefault();
                 e.stopPropagation();

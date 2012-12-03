@@ -18,7 +18,7 @@ var _preferences = {
     app:'app.js',
     theme:'default',
     startPage:0,
-    useCSS3:false,
+    useCSS3:true,
     styling:'css/style.css',
     // Default button style.
     button: {

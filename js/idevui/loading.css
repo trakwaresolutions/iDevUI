@@ -1,0 +1,59 @@
+.ui-loader{
+    position:absolute;
+    left:40%;
+    top:48%;
+    font-family:tahoma;
+    width:300px;
+    height:24px;
+    vertial-align:center;
+    font-size:12pt;
+    border:1px solid #DB9A02;
+    border-radius:12px;
+    -webkit-border-radius:12px;
+    -moz-border-radius:12px;
+    line-height:26px;
+    color:#777;
+    background: rgb(250,242,180); /* Old browsers */
+    /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZhZjJiNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZlZjciIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(top,  rgba(250,242,180,1) 0%, rgba(255,254,247,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(250,242,180,1)), color-stop(100%,rgba(255,254,247,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(250,242,180,1) 0%,rgba(255,254,247,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(250,242,180,1) 0%,rgba(255,254,247,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(250,242,180,1) 0%,rgba(255,254,247,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(250,242,180,1) 0%,rgba(255,254,247,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#faf2b4', endColorstr='#fffef7',GradientType=0 ); /* IE6-8 */
+    -pie-background: linear-gradient(rgba(250,242,180,1), rgba(255,254,247,1)); /* W3C */
+}
+.ui-loader-progress{
+    float:left;
+    font-family:tahoma;
+    text-shadow: 3px 3px 3px #ddd;
+    text-align:center;
+    width:0px;
+    height:24px;
+    border-radius:12px;
+    -webkit-border-radius:12px;
+    -moz-border-radius:12px;
+    background: rgb(252,246,189); /* Old browsers */
+    /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZjZjZiZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZmQwMDIiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(top,  rgba(252,246,189,1) 0%, rgba(239,208,2,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,246,189,1)), color-stop(100%,rgba(239,208,2,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(252,246,189,1) 0%,rgba(239,208,2,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(252,246,189,1) 0%,rgba(239,208,2,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(252,246,189,1) 0%,rgba(239,208,2,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(252,246,189,1) 0%,rgba(239,208,2,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcf6bd', endColorstr='#efd002',GradientType=0 ); /* IE6-8 */
+    -pie-background: linear-gradient(rgba(252,246,189,1), rgba(239,208,2,1)); /* W3C */
+}
+
+.ui-modern{
+    behavior: url(PIE.htc);
+    -pie-poll:false; 
+}
+
+.ui-ie9{
+    filter:none;
+}
+

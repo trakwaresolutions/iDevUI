@@ -8,7 +8,7 @@ idev.ux.widgetRichtext = baseWidget.extend(
         this.wtype = "richtext";
         this.value = config.value || "";
         this.tpl = new idev.wTemplate(
-            "<div id='{id}' class='ui-element' style='{elementstyle}{style};max-height:{height}px;'>",
+            "<div id='{id}' class='ui-element ui-richText' style='{elementstyle}{style};max-height:{height}px;'>",
             "<div id='{id}-input' style='width:{width}px;height:{theight}px;max-height:{theight}px;overflow:auto;'></div>",
             "</div>" );
         idev.internal.add(this);

@@ -28,7 +28,7 @@ var page1 =  {
                     y:5,
                     width:96,
                     height:96,
-                    src:'images/earth-red.png',
+                    src:'images/earthred.png',
                     events: {
                         click: function(img)
                         {
@@ -134,7 +134,7 @@ idev.app = {
                 },
                 '>>',
                 {
-                    wtype:'buttonrwd',
+                    wtype:'button',
                     id:'idBack',
                     width:90,
                     color:'blue', 
@@ -151,7 +151,7 @@ idev.app = {
                     width:2
                 },
                 {
-                    wtype:'buttonfwd',
+                    wtype:'button',
                     id:'idNext', 
                     width:90,
                     color:'blue', 
