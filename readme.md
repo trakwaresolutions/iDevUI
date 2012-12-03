@@ -2,8 +2,8 @@
 
 #  iDevUI Web 2.0 Framework #
     
-Version: 1.0.2
-Build  : 120801.1
+Version: 1.1.0
+Build  : 121203.1
     
 Copyright 2012 Trakware Solutions Ltd, All rights reserved.
 
@@ -22,6 +22,10 @@ Web app users must have access to source code of your application and iDevUI.
 The software is distributed under the MIT license
 Please note that iDevUI includes other open source code and therefore you need to respect their respective licenses.
     
+----------
+## Upgrading From Previous Version
+Check readme.txt file for important changes.
+
 ----------
 ## Installation Steps
 1. Download the latest zip file from [here](https://github.com/trakwaresolutions/iDevUI/zipball/master).
