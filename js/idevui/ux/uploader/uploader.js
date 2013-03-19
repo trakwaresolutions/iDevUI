@@ -28,6 +28,11 @@
     - Add image to button properties
     - Fixed bug where url needed to be set dynamically on load method
 
+	130206.1
+	- Fixed callback on upload
+	
+	130307.1
+	- Fixed Propogation bug
 
 */
 
@@ -114,14 +119,23 @@ idev.ux.widgetUploader = baseWidget.extend(
             buttonTextCls:this.buttonTextCls,
             svg:this.svg,
             cls:this.cls,
-            text:this.text
+            text:this.text,
+			allowDefault:true
         });
+		if (this.events.click)
+		{
+			$( '#' +  this.id ).click(idev.internal.onClick);
+		}
         this.btn.render();
         $( '#' +  this.id + "-input" ).change(function(e)
         {
             if (e == null) e = window.event;
             var wgt = idev.get(this.id.replace("-input",""));
             if (wgt.events.change) wgt.events.change(wgt,e);
+        });
+		$( '#' +  this.id + "-input" ).click(function(e)
+        {
+			e.stopPropagation();
         });
         this.rendered = true;
     },
@@ -139,7 +153,8 @@ idev.ux.widgetUploader = baseWidget.extend(
     },
     upload : function(callback)
     {
-        if ($('#' + this.id + "-input").val() == "") return; 
+        if ($('#' + this.id + "-input").val() == "") return;
+		if(typeof(callback)!="function") callback = function(){};
         this.callback = callback;
         var sHTML = "";        
         for (key in this.params)

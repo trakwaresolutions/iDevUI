@@ -3,10 +3,10 @@
     
     iDevUI Web 2.0 Framework
     
-    Version: 1.1.0
-    Build  : 121203.1
+    Version: 1.1.1
+    Build  : 130307.1
     
-    Copyright 2012 Trakware Solutions Ltd, All rights reserved.
+    Copyright 2011-2013 Trakware Solutions Ltd, All rights reserved.
     
     *** Do not remove this copyright message ***
     
@@ -16,133 +16,73 @@
     
 The example application is designed for a mobile.
     
-We have also provided phonegap.js if you wish to package your application using
-their services. Though you may wish to check for updates.
+We have also provided cordova.js if you wish to package your application using
+the phonegap services. Though you may wish to check for updates.
     
 Please be aware of PhoneGap's licensing aggreement.
     
 Changelog
     
-    - Add down property to button widget when in toggle mode.
-    - Made change to panel to allow borderStyle property to work better.
-    - Moved afterRender event in button widget after the SVG is created
-    - Fixed issue with combo widget drop down 1 pixel too high
-    - Fixed issue with missing border on input widget in chrome (removed overflow:hidden in idevui.css for iu-element class)
-    - Added ability to define a switch's width and height. (Bug #6)
-    - Fixed issue with incorrectly calculated tbar height affecting widgets inside of it. (Bug #4)
-    - Added emptyText property to widgetList to enable you to add some text to display when a list has no rows. (Enhancement #5)
-    - Added clearSelection() method to widgetList to clear the selected list item. (Enhancement #7)
-    - Fixed issues in ie8 with Quirks Mode.
-    - Fixed widget Height for main app toolbar not being default height
-    - Add css3pie as an options for modernising IE7 & IE8
-    - Added a loader options when loading iDevUI to show progress
-    - Added buttonBodyStyle to widgetButton to help date picker become square.
-    - Date picker is now square (Separate widget)
-    - widgetCombo is now square
-    - Date picker and widgetCombo can now be made with rounded corners by settings roundCorners as true/false.
-    - Stopped statusbar and column layout widgets from setting widget height the same as the statusbar
-    - Fixed roundCorners on window widget
-    - Added hover enter to dataview widget
-    - Add fireEvent method to base widget
-    - Remove DD_Roundies in favour of CSS and PIE.htc
-    - Changed toolbar and statusbar widgets to extensions of the composite widget instead of panel
-    - Remove top border style from default theme for toolbar and statusbar
-    - Added ability to create hidden page to be shown loader hence giving the appearance of speed.
-    - Added getFrame, getWindow, getDocument to iframe widget
-    - Added stylesheet refresh function to idev.internal collection
-    - Removed forcing no border radius if rouncCorner not true on input widget
-    - Update date picker widget to allow css button and input class properly
-    - Added beforeShowTab event to tabpanel widget.
-    - Changed show and hide widget methods to notifiy child widgets and hence fire show and hide events  
-    - Fixed bug with opacity in IE8 if opacity = 1
-    - Changed toolbar and statusbar widgets so you can set the vertical columns alignment
-    - Added header renderer option to grid column widget
-    - Added click event to grid widget
-    - Added formData method to idev.utils object to drill into a form panel and
-      build and array of input values
-    - Improved grid toolbar and statusbar code
-    - Fixed bug with multiple widgets on a "fit" layout panel not hiding properly
-    - Changed "fit" layout to take into consideration for toolbar and statusbar of parent panel
-    - Fixed CodeEditor incorrectly highlighting Javascript
-    - Added New CodeEditor theme 'Solarized'
-    - Added setValue to checkbox widget
-    - Added form object to idev.utils object with various methods to manipulate a form panel
-    - Added setEditable and getEditable to textfield and textarea widgets
-    - CSS3 Icons now detect colour chosen from iconColor on widgetButton.
-    - Added CSS3 icons PNGs to /images/icons
-    - Added svg property to widgetButton to force a button to render using SVG
-    - Fixed Bug #9
-    - Fixed Bug #10
-    - Fixed iScroll refresh bug on widgetList (bug #11)
-    - Changed delays in iScroll rendering on widgetList
-    - Add clone to data record
-    - Fixed bug if widget is hidden the form label is still visible
-    - Added widget min width and height
-    - Fixed frame layout not working correctly
-    - Added defaultTitleHeight to idev object
-    - Added textAlign and textVAlign to button widget
-    - Added updateJSONObject method to utils object. This method updates a JSON
-      object from either an array or JSON object but on where the names match
-    - Fixed potential problem with form labels not hiding or showing properly
-    - Improved the reliability of drag'n'drop
-    - Fixed bug with click called twice if widget draggable
-    - Added form panel widget and form window widget
-    - Added dataRecord data binding to widget in particular new form panel
-    - Added parent property to page fn object
-    - Removed duplicate code for mobile detection
-    - Removed duplicate fn definition to baseWidget object
-    - Changed page object so if data not passed blank data object created
-    - Changed the z-indexing on the panel render causing issue where modal window appeared below non-modal window.
-    - Added switch theme method to utils object
-    - Added buttonTextStyle to button widget
-    - Fixed bug with column layout if no initial widgets listed and you want
-      to dynamically add one using the addWidget method.
-    - Fixed bug with close tab
-    - Changed app toolbar and statusbar to a composite
-    - Fixed main app resize and the resize of the widgets within it
-    - Added anchor capabilities for widgets
-    - Added auto columns on dataview widget
-    - Removed forward and backward button widgets on the grounds they are too 
-      specialised and can be create using other widgets
-    - Added a renderer function to the dataview widget.
-    - Added click event listeners to textarea widget
-    - Modified the datastore updatebinds method to not fire the onload event when dynamically adding a record.
-    - Fixed bug with data record getRecNo method not working
-    - Fixed bug with window widget showing before the show method is called.
-    - Added prehtml property to image widget to display come html before the image
-    - Change spacer on YESNO message from 2 to 10 wide
-    - Fixed bug where the borders would be zero if not rounded corners
-    - Added a titleTextCls property to panel.
-    - Added object widget
-    - Added cls and style attributes to button widget image property
-    - Added object widget
-    - Fixed bug in combo widget not returning correct value if editable and has
-      a selection that has been overwritten
-    - Made button widget pure CSS and a added SVG button to keep backward compatibility
-    - Update default theme.
-    - Changed page hidding to visibility instead of display for speed.
-    - Fixed the theming of iDevUI
-    - Added set series to widgetchart to allow updating of chart info.
-    - Fixed bug with combo boxes showing no icons
-    - Reverted to old version of Raphael to fix positiong issues in IE8
-    - Modified treeview extension - added in slate theme
-    - Fixed bug in column renderer in grid passing wrong variables
-    - Fixed resize issue for list on combobox.
-    - Fixed listentry height in widgetcombobox
-    - Fixed overflow on combobox
-    - Fixed overflow on grid column
-    - Added lock option to checkbox
-    - Added boolean title attribute to label
-    - Trimmed leading and trailing spaces from label text
-    - Fixed bug on showpage not fully hiding old page.
-    - Added parent to baseWidget fn
-    - Create empty object for baseWidget data property if not set
-    - Added ie9gradient to ui-cell
-    - Added feature for composite widget to match parent width by parent
-    - Fixed bug fade in showPage, not loading page.
-    - Amended key to be defined inside each function that uses it, removing it from the global scope.
-    - Fixed bugs on dark theme for treeview, codeeditor, label and plugin widgets
-    - Fixed bug on active tab gradient overflowing border
-    - Fixed bug on set height of content div.
-    - Added ds unbind for base widget destroy.
-    - Fixed dark theme bug, text not showing on richtext.
+    - Added maxlength to textfield and textarea widgets
+    - Added a forcereload property to the config section of preferences. This 
+      will add a timestamp to the script or css url, forcing the browser to
+      re-download the file.
+    - Added a messagebox function to the idev.ui object
+    - Added fromUDateTime function to the idev.utils object to convert a
+      string contains the date and time in YYYYMMDDHHNNSS format to a date 
+    - Remove toolbar and statusbar padding from idevui.css and updated dark and
+      default themes
+    - Improved grid editing.
+    - Grid dsFilter now passes the row number
+    - Fix bug in replaceAll return and empty string if parameter is a number;
+    - Fixed getTotal to work with local data sources
+    - Made sure grid widget sets the CM column index for each column object.
+    - Add an invalidchars property to the textfield and textarea widgets
+      this prevents invalid characters from being entered.
+    - Fixed bug in dbOpen and dbExecute not working because wrong function name
+      used to check if local database is supported. 
+    - Fixed duplicate widget id issue on idev.internal.add
+    - Added enable and disabledCls to several widgets
+    - Fixed comboBox dropdown unexpected close issue
+    - Added stopPropagation and preventDefault after a button has been clicked 
+    - Corrected bug where selected property in a number of widgets was being
+      set by the internal onClick function to a string type. 
+    - Fixed combo list onclick styling issue
+    - Move idev.internal.add to the baseWidget
+    - Added autoload to datasource
+    - Amended pannel resize
+    - Amended Grid editor
+    - Fixed issue with scrollbars on widget drag
+    - Fixed icon update on drag and drop
+    - Fixed width calculation on spacer
+    - Added Tooltip to button widget.
+    - Added roundUp to utils
+    - Added downloadURL to utils
+    - Fixed Combobox list click event to pass correct data
+    - Fixed TabPanel widget to render correctly on add tab
+    - Added setTabTitle function to TabPanel
+    - Added select function to WidgetList
+    - Fixed composite layout
+    - Fixed double click in WidgetList
+    - Fixed unbind
+    - Added cell double click to grid widget
+    - Added title atribute to columns
+    - Fixed missing id on grid cell
+    - Amended column edit to work with tab
+    - Amended data object to work using indexOf
+    - Fixed resize function to fix jumping
+    - Added keyboard navigation to grid
+    - Amended inputType to support interger, currency and custom (custom uses regex for input)
+    - Standardised getting of element ids to jquery
+    - Performance tweaks to for loops
+    - Removed isNumeric (use javascript isNaN)
+    - Performance tweak to comboboxs
+    - Fixed bug on panel resizing
+    - Fixed bug on column find with custom attributes
+    - Added keyboard for widget resizing
+    - Fixed grid renderer issue
+    - Fixed bug in Regex on input validation to account for hyphens
+    - Fixed bug in input get value to account for hyphens
+    - Fixed radio buttons (broken by changing widget array to object)
+    - Fixed radio getValue() (broken by changing widget array to object)
+    - Fixed idev.internal.remove() (broken by changing widget array to object)

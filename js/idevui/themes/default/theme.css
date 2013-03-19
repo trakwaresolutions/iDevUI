@@ -30,11 +30,7 @@ body{
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#89c8e5', endColorstr='#066dab',GradientType=0 ); /* IE6-9 */
     background: linear-gradient(top, rgba(137,200,229,1) 0%,rgba(79,166,214,1) 31%,rgba(6,109,171,1) 100%); /* W3C */
     text-align:center;
-    padding:5;
-    padding-right:0;
-    margin:0px;
     font-family: tahoma, Helvetica, Arial, sans-serif;
-    font-size:20pt;
 } 
 .ui-app-statusbar {
     height:40;
@@ -48,11 +44,7 @@ body{
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#89c8e5', endColorstr='#066dab',GradientType=0 ); /* IE6-9 */
     background: linear-gradient(top, rgba(137,200,229,1) 0%,rgba(79,166,214,1) 31%,rgba(6,109,171,1) 100%); /* W3C */
     text-align:center;
-    padding:5;
-    padding-right:0;
-    margin:0px;
     font-family: tahoma, Helvetica, Arial, sans-serif;
-    font-size:20pt;
 } 
 
 /*----------------------------------------------------------------------------*/
@@ -400,6 +392,15 @@ body{
     border-right: 1px solid #bbb;
     padding:2px;
     background: #8b8b8b; 
+    color:#fff;
+    font-size:10pt;
+}
+.ui-grid-cell-select-active{
+    border-top: 0px solid #bbb;
+    border-bottom: 1px solid #bbb;
+    border-right: 1px solid #bbb;
+    padding:2px;
+    background: #6B6B6B; 
     color:#fff;
     font-size:10pt;
 }

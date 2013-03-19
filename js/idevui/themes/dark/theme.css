@@ -28,14 +28,10 @@ body{
 .ui-app-toolbar {
 	height:40;
 	position: relative;
-	background: #222222;
+	background: #222222; 
 	filter:none;
 	text-align:center;
-	padding:5;
-	padding-right:0;
-	margin:0px;
 	font-family: tahoma, Helvetica, Arial, sans-serif;
-	font-size:20pt;
 } 
 .ui-app-statusbar {
     height:40;
@@ -43,11 +39,7 @@ body{
 	background: #222222;
 	filter:none;
     text-align:center;
-    padding:5;
-    padding-right:0;
-    margin:0px;
     font-family: tahoma, Helvetica, Arial, sans-serif;
-    font-size:20pt;
 } 
 
 /*----------------------------------------------------------------------------*/
@@ -447,13 +439,6 @@ body{
     background:#fff;
     border:1px solid #ccc;
     color:#2b2b2b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* RICHTEXT                                                                   */
-
-.ui-richText {
-	color: #000000;
 }
 
 /*----------------------------------------------------------------------------*/

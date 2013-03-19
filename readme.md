@@ -2,10 +2,10 @@
 
 #  iDevUI Web 2.0 Framework #
     
-Version: 1.1.0
-Build  : 121203.1
+Version: 1.1.1
+Build  : 130307.1
     
-Copyright 2012 Trakware Solutions Ltd, All rights reserved.
+Copyright 2011-2013 Trakware Solutions Ltd, All rights reserved.
 
 *** Do not remove this copyright message ***
 
@@ -16,8 +16,8 @@ License: MIT (see website for details http://www.idevui.com)
 
 **Open Source Software**
  
-iDevUI is Open Source for non-commercial use only.
-Great for non-commercial organisations and personal uses.
+iDevUI is Open Source for commercial and non-commercial use.
+Great for commercial organisations and personal uses.
 Web app users must have access to source code of your application and iDevUI.
 The software is distributed under the MIT license
 Please note that iDevUI includes other open source code and therefore you need to respect their respective licenses.

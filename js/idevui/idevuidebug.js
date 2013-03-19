@@ -5,8 +5,8 @@
 
     Do not remove this copyright message
 
-    version    : 1.1.0
-    build      : 121203.1
+    version    : 1.1.1
+    build      : 130307.1
 
     Started    : 5th March 2011
 
@@ -18,224 +18,11 @@
         1.0.0   2011-11-23  First release
         1.0.1   2012-04-04  Milestone release
         1.0.2   2012-08-01  Milestone release
-        1.1.0   2012-12-03  Milestone release
+        1.1.0   2012-11-30  Milestone release
+		1.1.1	2013-03-07  Milestone release
 
 
     iDevUI is distributed under the terms of the MIT license
-    
-    120807.1
-    
-    - Add down property to button widget when in toggle mode.
-    - Made change to panel to allow borderStyle property to work better.
-    - Moved afterRender event in button widget after the SVG is created
-    
-    120810.1
-    
-    - Fixed issue with combo widget drop down 1 pixel too high
-    - Fixed issue with missing border on input widget in chrome (removed overflow:hidden in idevui.css for iu-element class)
-    
-    120817.1
-    - Added ability to define a switch's width and height. (Bug #6)
-    
-    120820.1
-    - Fixed issue with incorrectly calculated tbar height affecting widgets inside of it. (Bug #4)
-    - Added emptyText property to widgetList to enable you to add some text to display when a list has no rows. (Enhancement #5)
-    - Added clearSelection() method to widgetList to clear the selected list item. (Enhancement #7)
-    - Fixed issues in ie8 with Quirks Mode.
-    
-    120822.1
-    - Fixed widget Height for main app toolbar not being default height
-    
-    120828.1
-    
-    - Add css3pie as an options for modernising IE7 & IE8
-    - Added a loader options when loading iDevUI to show progress
-    
-    120829.1
-    
-    - Added btnBodyStyle to widgetButton to help date picker become square.
-    - Date picker is now square (Separate widget)
-    - widgetCombo is now square
-    - Date picker and widgetCombo can now be made with rounded corners by settings roundCorners as true/false.
-    
-    120830.1
-    - Stopped statusbar and column layout widgets from setting widget height the same as the statusbar
-    - Fixed roundCorners on window widget
-    - Added hover enter to dataview widget
-    
-    120831.1
-    - Add fireEvent method to base widget
-    - Remove DD_Roundies in favour of CSS and PIE.htc
-    
-    120901.1
-    - Changed toolbar and statusbar widgets to extensions of the composite widget instead of panel
-    - Remove top border style from default theme for toolbar and statusbar
-    
-    120903.1
-    - Added ability to create hidden page to be shown loader hence giving the appearance of speed.
-    - Added getFrame, getWindow, getDocument to iframe widget
-    
-    120904.1
-    - Added stylesheet refresh function to idev.internal collection
-    - Removed forcing no border radius if roundCorner not true on input widget
-    - Update date picker widget to allow css button and input class properly
-    
-    120905.1
-    - Added beforeShowTab event to tabpanel widget.
-    
-    120906.1
-    - Changed show and hide widget methods to notifiy child widgets and hence fire show and hide events  
-    - Fixed bug with opacity in IE8 if opacity = 1
-    
-    120908.1
-    - Changed toolbar and statusbar widgets so you can set the vertical columns alignment
-    - Added header renderer option to grid column widget
-    - Added click event to grid widget
-    - Added formData method to idev.utils object to drill into a form panel and
-      build and array of input values
-    - Improved grid toolbar and statusbar code
-    - Fixed bug with multiple widgets on a "fit" layout panel not hiding properly
-    - Changed "fit" layout to take into consideration for toolbar and statusbar of parent panel
-      
-    120911.1
-    - Fixed CodeEditor incorrectly highlighting Javascript
-    - Added New CodeEditor theme 'Solarized'
-	- Added setValue to checkbox widget
-	- Added form object to idev.utils object with various methods to manipulate a form panel
-	- Added setEditable and getEditable to textfield and textarea widgets
-    
-    120911.2
-    - CSS3 Icons now detect colour chosen from iconColor on widgetButton.
-    - Added CSS3 icons PNGs to /images/icons
-    - Added svg property to widgetButton to force a button to render using SVG
-	- Fixed Bug #9
-	- Fixed Bug #10
-	
-	120912.1
-	- Fixed iScroll refresh bug on widgetList (bug #11)
-	- Changed delays in iScroll rendering on widgetList
-	
-	120913.1
-	- Add clone to data record
-	- Fixed bug if widget is hidden the form label is still visible
-	- Added widget min width and height
-    - Fixed frame layout not working correctly
-    - Added defaultTitleHeight to idev object
-    - Added textAlign and textVAlign to button widget
-    
-    120916.1
-    - Added updateJSONObject method to utils object. This method updates a JSON
-      object from either an array or JSON object but on where the names match
-    - Fixed potential problem with form labels not hiding or showing properly
-    - Improved the reliability of drag'n'drop
-    - Fixed bug with click called twice if widget draggable
-    
-    120918.1
-    - Added form panel widget and form window widget
-    - Added dataRecord data binding to widget in particular new form panel
-
-	120919.1
-	- Added parent property to page fn object
-	- Removed duplicate code for mobile detection
-	- Removed duplicate fn definition to baseWidget object
-	- Changed page object so if data not passed blank data object created
-
-	120920.1
-	- Changed the z-indexing on the panel render causing issue where modal window appeared below non-modal window.
-    
-    120921.1
-    - Added switch theme method to utils object
-    - Added btnTextStyle to button widget
-    - Fixed bug with column layout if no initial widgets listed and you want
-      to dynamically add one using the addWidget method.
-    
-    120923.1
-    - Fixed bug with close tab
-    - Changed app toolbar and statusbar to a composite
-    - Fixed main app resize and the resize of the widgets within it
-    
-    120924.1
-    - Added anchor capabilities for widgets
-    - Added auto columns on dataview widget
-    
-    120925.1
-    - Removed forward and backward button widgets on the grounds they are too 
-      specialised and can be create using other widgets
-	- Added a renderer function to the dataview widget.
-
-	120927.1
-	- Added click event listeners to textarea widget
-	- Modified the datastore updatebinds method to not fire the onload event when dynamically adding a record.
-	
-	120928.1
-	- Fixed bug with data record getRecNo method not working
-	
-	120929.1
-	- Fixed bug with window widget showing before the show method is called.
-	- Added prehtml property to image widget to display come html before the image
-	- Change spacer on YESNO message from 2 to 10 wide
-	- Fixed bug where the borders would be zero if not rounded corners
-	- Added a titleTextCls property to panel
-
-	120930.1
-	- Added object widget
-	- Added cls and style attributes to button widget image property
-	- Fixed bug in combo widget not returning correct value if editable and has
-	  a selection that has been overwritten
-
-	121030.1
-	- Made button widget pure CSS and a added SVG button to keep backward compatibility
-	- Update default theme.
-	- Changed page hidding to visibility instead of display for speed.
-	
-	121031.1
-	- Fixed the theming of iDevUI
-	
-	121108.1
-    - Added set series to widgetchart to allow updating of chart info.
-	- Fixed bug with combo boxes showing no icons
-	- Reverted to old version of Raphael to fix positiong issues in IE8
-	
-	121109.1
-    - Modified treeview extension - added in slate theme
-	- Fixed bug in column renderer in grid passing wrong variables
-	
-    121112.1
-    - Fixed resize issue for list on combobox.
-	- Fixed listentry height in widgetcombobox
-	
-	121113.1
-	- Fixed overflow on combobox
-	- Fixed overflow on grid column
-	- Added lock option to checkbox
-
-	121120.1
-	- Added boolean title attribute to label
-	- Trimmed leading and trailing spaces from label text
-	
-	121122.1
-	- Fixed bug on showpage not fully hiding old page.
-	- Added parent to baseWidget fn
-	- Create empty object for baseWidget data property if not set
-	- Added ie9gradient to ui-cell
-	
-	121125.1
-	- Added feature for composite widget to match parent width by parent
-	
-	121127.1
-	- Fixed bug fade in showPage, not loading page.
-	- Amended key to be defined inside each function that uses it, removing it from the global scope.
-	
-	121128.1
-	- Fixed bugs on dark theme for treeview, codeeditor, label and plugin widgets
-	- Fixed bug on active tab gradient overflowing border
-	
-	121130.1
-	- Fixed bug on set height of content div.
-	
-	121203.1
-	- Added ds unbind for base widget destroy.
-	- Fixed dark theme bug, text not showing on richtext.
 	
 */
 
@@ -571,7 +358,7 @@ var idevResize = idevObject.extend({
             var w = parseInt($("#" + this.widget.id).width()) - this.rsw;
             var h = parseInt($("#" + this.widget.id).height())- this.rsh;
 
-            var sHTML = "<div id='" + this.widget.id + "-drframe' style='position:absolute;top:" + (this.rsh/2) + "px;left:" + (this.rsw/2) + "px;border:1px dashed " + this.resizeColor  + ";width:" + w + "px;height:" + h + "px;z-index:990;'></div>";
+            var sHTML = "<div id='" + this.widget.id + "-drframe' style='position:absolute;top:" + (this.rsh/2) + "px;left:" + (this.rsw/2) + "px;border:1px dashed " + this.resizeColor  + ";width:" + w + "px;height:" + h + "px;'></div>";
 
             if (this.resizable)
             {
@@ -588,6 +375,76 @@ var idevResize = idevObject.extend({
             $("#" + this.widget.id).append(sHTML);
             $('#' + this.widget.id).attr("draggable","Y");
             $('#' + this.widget.id).attr("resizable","Y");
+			// Keyboard Control for resizable pannels
+			var wgt = this;
+			var ctrl = false; // ctrl = resize
+			var shift = false; // shift = faster
+			$delay(0,function(){				
+				$('#'+wgt.widget.id+'-drframe').focus();
+				$('#'+wgt.widget.id+'-drframe').keydown(function(event){
+					var key = event.keyCode;
+					var parentDiv = $('#'+event.target.id).parent();
+					var left = parseInt(parentDiv.css('left'));
+					var top = parseInt(parentDiv.css('top'));
+					var width = parseInt(parentDiv.css('width'));
+					var height = parseInt(parentDiv.css('height'));
+					var speed = 1;
+					if(key==17){
+						if(ctrl==false) ctrl = true;
+					}
+					if(key==16){
+						if(shift==false) shift = true;
+					}
+					if(shift==true) {
+						speed = 5;
+					}
+					if(key==37){ //left
+						if(ctrl) {
+							width-=speed;
+							wgt.change(left,top,width,height);
+						} else {
+							left-=speed;
+							wgt.change(left,top,width,height);
+						}
+					}
+					if(key==38){ //up
+						if(ctrl) {
+							height-=speed;
+							wgt.change(left,top,width,height);
+						} else {
+							top-=speed;
+							wgt.change(left,top,width,height);
+						}
+					}
+					if(key==39){ //right
+						if(ctrl) {
+							width+=speed;
+							wgt.change(left,top,width,height);
+						} else {
+							left+=speed;
+							wgt.change(left,top,width,height);
+						}
+					}
+					if(key==40){ //down
+						if(ctrl) {
+							height+=speed;
+							wgt.change(left,top,width,height);
+						} else {
+							top+=speed;
+							wgt.change(left,top,width,height);
+						}
+					}
+				});
+				$('#'+wgt.widget.id+'-drframe').keyup(function(event){
+					var key = event.keyCode
+					if(key==17){
+						ctrl = false
+					}
+					if(key==16){
+						shift = false;
+					}
+				});
+			});
             this.resizing = true;
         },
         remove: function()
@@ -680,8 +537,8 @@ var idevDD = idevObject.extend({
                 var data = new Array();
     
                 data['id'] = this.widget.id + "-dd";
-                data['x'] = this.tx - 50;
-                data['y'] = this.ty - 14;
+                data['x'] = this.tx + 2;
+                data['y'] = this.ty + 2;
                 data['width'] = 100;
                 data['height'] = 20;
                 data['style'] = style;
@@ -699,7 +556,7 @@ var idevDD = idevObject.extend({
             var mousePos = idev.utils.mousePosition(ev);
             var dx = mousePos.x - idev._sX;
             var dy = mousePos.y - idev._sY;
-            var el = document.getElementById(this.widget.id + "-dd");
+            var el = $('#'+this.widget.id + "-dd");
             if (el)
             {
                 idev._sX =  mousePos.x;
@@ -1397,11 +1254,15 @@ var baseWidget = idevObject.extend(
             this.hideType     = this.config.hideType == null ? "display" : this.config.hideType;
 			if(this.parent)
 			{
+
 				if(this.parent.id == "ui-toolbar")
 				{
+
 					this.hideType = 'visibility';
 				}
 			}
+
+
             this.enabled      = this.config.enabled == null ? true : this.config.enabled;
             this.padding      = this.config.padding == null ? 0 : this.config.padding;
             this.border       = this.config.border == null ? false : this.config.border;
@@ -1424,6 +1285,7 @@ var baseWidget = idevObject.extend(
             this.anchor       = this.config.anchor || "";
             this.anchorMargin = this.config.anchorMargin|| { left:0, top:0, right:0, bottom:0};
             this.radius       = idev.convertNulls(this.config.radius,4);
+			this.disabledCls  = this.config.disabledCls || "";
 
             var dim = this.alignAchor();
             this.width = dim.width;
@@ -1507,12 +1369,13 @@ var baseWidget = idevObject.extend(
             this.resizer = new idevResize(this);
             this.children = new Array();
             this.config.id = this.id;
-            if (this.events.dblClick) this.events.dblclick = this.events.dblClick;
+            if (this.events.dblclick) this.events.dblclick = this.events.dblclick;
             if (this.events.afterRender) this.events.afterrender = this.events.afterRender;
             this.layoutConfig = this.config.layoutConfig;
             this.variable = this.config.variable;
             this.resizing = false;
             this.inLayout = false;
+			idev.internal.add(this);
         },
         alignAchor:function()
         {
@@ -1531,6 +1394,7 @@ var baseWidget = idevObject.extend(
                     var h = this.parent.getInnerHeight();
                     var w = this.parent.getInnerWidth();
                     
+                    if (pos.left == 0 &&  this.parent.labelWidth) pos.left =  this.parent.labelWidth
                     if (this.anchorMargin.left == null) this.anchorMargin.left = 0;
                     if (this.anchorMargin.top == null) this.anchorMargin.top = 0;
                     if (this.anchorMargin.right == null) this.anchorMargin.right = 0;
@@ -1667,9 +1531,13 @@ var baseWidget = idevObject.extend(
         {
             this.hidden = true;
             if (this.hideType == "visibility")
+            {
                 $("#" + this.id).css("visibility","hidden");
+            }
             else
+            {
                 $("#" + this.id).hide();
+            }
             this.onhide();
         },
         show : function()
@@ -1677,18 +1545,11 @@ var baseWidget = idevObject.extend(
             this.hidden = false;
             if (this.hideType == "visibility")
             {
-                $("#" + this.id).css("visibility","visible");
+                $("#" + this.id).css("visibility","visible"); 
                 if (idev.isIE8() && this.wtype == "icon")
                 {
                     this.refresh();
                 }
-                try{ 
-                    for (var i = 0;i < this.widgets.length;i++ )
-                    {
-                        var wgt = idev.get(this.widgets[i].id);
-                        wgt.onshow(); 
-                    }
-                } catch(e) { }
             }
             else
             {
@@ -1756,7 +1617,7 @@ var baseWidget = idevObject.extend(
             {
                 $delay(100,function(id)
                 {
-                    var el = document.getElementById(id + "-input");
+                    var el = $('#' + id + "-input");
                     el.focus();
                     if (idev.isFF())
                     {
@@ -1769,6 +1630,11 @@ var baseWidget = idevObject.extend(
 
                 },this.id);
             }
+            else if (this.wtype == "button")
+            {
+                var el = $('#'+this.id);
+                el.focus();
+            }
         },
         widgetCount:function()
         {
@@ -1777,6 +1643,8 @@ var baseWidget = idevObject.extend(
         enable : function(bFlag)
         {
             this.enabled = bFlag;
+            if(bFlag) $('#' + this.id).removeClass(this.disabledCls);
+            else  $('#' + this.id).addClass(this.disabledCls);
             if (this.wtype == "button") this.enableButton(bFlag);
         },
         isEnabled : function()
@@ -1932,7 +1800,7 @@ var baseWidget = idevObject.extend(
             {
                 if (this.parent.layout == "form")
                 {
-                    $("#"+this.renderTo+"-label").hide();
+                    $("#"+this.id+"-label").hide();
                 }
             }
             if (this.events.hide) this.events.hide(this);
@@ -1948,7 +1816,7 @@ var baseWidget = idevObject.extend(
             {
                 if (this.parent.layout == "form" && this.hidden !== true)
                 {
-                    $("#"+this.renderTo+"-label").show();
+                    $("#"+this.id+"-label").show();
                 }
             }
             if (this.events.show) this.events.show(this);
@@ -2048,6 +1916,7 @@ var idevCore = idevObject.extend({
         _preferences.config.trapunload = _preferences.config.trapunload == null ? true : _preferences.config.trapunload;
 		_preferences.config.unloadText = _preferences.config.unloadText == null ? false : _preferences.config.unloadText;
         _preferences.useCSS3 = _preferences.useCSS3 == null ? true : _preferences.useCSS3;
+        _preferences.forcereload = _preferences.config.forcereload == null ? false : _preferences.config.forcereload;
          
         if (_preferences.meta)
         {
@@ -2331,6 +2200,17 @@ var idevCore = idevObject.extend({
             datuURIs.href = "data:text/css,"+css;
             datuURIs.rel = "stylesheet";
             document.head.appendChild(datuURIs);
+        },
+        addForceLoad: function(s)
+        {
+            if (_preferences.forcereload)
+            {
+                if (s.indexOf("?") == -1)
+                    s += '?forceReload='+(new Date().valueOf());
+                else
+                    s += '&forceReload='+(new Date().valueOf());
+            }
+            return s
         }, 
         addStyleSheet: function(s,callback)
         {
@@ -2342,9 +2222,9 @@ var idevCore = idevObject.extend({
             idev.loadedFiles.push(s);
             var el = document.createElement('link')
             el.rel = "stylesheet";
-            el.href = s;
+            el.href = idev.internal.addForceLoad(s);
             el.callback = callback
-            $debug(s)
+            $debug(el.href)
             if (idev.isIE7() || idev.isIE8())
             {
                 el.onreadystatechange= function ()
@@ -2376,9 +2256,9 @@ var idevCore = idevObject.extend({
             idev.loadedFiles.push(s);
             var el = document.createElement('script')
             el.type = 'text/javascript';
-            el.src = s;
+            el.src = idev.internal.addForceLoad(s);
             el.callback = callback
-            $debug(s)
+            $debug(el.src)
             if (idev.isIE7() || idev.isIE8())
             {
                 el.onreadystatechange= function ()
@@ -2468,6 +2348,7 @@ var idevCore = idevObject.extend({
 					} else {
 						return "Are you sure that you wish to exit the application?";
 					}
+
                 }
             }
             $(window).resize(function(e)
@@ -2512,9 +2393,9 @@ var idevCore = idevObject.extend({
 
                     if (target)
                     {
-                        if (target.id.substr(0,idev.hideWidget.id.length) != idev.hideWidget.id)
+                        if (target.id.substr(0,idev.hideWidget.id.length) != idev.hideWidget.id && target.parentElement && target.parentElement.id.substr(0,idev.hideWidget.id.length) != idev.hideWidget.id)
                         {
-                            $delay(300,function()
+                            $delay(99,function()
                             {
                                 if (idev.hideWidget)
                                 {
@@ -2600,7 +2481,23 @@ var idevCore = idevObject.extend({
                         if (idev._dragWidget.wtype == 'panel')
                         {
                             if (idev._dragWidget.title)
+                            {
                                 if (idev._dragWidgetId.indexOf("-titletext") == -1) return;
+                            }
+                            else
+                            {
+                                var div = $('#'+idev._dragWidgetId);
+                                if (div)
+                                {
+                                    var hasVerticalScrollbar = div.scrollHeight>div.clientHeight;
+                                    if (hasVerticalScrollbar)
+                                    {
+                                        var mousePos  = idev.utils.mousePosition(e);
+                                        if (mousePos.x > $("#"+idev._dragWidgetId).width() - 20) 
+                                            return;
+                                    }
+                                }
+                            }
                         }
                     }
                     idev._cursor = null;
@@ -2639,8 +2536,18 @@ var idevCore = idevObject.extend({
                 {
                     idev.dd = false;
                     idev._dragElement = e.target != null ? e.target : e.srcElement;
-                    var id = idev.findID(idev._dragElement).id;
-                    var dragid = idev._dragWidget.id + "-dd";
+					var id = idev.findID(idev._dragElement).id;
+					if (id.indexOf(idev._dragWidget.id) == 0)
+					{
+
+						idev._dragWidget.dd.move(e);
+						idev.dd = true;
+						idev.widgetMoved = true;
+						e.preventDefault();
+						return;
+					}
+
+					var dragid = idev._dragWidget.id + "-dd";
                     var pos = id.indexOf("-",3);                    
                     if (pos == -1)pos = id.indexOf("_",3);
                     if (pos != -1 && id != dragid)
@@ -2673,6 +2580,8 @@ var idevCore = idevObject.extend({
                     idev._sY = mousePos.y;
                     if (idev._resizable)
                     {
+						var left = parseInt(idev._dragElement.style.left.replace("px","")) + dx;
+                        var top = parseInt(idev._dragElement.style.top.replace("px",""))+ dy;
                         var oldLeft = parseInt(idev._dragElement.style.left.replace("px",""));
                         var oldTop = parseInt(idev._dragElement.style.top.replace("px",""));
                         var oldWidth = parseInt(idev._dragElement.style.width.replace("px",""));
@@ -2974,11 +2883,24 @@ var idevCore = idevObject.extend({
                 var wgt = idev.get(this.id);
                 if (wgt.events == null) return;
                 if (wgt.events.click == null) return;
-                if(wgt.resizer.resizing) return;
+                if(wgt.resizer.resizing) {
+					e.preventDefault();
+					e.stopPropagation();
+					return;
+                }
                 if (wgt.enabled)
                 {
-                    wgt.events.click(wgt,e);
+                    try
+                    {
+                        wgt.events.click(wgt,e);
+                    }
+                    catch(e)
+                    {
+                    }
                 }
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
             }
             else
             {
@@ -3006,9 +2928,14 @@ var idevCore = idevObject.extend({
                             wgt.updateItem(dsIndex,"background-color",wgt.selectColor);
                     }
                     var oldselection = wgt.selected;
-                    wgt.selected = dsIndex;
+                    wgt.selected = parseInt(dsIndex);
                     if (wgt.events.click)
+                    {
                         wgt.events.click(wgt,dsIndex,oldselection,e);
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return false;
+                    }
                 }
             }
         },
@@ -3026,6 +2953,9 @@ var idevCore = idevObject.extend({
                 {
                     wgt.events.dblclick(wgt,e);
                 }
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
             }
             else
             {
@@ -3041,6 +2971,9 @@ var idevCore = idevObject.extend({
                     wgt.events.dblclick(wgt,dsIndex,wgt.selected,e);
                     wgt.selected = dsIndex;
                 }
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
             }
 
         },
@@ -3069,7 +3002,7 @@ var idevCore = idevObject.extend({
 
             if (wgt)
             {
-                if (wgt.watermark != "")
+                if (wgt.watermark != "" && wgt.watermark != null)
                 {
                     var v = $('#'+wgt.id+"-input").val() || "";
                     if (v == "")
@@ -3122,33 +3055,24 @@ var idevCore = idevObject.extend({
         },
         remove : function (id)
         {
-            for(var i = 0;i < idev.widgets.length;i++)
-            {
-                var widget = idev.widgets[i];
-
-                if (widget.id != null && widget.id == id)
-                {
-                    if (widget.parent)
-                    {
-                        if (widget.parent.children)
-                        {
-                            // Remove widget object from parent child list
-                            for (var c = 0;c < widget.parent.children.length;c++)
-                            {
-                                if(widget.parent.children[c] == widget)
-                                {
-                                    widget.parent.children.splice(c,1);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    $('#' +  widget.id).remove();
-                    idev.widgets.splice(i,1);
-                    return true;
-                }
-            }
-            return false;
+			var widget = idev.widgets[id];
+			if (widget.id != null) {
+				if (widget.parent) {
+					if (widget.parent.children) {
+						// Remove widget object from parent child list
+						for (var c = 0;c < widget.parent.children.length;c++) {
+							if(widget.parent.children[c] == widget) {
+								widget.parent.children.splice(c,1);
+								break;
+							}
+						}
+					}
+				}
+				$('#' +  widget.id).remove();
+				delete idev.widgets[id];
+				return true;
+			}
+			return false;
         },
         nextUIID : function(prefix)
         {
@@ -3416,16 +3340,10 @@ var idevCore = idevObject.extend({
                     {
                         if (widgets[i].variable) 
                             variableIDX = i;
-                        else
-                            spacer -= widgets[i].width;
                     }
                     else if (widgets[i] === ">>")
                     {
                         spacerFound = true;
-                    }
-                    else if (typeof widgets[i] == "string")
-                    {
-                        spacer -= widgets[i].length * idev.charWidth;
                     }
                 }
                 var sHTML = "<table class='ui-table' id='" + renderTo + "-table' border=0 " + parent.attr + "><tbody id='" + renderTo + "-body'></tbody></table>";
@@ -3435,7 +3353,7 @@ var idevCore = idevObject.extend({
                     {
                         if (parent.width)
                         {
-                             sHTML = "<table class='ui-table' id='" + renderTo + "-table' border=0  width=100%" + parent.attr + "><tbody id='" + renderTo + "-body'></tbody></table>";
+                             sHTML = "<table class='ui-table' id='" + renderTo + "-table' border=0  width=100% " + parent.attr + "><tbody id='" + renderTo + "-body'></tbody></table>";
                         }
                     }
                 }
@@ -3521,9 +3439,9 @@ var idevCore = idevObject.extend({
                     {
                         widget.page = page;
                         widget.parent = parent;
-                        if (i == variableIDX)
+                        if (i == variableIDX && !spacerFound)
                         {
-                            widget.width = spacer;
+                            widget.width = 0;
                         }
                         if (parent.layoutConfig)
                         {
@@ -3551,7 +3469,7 @@ var idevCore = idevObject.extend({
                             wtype:'spacer',
                             id: parent.id + "-spacer",
                             renderTo: renderTo,
-                            width:spacer
+                            width:0
                         }
                         idev.internal.renderWidget( page, wgt );
                     }
@@ -3570,7 +3488,23 @@ var idevCore = idevObject.extend({
                     }
                     cell++;
                 }
-                return;
+				if(spacerFound || variableIDX!=-1)
+				{
+
+					$delay(0, function() {
+						for (var i = 0;i < widgets.length;i++) {
+							spacer -= $('#' + widgets[i].id).outerWidth(true);
+						}
+
+						if(spacer<0) spacer=0;
+						if(spacerFound) var id = parent.id + "-spacer";
+						else var id = widgets[variableIDX].id;
+						$('#' + id).width(spacer);
+						$('#' + id).css("max-width",spacer + "px");
+					});
+				}
+
+				return;
             }
             if (layout == "frame")
             {
@@ -4026,7 +3960,6 @@ var idevCore = idevObject.extend({
                         {
                             widget.wtype = widget.wtype.toLowerCase();
                             if (cnt > 0 ) widget.hidden = true;
-                            widget.hideType = 'visibility';
                             widget.renderTo = renderTo;
                             widget.id = idev.internal.renderWidget( page, widget );
                             cnt++;
@@ -4078,7 +4011,10 @@ var idevCore = idevObject.extend({
         },
         add : function (widget)
         {
-            idev.widgets.push(widget);
+            if (idev.widgets[widget.id] == null)
+                idev.widgets[widget.id] = widget;
+
+
         },
         render : function()
         {
@@ -4101,7 +4037,7 @@ var idevCore = idevObject.extend({
             {
                 if (idev.app.toolbar.height == null) idev.app.toolbar.height = 40;
                 idev.app.toolbar.visible = true;
-                $('#container').append("<div id='ui-toolbar' class='ui-app-toolbar" + sTheme + "' style='height:" + idev.app.toolbar.height + "px;max-height:" + idev.app.toolbar.height + "px;'></div>");
+                $('#container').append("<div id='ui-toolbar' class='ui-app-toolbar" + sTheme + "' style='overflow:hidden;height:" + idev.app.toolbar.height + "px;max-height:" + idev.app.toolbar.height + "px;'></div>");
                  if (idev.app.toolbar.widgets)
                 {
                     idev.app.toolbar.id = "ui-toolbar";
@@ -4380,7 +4316,7 @@ var idevCore = idevObject.extend({
     addTouchScroll:function(id,options)
     {
         if (options == "H") options = { hScroll:true, bounce:true, momentum: true };
-        return  new iScroll(document.getElementById(id),options);
+        return  new iScroll($('#'+id),options);
     },
     createWorker :function(sScript,onmessage)
     {
@@ -4399,15 +4335,8 @@ var idevCore = idevObject.extend({
     get : function (id)
     {
         if (id == "" || id == null) return null;
-        for(var i = 0;i < this.widgets.length;i++)
-        {
-            var widget = this.widgets[i];
-
-            if (widget.id != null && widget.id == id) return widget;
-        }
-        return null;
+		return this.widgets[id];
     },
-
     lastPage : function()
     {
         return this.pageManager.lastPage;
@@ -4721,19 +4650,18 @@ var idevCore = idevObject.extend({
         },
         dbOpen : function(dbName, dbSize, dbVersion)
         {
-            if (!this.databaseSupport()) return null;
+            if (!this.dbSupport()) return null;
             if (dbSize == null) dbSize = 100000;
             if (dbVersion == null) dbVersion = "1.0";
             return openDatabase(dbName, dbVersion, dbName, dbSize);
         },
-        dbExecute : function(db,sSQL,args,success,failed)
+        dbExecute : function(db,sSQL,success,failed)
         {
-            if (!this.databaseSupport()) return false;
-            if (args == null) args = [];
+            if (!this.dbSupport()) return false;
             db.transaction(
                 function(tx)
                 {
-                    tx.executeSql(sSQL, args, success, failed);
+                    tx.executeSql(sSQL, [], success, failed);
                 }
             );
         }
@@ -4759,10 +4687,11 @@ var idevCore = idevObject.extend({
                 this.events = config.events || {};
                 this.editor = config.editor;
                 this.editID = "";
+				this.tooltip = config.tooltip || "";
                 if (this.tpl == null)
                 {
                     this.tpl = new idev.wTemplate(
-                        "<div id='{id}-cell-{row}-{col}' class='ui-grid-cell {cls} ie9gradient' style='{style};width:{width}px;max-width:{width}px;height:{height}px;text-overflow: ellipsis; overflow: hidden;white-space: nowrap;' row='{row}' col='{col}'>",
+                        "<div id='{id}-cell-{row}-{col}' class='ui-grid-cell {cls} ie9gradient' style='{style};width:{width}px;max-width:{width}px;height:{height}px;text-overflow: ellipsis; overflow: hidden;white-space: nowrap;' row='{row}' col='{col}' title='{tooltip}'>",
                         "{value}",
                         "</div>" );
                 }
@@ -4774,6 +4703,7 @@ var idevCore = idevObject.extend({
                 if (data['value'] == null) data['value'] = "";
                 if (data['style'] == null || data['style'] == "") data['style'] = this.style;
                 if (data['height'] == null) data['height'] = "";
+				if(data['tooltip'] == null) data['tooltip'] = "";
                 if (this.events != null)
                 {
                     if (this.events.click)
@@ -4783,57 +4713,35 @@ var idevCore = idevObject.extend({
                 }
                 return this.tpl.render(data);
             },
-            edit : function(row,col)
+            setValue : function(value,row)
             {
-                if (this.editor == null) return;
-                this.editRow = row;
-                this.editCol = col;
-                var id = this.parent.id + "_"+row+"_"+col;
-                var w = $("#"+id).width();
-                var h = $("#"+id).height();
                 var rec = this.parent.ds.getAt(row);
-
-                if (this.parent.events.beforeEdit)
-                {
-                    if (this.parent.events.beforeEdit(this.parent,row,col,rec) === false) return;
-                }
-                this.editor.width = w-2;
-                this.editor.height = h-2;
-                this.editor.roundCorners = false;
-                this.editor.value = rec.get(this.field);
-                this.editor.renderTo = id;
-                this.editor.style = "background-color:#fff;color:#000;";
-                $("#"+id).html("");
-                this.editID = idev.internal.renderWidget(this.parent.page,this.editor);
-            },
-            endEdit : function(row)
-            {
-                idev.utils.showBusy();
-                if (this.editID == "") return;
-                var wgt = $get(this.editID);
-                var value = wgt.getValue();
-                var rec = this.parent.ds.getAt(this.editRow);
-                var id = this.parent.id + "_"+this.editRow+"_"+this.editCol;
+                var id = this.parent.id + "_"+row+"_"+this.col;
                 var data = new Array();
                 var topoffset = $("#"+this.parent.id + "-data").scrollTop();
                 var leftoffset = $("#"+this.parent.id + "-data").scrollLeft();
-                wgt.destroy();
                 rec.set(this.field,value);
-                if (this.renderer != null)
-                    data['value'] = this.renderer(rec.get(this.field),rec,this.editRow,this.editCol,this);
-                else
+                if (this.renderer != null) {
+                    data['value'] = this.renderer(rec.get(this.field),rec,row,this.col,this);
+                } else {
                     data['value'] = rec.get(this.field);
-
+				}
+                data['value'] = idev.utils.replaceAll(data['value'],"\n","<br/>");
                 data['id'] = this.parent.id;
                 data['style'] = this.style || "";
                 data['cls'] = "";
-                if (this.editRow % 2) data['cls'] = " ui-cell-alt";
-                data['row'] = this.editRow;
-                data['col'] = this.editCol;
+				if (this.parent.autoSelect) data['cls'] = 'ui-grid-cell-select-active';
+                if (row % 2) data['cls'] = " " + this.parent.altCls + ' ui-grid-cell-select-active';
+                data['row'] = row;
+                data['col'] = this.col;
                 data['width'] = this.width-5;
-                data['height'] = this.parent.rowHeight;
-                value = this.render(data, rec, this.editRow, this.editCol);
-     //           $("#"+id).html(value);
+                
+                data['height'] = $("#"+id).parent().attr("height");
+                var html = this.render(data, rec, row, this.col);
+                $("#"+id).html(html);
+				var cellid = this.parent.id + "-cell-" + row + "-" + this.col;
+                $("#"+cellid).click(this.parent.cellClick);
+				$("#"+cellid).dblclick(this.parent.cellDblClick);
                 this.editID = "";
                 if(topoffset > 0 || leftoffset > 0)
                 {
@@ -4842,9 +4750,130 @@ var idevCore = idevObject.extend({
                 }
                 if (this.parent.events.afterEdit)
                 {
-                    this.parent.events.afterEdit(this.parent,this.editRow,this.editCol,rec, this.field, this.editor.value,data['value']);
+                    this.parent.events.afterEdit(this.parent,row,this.col,rec, this.field, this.value,value);
                 }
-                idev.utils.hideBusy();
+            },
+            edit : function(row,col,ev)
+            {
+                if (this.editor == null) return;
+                this.editRow = parseInt(row);
+
+				this.editCol = parseInt(col);
+                var id = this.parent.id + "_"+row+"_"+col;
+                var w = $("#"+id).width();
+                var h = $("#"+id).height();
+                var rec = this.parent.ds.getAt(row);
+                if (this.parent.events.beforeEdit)
+                {
+                    if (this.parent.events.beforeEdit(this.parent,row,col,rec) === false) return;
+                }
+                if (typeof this.editor == "function")
+                {
+                    this.editor(this.parent,this,row,col,ev);    
+                    return;
+                }
+                var sHTML = "<div id='" +id+ "-edit' style='height:"+(h-2)+"px;max-height:"+h+"px;background-color:#fff;color:#000;border:1px solid #ccc;'></div>";
+				$("#"+id).html(sHTML);  
+				$delay(0, function() {
+					$('#'+id+'-edit').children().children().blur(function(){
+						var parentID = id.substr(0,id.indexOf('_'));
+						var currentPart = parentID + '-cell-' + row;
+						if($('[id^=' + currentPart + '-]:focus').length == 0) {
+							$('#'+currentPart+'-'+col).removeClass("ui-grid-cell-select");
+							$('#'+currentPart+'-'+col).removeClass("ui-grid-cell-select-active");
+							$('[id^=' + currentPart + '-]').removeClass("ui-grid-cell-select");		
+						}
+					});	
+				});
+                var value = idev.utils.replaceAll(rec.get(this.field),"<br/>","\n");
+                if (this.editor.width == null) this.editor.width = w-2;
+                if (this.editor.height == null) this.editor.height = h-2;
+                this.editor.roundCorners = false;
+                this.editor.renderTo = id+'-edit';
+                this.editor.style = "background-color:#fff;color:#000;border:0px;border-radius:0px;-moz-border-radius:0px;-webkit-border-radius:0px;";
+                this.editor.buttonStyle = "border-radius:0px;-moz-border-radius:0px;-webkit-border-radius:0px;";
+                this.editor.data = {
+                    col:this,
+                    grid: this.parent
+                };
+                this.editor.delay = this.editor.delay || 100;
+
+				this.parent.editCol = this;
+                if (this.editor.events == null) this.editor.events = {};
+                this.editor.events.lostfocus = function(wgt)
+                    {
+                        if (wgt.data.col.editor)
+                        {
+                            if (wgt.data.col.editor.wtype != "combo")
+                            {
+                                wgt.data.col.endEdit( wgt.data.col.editRow);
+                                wgt.data.grid.editCol = null;
+                            }
+                        }
+                    };
+                this.editor.events.onenter = function(wgt)
+                    {
+                        var column = wgt.data.col;
+						if (wgt.wtype == 'textarea') return;
+                        if(column.editCol < column.cm.columns.length-1)
+                        {
+                            var row = wgt.data.col.editRow;
+                            var col = column.editCol+1;
+                            wgt.data.col.endEdit(row,col);
+                            wgt.data.grid.editCol = null;
+                            column = column.cm.getAt(col);
+                            column.edit(row,col);
+                        }    
+                        if (column.parent.events.onenter)
+                        {
+                            column.parent.events.onenter(column);
+                        }
+                    };
+                this.editor.events.ontab = function(wgt)
+                    {
+                        var column = wgt.data.col;
+                        if(column.editCol < column.cm.columns.length-1)
+                        {
+                            var row = wgt.data.col.editRow;
+                            var col = column.editCol+1;
+                            wgt.data.col.endEdit(row);
+                            wgt.data.grid.editCol = null;
+                            column = column.cm.getAt(col);
+                            column.edit(row,col);
+                        }    
+                        if (column.parent.events.ontab)
+                        {
+                            column.parent.events.ontab(column);
+                        }
+                    };
+                this.editID = idev.internal.renderWidget(this.parent.page,this.editor);
+                this.value = value;
+                $delay(this.editor.delay,function(col)
+                {
+                    try{
+                        $get(col.editID).setValue(col.value);
+                        $get(col.editID).focus();
+                    }
+                    catch(e)
+                    {
+                    }
+                },this);
+            },
+            endEdit : function(row,col)
+            {
+				if (this.editID == "") return;
+                var wgt = $get(this.editID);
+                var value = wgt.getValue();
+                
+                wgt.destroy();
+                this.setValue(value,this.editRow); 
+				if(col){
+					var id = '#' + this.parent.id + "-cell-" + (row) + "-" + (col-1);
+					$delay(0,function(){
+						$(id).focus();
+						$(id).click();
+					});
+				}
             }
         }),
         columnModel : idevObject.extend(
@@ -4864,6 +4893,7 @@ var idevCore = idevObject.extend({
                     }
                     this.columns[i].index = i;
                     this.columns[i].cm = this;
+                    this.columns[i].col = i;
                 }
             },
             getCount: function()
@@ -4935,32 +4965,22 @@ var idevCore = idevObject.extend({
             set : function(sField,value,nobind)
             {
                 if (nobind == null) nobind = false;
-                for(var i in this.fields)
+                var i = $.inArray(sField,this.fields);
+                if (i == -1) return false;
+                this.data[i] = value;
+                this.modified = true;
+                if (this.store && !nobind)
                 {
-                    if (this.fields[i] == sField)
-                    {
-                        this.data[i] = value;
-                        this.modified = true;
-                        if (this.store && !nobind)
-                        {
-                            this.store.updateBinds();
-                        }
-                        if (!nobind) this.updateBinds();
-                        return true;
-                    }
+                    this.store.updateBinds();
                 }
-                return false;
+                if (!nobind) this.updateBinds();
+                return true;
             },
             get : function(sField)
             {
-                for(var i in this.fields)
-                {
-                    if (this.fields[i] == sField)
-                    {
-                        return this.data[i] == null ? "" : this.data[i];
-                    }
-                }
-                return "";
+                var i = $.inArray(sField,this.fields);
+                if (i == -1) return "";
+                return this.data[i] == null ? "" : this.data[i];
             },
             isModified : function()
             {
@@ -5039,6 +5059,7 @@ var idevCore = idevObject.extend({
                 this.results = config.results;
                 this.autoDestroy = config.autoDestroy == null ? false : config.autoDestroy;
                 this.events = config.events || {};
+				if(config.autoLoad) this.fetch();
             },
             onload: function(func)
             {
@@ -5104,11 +5125,11 @@ var idevCore = idevObject.extend({
                 {
                     try
                     {
-                        if (this.binds[i]) this.binds[i].refresh(fromload);
+                        this.binds[i].refresh(fromload);
                     }
                     catch(e)
                     {
-                        idev.errorHandler("Update bind failed");
+						idev.errorHandler("Update bind failed");
                     }
                 }
                 if (this.events == null) return;
@@ -5209,7 +5230,7 @@ var idevCore = idevObject.extend({
                 // Check not already bound
                 for (var i = 0;i < this.binds.length;i++)
                 {
-                    if (this.binds[i] == widget) return;				
+                    if (this.binds[i] == widget) return;
                 }
                 this.binds.push(widget)
             },
@@ -5218,9 +5239,10 @@ var idevCore = idevObject.extend({
                 for (var i = 0;i < this.binds.length;i++)
                 {
                     if (this.binds[i] == widget) {
-					this.bind.slice(i,1);
+					this.binds.splice(i,1);
 					return;
 					}
+
                 }
             },
             asString: function(type,separator)
@@ -5262,37 +5284,57 @@ var idevCore = idevObject.extend({
             },
             find: function(sField,sValue,start,matchAny,caseSensitive)
             {
-
+                var search = [];
                 if (start == null) start = 0;
                 if (matchAny == null) matchAny = true;
                 if (caseSensitive == null) caseSensitive = true;
-                if (!caseSensitive) if (typeof sValue == "string") sValue = sValue.toLowerCase();
+                if (typeof sField == "string")
+                {
+                    if (!caseSensitive) if (typeof sValue == "string") sValue = sValue.toLowerCase();
+                    search.push ( { field:sField, value:sValue });    
+                }
+                else
+                {
+                    search = sField;
+                }
                 for(var i = start;i < this.records.length;i++)
                 {
-                    var v = this.records[i].get(sField);
-
-                    if (!caseSensitive) if (typeof v == "string") v = v.toLowerCase();
-                    if (matchAny)
+                    var pass = true;
+                    for (var s = 0;s < search.length; s++)
                     {
-                        if (typeof v == "string")
+                        var criteria = search[s];
+                        var v = this.records[i].get(criteria.field);
+                        sValue = criteria.value;
+                        if (!caseSensitive) if (typeof v == "string") v = v.toLowerCase();
+                        if (matchAny)
                         {
-                            if (v.indexOf(sValue) != -1) return i;
+                            if (typeof v == "string")
+                            {
+                                if (v.indexOf(sValue) == -1) pass = false;
+                            }
+                            else
+                            {
+                                if (v != sValue) pass = false;
+                            }
                         }
                         else
                         {
-                            if (v == sValue) return i;
+                            if (v != sValue) pass = false;
                         }
                     }
-                    else
-                    {
-                        if (v == sValue) return i;
-                    }
+                    if (pass) return i;
+
                 }
                 return -1;
             },
             getTotal:function()
             {
-                return this.total;
+                if (!this.url) {
+                    this.total = this.records.length;
+                    return this.total
+                } else {
+                    return this.total;
+                }
             }
         })
     },
@@ -5495,7 +5537,7 @@ var idevCore = idevObject.extend({
 
             if (this.controlledContent && idev.isTouch())
             {
-                widget.iScroll = new iScroll(document.getElementById(this.id + '-scroller'))
+                widget.iScroll = new iScroll($('#'+this.id + '-scroller'))
             }
 
             if (!idev.swipping) return;
@@ -5535,7 +5577,7 @@ var idevCore = idevObject.extend({
                     return;
                 }
             });
-            var el = document.getElementById(this.config.id + '-content');
+            var el = $('#' + this.config.id + '-content');
 
             el.ontouchstart = function()
             {
@@ -6048,7 +6090,6 @@ var idevCore = idevObject.extend({
             var h = $(window).height();
             idev.pgWidth = w;
             idev.pgHeight = h;
-            $debug("syncSize");
             var ch = h - ($('#ui-toolbar').height() + $('#ui-statusbar').height());            
             $("#container").width(w);
             $("#container").height(h);
@@ -6153,6 +6194,20 @@ var idevCore = idevObject.extend({
                 return null;
             }
         },
+		downloadURL:function (url) 
+		{
+
+			var hiddenIFrameID = 'idevuihiddenDownloader',
+				iframe = $('#' + hiddenIFrameID);
+			if (iframe === null) {
+				iframe = document.createElement('iframe');
+				iframe.id = hiddenIFrameID;
+				iframe.style.display = 'none';
+				document.body.appendChild(iframe);
+			}
+
+			iframe.src = url;
+		},
         switchTheme:function(theme,callback)
         {
             theme =  _preferences.libpath + "themes/" + theme + "/theme.css?forceReload="+(new Date().valueOf());
@@ -6268,7 +6323,7 @@ var idevCore = idevObject.extend({
         },
         showBusy : function()
         {
-            if (document.getElementById("_busy") == null)
+            if ($("#_busy") == null)
             {
                 $("#container").append("<div id='_busy' class='ui-busy'></div>");
             }
@@ -6299,7 +6354,7 @@ var idevCore = idevObject.extend({
         },
         replaceAll : function(sText,sSubstr,sWith)
         {
-            if (typeof sText != "string") return "";
+            if (typeof sText != "string") return sText == null ? "" : sText;
             if (sSubstr != sWith && sSubstr != "")
             {
                 while (sText.indexOf(sSubstr) != -1) sText = sText.replace(sSubstr,sWith);
@@ -6308,8 +6363,13 @@ var idevCore = idevObject.extend({
         },
         round : function (num, dec)
         {
-            var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
+			if(dec===null) dec=0;
+			var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
             return result;
+        },
+        roundUp : function (num)
+        {
+            return Math.ceil(num);
         },
         ucwords : function (str)
         {
@@ -6406,23 +6466,23 @@ var idevCore = idevObject.extend({
             }
             return objDate;
         },
-        isNumeric: function(sText)
+        fromUDateTime: function(sDate)
         {
-            var ValidChars = "0123456789";
-            var IsNumber=true;
-            var Char;
-
-            if (sText == "") return false;
-            for (var i = 0; i < sText.length && IsNumber == true; i++)
-            {
-                Char = sText.charAt(i);
-                if (ValidChars.indexOf(Char) == -1)
-                {
-                    IsNumber = false;
-                }
-            }
-            return IsNumber;
-
+            var dateArray = [];
+            dateArray[0] = parseInt(sDate.substr(0,4));    
+            dateArray[1] = parseInt(sDate.substr(4,2));   
+            dateArray[2] = parseInt(sDate.substr(6,2));   
+            dateArray[3] = parseInt(sDate.substr(8,2));   
+            dateArray[4] = parseInt(sDate.substr(10,2));   
+            dateArray[5] = parseInt(sDate.substr(12,2));   
+            return new Date(
+                 dateArray[0],
+                 dateArray[1]-1, // Careful, month starts at 0!
+                 dateArray[2],
+                 dateArray[3],
+                 dateArray[4],
+                 dateArray[5]
+            );   
         },
         trim : function (str, chars)
         {
@@ -6443,6 +6503,14 @@ var idevCore = idevObject.extend({
             chars = chars || "\\s";
             return str.replace(new RegExp("[" + chars + "]+$", "g"), "");
         },
+		objectLength : function(obj)
+		{
+			var length = 0, key;
+			for (key in obj) {
+				if (obj.hasOwnProperty(key)) length++;
+			}
+			return length;
+		},
         urldecode: function  (str)
         {
             return decodeURIComponent((str+'').replace(/\+/g, '%20'));
@@ -7071,6 +7139,87 @@ var idevCore = idevObject.extend({
                 win.show();
             return win;
         },
+        messagebox:function(message, but, config)
+        {
+            var buttons = [];
+            if (idev.msgwin != null) return;
+            
+            if (config == null) config = {};
+            if (config.backgroundStyle == null) config.backgroundStyle = '';
+            if (config.labelStyle == null) config.labelStyle = 'font-size:30px;font-family:Roboto, sans-serif;text-align:center;';
+            if (config.borderColor == null) config.borderColor = '#777';
+            if (config.buttonBorderColor == null) config.buttonBorderColor = '#545454';
+            if (config.buttonCls == null) config.buttonCls = '';
+               
+            for(var i in but)
+            {
+                if(i%2)
+                {
+                    buttons.push(new idev.ui.widgetSpacer({
+                        width:40
+                    }));
+                }
+                
+                buttons.push(new idev.ui.widgetButton({
+                    width:160,
+                    height:50,
+                    text:but[i].text,
+                    id:'messagewin-' + i,
+                    cls:config.buttonCls,
+                    border:true,
+                    borderColor:config.buttonBorderColor,
+                    events:{
+                        click:function(btn)
+                        {
+                            var id = btn.id;
+                            var n = id.replace("messagewin-","");
+                            if(typeof(but[n].click)=='function')but[n].click(btn);
+                            idev.msgwin.close();
+                            idev.msgwin = null;
+                        }
+                    }
+                }));
+            }
+            i = parseInt(i);
+            buttons.unshift(new idev.ui.widgetSpacer({
+                width: i>0 ? (600-160*(i+1)-40*i)/2 : 220
+            }));
+            idev.msgwin = new idev.ui.widgetWindow({
+                width:600,
+                height:220,
+                x:(idev.pgWidth-600)/2,
+                y:(idev.pgHeight-220)/2,
+                modal:true,
+                layout:'row',
+                backgroundStyle:config.backgroundStyle,
+                roundCorners:true,
+                border:true,
+                borderColor:config.borderColor,
+                autoFocus:true,
+                widgets:[
+                    {
+                        wtype:'spacer',
+                        height:20
+                    },
+                    {
+                        wtype:'label',
+                        style:config.labelStyle,
+                        text:message,
+                        width:600,
+                        height:100
+                    },
+                    {
+                        wtype:'spacer',
+                        height:30
+                    },
+                    {
+                        wtype:'composite',
+                        widgets:buttons
+                    }
+                ]
+            });
+            idev.msgwin.show();
+        },
         //------------------------------------------------------------------
         widgetPanel : baseWidget.extend(
         {
@@ -7261,7 +7410,6 @@ var idevCore = idevObject.extend({
                         "</div>",
                         "</div>"
                     );
-                idev.internal.add(this);
            },
             render : function()
             {
@@ -7358,7 +7506,8 @@ var idevCore = idevObject.extend({
                     else
                         style += "box-shadow: "+this.shadowSize +"px "+this.shadowSize +"px "+(this.shadowSize *2)+"px "+this.shadowColor+";";
                 }
-                if (idev.isFF() && this.wtype == "window") contentstyle += "display: inline;";
+                // Removed 31/12/2012 to fix rendering issue in FF
+                //   if (idev.isFF() && this.wtype == "window") contentstyle += "display: inline;";
                 var sFullContent = "";
                 
                 if ((this.title == "" || this.title == null) && this.tbar == null) 
@@ -7528,7 +7677,7 @@ var idevCore = idevObject.extend({
                 {
                     for(var i = 0;i < this.widgets.length;i++)
                     {
-                        if (this.widgets[i].wtype == "input" || this.widgets[i].wtype == "textarea")
+                        if (this.widgets[i].wtype == "input" || this.widgets[i].wtype == "textarea" || this.widgets[i].wtype == "button")
                         {
                             if (this.focusID == this.widgets[i].id)
                             {
@@ -7539,6 +7688,26 @@ var idevCore = idevObject.extend({
                             {
                                 $get(this.widgets[i].id).focus();
                                 break;
+                            }
+                        }
+                        else  if (this.widgets[i].wtype == "composite")
+                        {
+                            for(var n = 0;n < this.widgets[i].widgets.length;n++)                                
+                            {
+                                var w = this.widgets[i].widgets[n];
+                                if (w.wtype == "input" || w.wtype == "textarea" || w.wtype == "button")
+                                {
+                                    if (this.focusID == w.id)
+                                    {
+                                        $get(w.id).focus();
+                                        break;
+                                    }
+                                    else  if (this.autoFocus)
+                                    {
+                                        $get(w.id).focus();
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
@@ -7770,7 +7939,6 @@ var idevCore = idevObject.extend({
                     wgt.width = this.width - this.padding*2;
                     wgt.height = this.bodyheight;
                     if (idev.isIE()) wgt.height = this.bodyheight - this.padding*2;
-                    wgt.hideType='visibility';
                     renderTo = this.id + "-content";
                 }
                 else
@@ -7818,16 +7986,33 @@ var idevCore = idevObject.extend({
                 this.inputStyle = config.inputStyle || "";
                 this.inputCls = config.inputCls || "";
                 this.editable = config.editable == null ? true : config.editable;
+                this.uppercase = config.uppercase == null ? false : config.uppercase;
+                this.lowercase = config.lowercase == null ? false : config.lowercase;
+                this.capitalize = config.capitalize == null ? false : config.capitalize;
                 this.watermark = config.watermark || "";
                 this.watermarkColor = config.watermarkColor || "#aaa";
-
+				this.inputDisabledCls = config.inputDisabledCls || "";
+                this.maxlength = config.maxlength || "";
+				this.zeroreturn = config.zeroreturn == null ? true : config.zeroreturn;
+                this.invalidchars = config.invalidchars || "";
+				this.customregex = config.customregex || "";
                 this.tpl = new idev.wTemplate(
                         "<div id='{id}' class='ui-element ui-textfield ui-frame {cls}' style='{elementstyle};{style};'>",
                         "<input id='{id}-input' type='{inputtype}' class='ui-input {inputcls}' style='width:{width}px;height:{height}px;max-width:{width}px;max-height:{height}px;{inputstyle}'  value='{value}'/>",
                         "</div>"
                     );
-                idev.internal.add(this);
                 if (this.inputCls != "") this.inputCls += "  ie9gradient";
+            },
+            enable:function(flag)
+            {
+                this._super(flag);
+                if(flag) {
+                    $('#' + this.id + "-input").removeClass(this.inputDisabledCls);
+                    this.editable = true;
+                } else {
+                    $('#' + this.id + "-input").addClass(this.inputDisabledCls);
+                    this.editable = false;
+                }
             },
             setValue : function(value)
             {
@@ -7851,10 +8036,35 @@ var idevCore = idevObject.extend({
                 var v = $('#'+this.id+"-input").val();
 
                 if (this.watermark == v && this.watermark != "") v = "";
-                if (this.inputType == "number") 
+                if (this.inputType == "integer") 
                 {
-                    if (v == "") return 0;
+					if(v=="-") v="";
+					if (v == "") 
+                    {
+                        if (this.zeroreturn) return 0;
+                        return '';
+                    }
                     return parseInt(v);
+                }
+				if (this.inputType == "number") 
+                {
+					if(v=="-") v="";
+					if (v == "") 
+                    {
+                        if (this.zeroreturn) return 0;
+                        return '';
+                    }
+                    return parseFloat(v);
+                }
+				if (this.inputType == "currency") 
+                {
+					if(v=="-") v="";
+					if (v == "") 
+                    {
+                        if (this.zeroreturn) return 0;
+                        return '';
+                    }
+                    return parseFloat(v).toFixed(2);
                 }
                 return v;
             },
@@ -7879,7 +8089,9 @@ var idevCore = idevObject.extend({
                     inputstyle += "color:" + this.watermarkColor + ";";
                 }
                 if (this.borderStyle != "") style += ";border:" + this.borderStyle;
-
+                if (this.uppercase) inputstyle += ";text-transform:uppercase;"; 
+                if (this.lowercase) inputstyle += ";text-transform:lowercase;"; 
+                if (this.capitalize) inputstyle += ";text-transform:capitalize;"; 
                 var data = new Array();
                  
                 data['id'] = this.id;
@@ -7895,7 +8107,7 @@ var idevCore = idevObject.extend({
                 {
                     data['inputstyle'] = this.style+";overflow:auto;";
                 }
-                data['inputtype'] = this.inputType == "number" ? "text" : this.inputType;
+                data['inputtype'] = this.inputType == "password" ? "password" : "text"; //uses text for number for pre HTML5 compatibility
 
                 var  sHTML = this.tpl.render(data);
 
@@ -7923,33 +8135,53 @@ var idevCore = idevObject.extend({
                 {
                     $( '#' +  this.id ).change(idev.internal.onChange);
                 }
-                $( '#' +  this.id ).keydown({ widget: this },function(event)
+				$('#' +  this.id).keyup({ widget: this },function(event){
+					var wgt = event.data.widget;
+					var v = $('#'+wgt.id+"-input").val();
+					if(event.keyCode == 8) {
+						wgt.value = v;
+						return;
+					}
+					if(wgt.maxlength !='') 
+					{
+						if (v.length > wgt.maxlength) {
+							$('#'+wgt.id+"-input").val(wgt.value);
+							return;
+						}
+					}
+					if (wgt.inputType == "number")
+                    {
+						if (!(v.match(/^-{0,1}\d+\.{0,1}\d*$|^-{0,1}\d*$/))) $('#'+wgt.id+"-input").val(wgt.value);
+						else wgt.value = v;
+                    }
+					if (wgt.inputType == "integer")
+                    {
+						if (!(v.match(/^-{0,1}\d*$/))) $('#'+wgt.id+"-input").val(wgt.value);
+						else wgt.value = v;
+                    }
+					if (wgt.inputType == "text")
+                    {
+						wgt.value = v;
+                    }
+					if (wgt.inputType == "currency")
+                    {
+						if (!(v.match(/^-{0,1}\d+\.{0,1}\d{0,2}$|^-{0,1}\d*$/))) $('#'+wgt.id+"-input").val(wgt.value);
+						else wgt.value = v;
+                    }
+					if (wgt.inputType == "custom" && wgt.customregex != "")
+                    {
+						if (!(v.match(wgt.customregex))) $('#'+wgt.id+"-input").val(wgt.value);
+						else wgt.value = v;
+                    }
+				})
+                $( '#' +  this.id ).keypress({ widget: this },function(event)
                 {
                     var wgt = event.data.widget;
-                    if (!wgt.editable)
+                    if (wgt.invalidchars != "")
                     {
-                        event.preventDefault();
-                        return false;
-                    }
-                    if (wgt.watermark != "")
-                    {
-                        var v = $('#'+wgt.id+"-input").val();
-
-                        if (v == wgt.watermark )
+                        var key = event.keyCode;
+                        if (wgt.invalidchars.indexOf(String.fromCharCode(event.keyCode)) != -1)
                         {
-                            $('#'+wgt.id+"-input").val("");
-                            $('#'+wgt.id+"-input").css("color","");
-                        }
-                    }
-                    if (wgt.inputType == "number")
-                    {
-                        if ( event.keyCode == 46 || event.keyCode == 13 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 || event.keyCode == 39 || event.keyCode == 190)
-                        {
-                            // Do nothing
-                        }
-                        else if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 ))
-                        {
-
                             event.preventDefault();
                             return false;
                         }
@@ -7996,12 +8228,14 @@ var idevCore = idevObject.extend({
                 this.inputCls = config.inputCls || "";
                 this.inputStyle = config.inputStyle || "";
                 this.watermarkColor = config.watermarkColor || "#aaa";
+				this.maxlength = config.maxlength || "";
+				this.zeroreturn = config.zeroreturn == null ? true : config.zeroreturn;
+                this.invalidchars = config.invalidchars || "";
                 this.tpl = new idev.wTemplate(
                         "<div id='{id}' class='ui-element ui-textfield ui-frame {cls}' style='{elementstyle};{style}'>",
                         "<textarea id='{id}-input' class='ui-textarea {inputcls}'  style='width:{width}px;height:{height}px;{inputstyle};'>{value}</textarea>",
                         "</div>"
                     );
-                idev.internal.add(this);
                 if (this.inputCls != "") this.inputCls += "  ie9gradient";
             },
             setValue : function(value)
@@ -8027,7 +8261,12 @@ var idevCore = idevObject.extend({
                 var v = $('#'+this.id+"-input").val();
 
                 if (this.watermark == v) v = "";
-                return v;
+				if (v == "") 
+				{
+					if (this.zeroreturn) return 0;
+					return '';
+				}
+				return parseInt(v);
             },
             setEditable:function(canedit)
             {
@@ -8063,8 +8302,8 @@ var idevCore = idevObject.extend({
                 data['style'] = style;
                 data['inputstyle'] = inputstyle;
                 data['inputcls'] = this.inputCls;
-                data['width'] = this.width-10;
-                data['height'] = this.height-10;
+                data['width'] = this.width-2;
+                data['height'] = this.height-2;
                 data['value'] = text;
 
                 var  sHTML = this.tpl.render(data);
@@ -8083,8 +8322,10 @@ var idevCore = idevObject.extend({
                 $( '#' +  this.id + "-input" ).focus(idev.internal.onFocus);
 				if (this.events.click)
 				{
+
 					$( '#' +  this.id ).click(idev.internal.onClick);
 				}
+
                 if (this.events.change)
                 {
                     $( '#' +  this.id ).change(idev.internal.onChange);
@@ -8105,6 +8346,42 @@ var idevCore = idevObject.extend({
                         {
                             $('#'+wgt.id+"-input").val("");
                             $('#'+wgt.id+"-input").css("color","");
+                        }
+                    }
+                    if (wgt.maxlength > 0)
+                    {
+                        var v = $('#'+wgt.id+"-input").val();
+
+                        if (v.length >= wgt.maxlength)
+                        {
+                            if ( event.keyCode == 46 || event.keyCode == 13 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 || event.keyCode == 39 || event.keyCode == 190)
+                            {
+                                // Do nothing
+                            }
+                            else
+                            {
+                                event.preventDefault();
+                                return false;
+                            }
+                        }
+                    }
+                    if (event.keyCode == 9 && wgt.events.ontab)
+                    {
+                        wgt.events.ontab(wgt);
+                        event.preventDefault();
+                        return false;
+                    }
+                });
+                $( '#' +  this.id ).keypress({ widget: this },function(event)
+                {
+                    var wgt = event.data.widget;
+                    if (wgt.invalidchars != "")
+                    {
+                        var key = event.keyCode;
+                        if (wgt.invalidchars.indexOf(String.fromCharCode(event.keyCode)) != -1)
+                        {
+                            event.preventDefault();
+                            return false;
                         }
                     }
                 });
@@ -8152,6 +8429,7 @@ var idevCore = idevObject.extend({
                 this.watermark = config.watermark || "";
                 this.watermarkColor = config.watermarkColor || "#aaa";
                 this.buttonCls = config.buttonCls || "ui-combo-button";
+                this.buttonStyle = config.buttonStyle || "";
                 this.ds = config.ds;
                 this.listTpl = config.listTpl;
                 this.displayField = config.displayField || "";
@@ -8163,6 +8441,8 @@ var idevCore = idevObject.extend({
                 this.iconColor = config.iconColor;
                 this.selectColor = config.selectColor || "";
                 this.selectCls = config.selectCls || "ui-list-select";
+                this.inputDisabledCls = config.inputDisabledCls || "";
+                this.buttonDisabledCls = config.buttonDisabledCls || "";
                 var rc = this.roundCorners;
                 if (idev.isIE8()) rc = false;
                 this.dropWidth = config.dropWidth == null ? (this.width-(rc ? 6 : 0)) : config.dropWidth;
@@ -8194,7 +8474,18 @@ var idevCore = idevObject.extend({
                 {
                     this.inpStyle = idev.utils.css2JSON(this.inputStyle);
                 }
-                idev.internal.add(this);
+            },
+            enable:function(flag)
+            {
+                this._super(flag);
+                this.btn.enable(flag);
+                if(flag) {
+                    $('#' + this.id + "-input").removeClass(this.inputDisabledCls);
+                    this.editable = true;
+                } else {
+                    $('#' + this.id + "-input").addClass(this.inputDisabledCls);
+                    this.editable = false;
+                }
             },
             setInputValue : function(value)
             {
@@ -8216,7 +8507,7 @@ var idevCore = idevObject.extend({
                 else
                     $('#'+this.id+"-input").val(value);
             },
-            setValue : function(value)
+            setValue : function(value,fromclick)
             {
                 if(value == '')
                 {
@@ -8236,7 +8527,7 @@ var idevCore = idevObject.extend({
                 this.setInputValue(value);
                 var wgt = this.list;
                 if (this.list == null)  return;
-                if (wgt.autoSelect)
+                if (wgt.autoSelect && !fromclick)
                 {
                     if (wgt.selected != -1)
                     {
@@ -8285,6 +8576,14 @@ var idevCore = idevObject.extend({
                 }
                 var rec = this.ds.getAt(this.list.getSelected());
                 return rec == null ? "" : rec.get(this.valueField);
+            },
+            getSelected:function()
+            {
+                return this.list.getSelected();
+            },
+            getStore:function()
+            {
+                return this.ds;
             },
             render : function()
             {
@@ -8335,27 +8634,33 @@ var idevCore = idevObject.extend({
                 $delay(100,function(widget)
                 {
                     cls = widget.buttonCls;
+                    style = widget.buttonStyle;
                     widget.btn = new idev.ui.widgetButton({
                         parent:widget,
                         renderTo:widget.id + "-button",
                         width:widget.height,
-                        height:widget.height + 2,
+                        height:widget.height,
                         icon:{
-                            src:'_arrow'//,
-                       //     style:idev.utils.cssOpacity(0.6)
+                            src:'_arrow'
                         },
                         cls:widget.cssQuirks(cls),
+						disabledCls:widget.buttonDisabledCls,
+                        style:style,
                         border:false, 
                         events: {
                             click:function(btn)
                             {
                                 if (btn.parent.visible)
-                                    btn.parent.list.hide();
+								{
+
+									btn.parent.list.hide();
+								}
+
                                 else
                                 {
                                     if (idev.hideWidget)
                                     {
-                                        idev.hideWidget.parent.visible = false;
+										idev.hideWidget.parent.visible = false;
                                         idev.hideWidget.hide();
                                     }
                                     var h =  $("#" + btn.parent.id).height();
@@ -8417,11 +8722,11 @@ var idevCore = idevObject.extend({
                                 var ds = wgt.getStore();
                                 var rec = ds.getAt(index);
                                 var sValue = rec.get(wgt.parent.valueField);
-								wgt.parent.visible = false;
                                 wgt.hide();
-                                wgt.parent.setValue(sValue);
+                                wgt.parent.setValue(sValue,true);
+								wgt.parent.visible = false;
                                 idev.hideWidget = null;
-                                if (wgt.parent.events.selected) wgt.parent.events.selected(wgt.parent);
+                                if (wgt.parent.events.selected) wgt.parent.events.selected(wgt.parent,index,oldIndex);
                                 if (wgt.parent.events.change && index != oldIndex) wgt.parent.events.change(wgt.parent);
                             },
                             hover:function(enter,wgt,index,selected)
@@ -8468,6 +8773,12 @@ var idevCore = idevObject.extend({
                                   $('#'+wgt.id+"-input").css(wgt.inpStyle);
                             }
                         }
+                        if (event.keyCode == 9 && wgt.events.ontab)
+                        {
+                            wgt.events.ontab(wgt);
+                            event.preventDefault();
+                            return false;
+                        }
                     });
                     $( '#' +  widget.id ).keyup(function(event)
                     {
@@ -8479,7 +8790,7 @@ var idevCore = idevObject.extend({
                                 var v = $('#'+wgt.id+"-input").val();
                                 if (v == "")
                                 {
-                                    var el =  document.getElementById(wgt.id+"-input");
+                                    var el =  $('#'+wgt.id+"-input");
 
                                     $('#'+wgt.id+"-input").val(wgt.watermark);
                                     $('#'+wgt.id+"-input").css("color",wgt.watermarkColor);
@@ -8584,8 +8895,8 @@ var idevCore = idevObject.extend({
                             "<table width=100% style='{style}'>",
                             "<tr>",
                             "<td width='20px'>",
-                            "<div id='{id}-input' class='ui-checkbox {cls}' style='width:20px;height:20px' >&nbsp;&nbsp;&nbsp;&nbsp;",
-                            "</div>",
+                            "<button id='{id}-input' class='ui-checkbox {cls}' style='width:20px;height:20px;border:0px;' >&nbsp;&nbsp;&nbsp;&nbsp;",
+                            "</button>",
                             "</td>",
                             "<td id='{id}-text'>",
                             "<span style='{textStyle}'>{text}</span>",
@@ -8601,14 +8912,13 @@ var idevCore = idevObject.extend({
                             "<tr>",
                             this.text == ""? "" : "<td id='{id}-text'><span style='{textStyle}'>{text}</span></td>",
                             "<td width='22px'>",
-                            "<div id='{id}-input' style='width:20px;height:20px' class='ui-checkbox {cls}'>&nbsp;&nbsp;&nbsp;&nbsp;",
-                            "</div>",
+                            "<button id='{id}-input' style='width:20px;height:20px;border:0px;' class='ui-checkbox {cls}'>&nbsp;&nbsp;&nbsp;&nbsp;",
+                            "</button>",
                             "</td>",
                             "</tr>",
                             "</table>",
                             "</div>"
                         );
-                idev.internal.add(this);
             },
 			lock:function()
 			{
@@ -8624,10 +8934,11 @@ var idevCore = idevObject.extend({
             },
             setValue : function(value)
             {
-                if (value == this.value)
+                if (value == this.value) {
                     this.check(true)
-                else
+                } else {
                     this.check(false)
+				}
             },
             getValue : function()
             {
@@ -8635,14 +8946,11 @@ var idevCore = idevObject.extend({
             },
             check : function(checked)
             {
-                var isChecked = $('#'+this.id+"-input").hasClass("ui-checkbox-on");
-
-                if (checked && !isChecked)
-                {
+                var isChecked = isChecked();
+                if (checked && !isChecked) {
                    $('#'+this.id+"-input").toggleClass("ui-checkbox-on");
                 }
-                if (!checked && isChecked)
-                {
+                if (!checked && isChecked) {
                    $('#'+this.id+"-input").toggleClass("ui-checkbox-on");
                 }
             },
@@ -8679,6 +8987,7 @@ var idevCore = idevObject.extend({
                         widget.events.change(widget);
                     }
                 });
+                $( '#' +  this.id + "-input").blur(idev.internal.onLostFocus);
                 this.rendered = true;
             }
         }),
@@ -8701,7 +9010,6 @@ var idevCore = idevObject.extend({
                         "</div>",
                         "</div>"
                     );
-                idev.internal.add(this);
             },
             isOn : function()
             {
@@ -8803,57 +9111,29 @@ var idevCore = idevObject.extend({
                             "</table>",
                             "</div>"
                         );
-                idev.internal.add(this);
             },
             isChecked : function()
             {
-                return $('#'+this.id+"-input").hasClass("ui-radio-on");
+				return $('#'+this.id+"-input").hasClass("ui-radio-on");
             },
             getValue : function()
             {
-                for(var i = 0;i < idev.widgets.length;i++)
-                {
-                    var widget = idev.widgets[i];
-
-                    if (widget.wtype == "radio")
-                    {
-                        if (widget.group == this.group)
-                        {
-                            if (widget.isChecked())
-                            {
-                                return widget.value;
-                            }
-                        }
-                    }
-                }
+				var id = $('[group='+this.group+'].ui-radio-on').attr('id').replace('-input','');
+				return idev.widgets[id].value;
             },
             check : function(checked)
             {
                 var isChecked = $('#'+this.id+"-input").hasClass("ui-radio-on");
-
-                if (checked && !isChecked)
-                {
-                   $('#'+this.id+"-input").toggleClass("ui-radio-on");
-                }
-                if (!checked && isChecked)
-                {
-                   $('#'+this.id+"-input").toggleClass("ui-radio-on");
-                }
+                if (checked && !isChecked) $('#'+this.id+"-input").toggleClass("ui-radio-on");
+                if (!checked && isChecked) $('#'+this.id+"-input").toggleClass("ui-radio-on");
             },
             handleRadio : function(radio)
             {
-                if (this.isChecked()) return;
-
-                this.check(true);
-                for(var i = 0;i < idev.widgets.length;i++)
-                {
-                    var widget = idev.widgets[i];
-
-                    if (widget.id != this.id && widget.wtype == "radio")
-                    {
-                        if (widget.group == this.group) widget.check(false);
-                    }
-                }
+				if (this.isChecked()) return;
+                //Will match first found but radio should only have one active in each group
+				var id = $('[group='+this.group+'].ui-radio-on').attr('id').replace('-input','');
+				idev.widgets[id].check(false);
+				this.check(true);
                 if (this.events.click) this.events.click(this);
             },
             render : function()
@@ -8878,7 +9158,7 @@ var idevCore = idevObject.extend({
                 $("#" + this.renderTo).append(sHTML);
 
                 idev.internal.afterRender(this);
-                $( '#' + this.id).click(function()
+				$( '#' + this.id).click(function()
                 {
                     var r = idev.get(this.id);
                     r.handleRadio();
@@ -8976,7 +9256,6 @@ var idevCore = idevObject.extend({
                 this.icon = this.icon.replace("-black","");
                 this.tpl = new idev.wTemplate("<div id='{id}' class='ui-element {buttoncls}' style='{elementstyle}{style}' title='{title}'></div>");
                 if (this.startColor != "" && this.endColor != "") this.color = "";
-                idev.internal.add(this);
             },
             drawButton:function()
             {
@@ -9297,12 +9576,12 @@ var idevCore = idevObject.extend({
                 this.enabled = this.config.enabled == null ? true : this.config.enabled;
                 this.disabledCls = this.config.disabledCls || 'ui-button-disabled';
                 this.transparent = this.config.transparent == null ? false : this.config.transparent;
+				this.tooltip = config.tooltip || "";
                 this.tpl = new idev.wTemplate(
                     
-                    "<button type='button' id='{id}' class='ui-element {cls} {togglecls}' style='{elementstyle}{style}'>",
+                    "<button unselectable='on' type='button' id='{id}' class='ui-element {cls} {togglecls} unselectable' style='{elementstyle}{style}' title='{tooltip}'>",
                     "{image1}<span class='{textcls}' id='{id}-text' style='{textstyle}'>{text}</span>{image2}",
                     "</button>" );
-                idev.internal.add(this);
             },                                 
             render : function()
             {
@@ -9348,6 +9627,7 @@ var idevCore = idevObject.extend({
                 data['height'] = this.height;
                 data['elementstyle'] = this.elementStyle;
                 data['style'] = this.style;
+				data['tooltip'] = this.tooltip;
                 data['cls'] = this.cssQuirks(this.transparent ? "ui-button-transparent" : this.cls);
                 data['togglecls'] = !this.toggle ? "" : this.down ? this.toggleCls : ""; 
                 if (this.icon.align == "right")
@@ -9454,8 +9734,6 @@ var idevCore = idevObject.extend({
                         "{text}",
                         "</div>"
                     );
-
-                idev.internal.add(this);
             },
             render : function()
             {
@@ -9524,7 +9802,6 @@ var idevCore = idevObject.extend({
                     "<div class='ui-element' id='{id}' style='{style}'>",
                         "{prehtml}<img id='{id}-image' class='{cls}' src='{src}' style='width:{width}px;height:{height}px;' title='{title}'/>{html}",
                     "</div>" );
-                idev.internal.add(this);
             },
             render : function()
             {
@@ -9611,7 +9888,6 @@ var idevCore = idevObject.extend({
                     "<div id='{id}' class='ui-element' style='{elementstyle}{style};padding:10px;'>",
                     "<div id='{id}-chart' style='width:{width}px;height:{height}px;'></div>",
                     "</div>" );
-                idev.internal.add(this);
             },
             setSeries: function(series)
             {
@@ -9687,7 +9963,7 @@ var idevCore = idevObject.extend({
                     "</div>",
                     "</div>" );
                 this.resizer.handlers = "n,s,w,e,"
-                idev.internal.add(this);
+                
             },
             render : function()
             {
@@ -9749,7 +10025,7 @@ var idevCore = idevObject.extend({
                 });
                 if (idev.isTouch())
                 {
-                    var el = document.getElementById(this.id);
+                    var el = $('#'+this.id);
                     el.addEventListener("touchstart",function(e)
                     {
                         var w = parseInt($("#" +this.id).css("width").replace("px",""));
@@ -9845,7 +10121,7 @@ var idevCore = idevObject.extend({
                     "</div>",
                     "</div>" );
                 this.resizer.handlers = "n,s,w,e,"
-                idev.internal.add(this);
+                
             },
             render : function()
             {
@@ -9929,7 +10205,7 @@ var idevCore = idevObject.extend({
                     "<iframe id='{id}-frame' src='{src}' frameborder=0 style='height:{height}px;width:{width}px;overflow:auto;'>",
                     "</iframe>",
                     "</div>" );
-                idev.internal.add(this);
+                
             },
             render : function()
             {
@@ -10025,7 +10301,7 @@ var idevCore = idevObject.extend({
                     "<div id='{id}' class='ui-element' style='{elementstyle};{style};'>",
                     "<object id='{id}-object' type='{type}' data='{src}' style='height:{height}px;width:{width}px;overflow:auto;'></object>",
                     "</div>" );
-                idev.internal.add(this);
+                
             },
             render : function()
             {
@@ -10090,9 +10366,13 @@ var idevCore = idevObject.extend({
                 this.offset = config.offset == null ? 0 : config.offset;
                 this.limit = config.limit || 65535;
                 this.rowHeight = config.rowHeight == null ? 25 : config.rowHeight;
+                config.rowHeight = this.rowHeight;
                 this.selectedRow = -1;
+				this.selectedCell = -1;
+                this.autoSelect = config.autoSelect == null ? true : config.autoSelect; 
                 this.dsFilter = config.dsFilter;
                 this.editCol = null;
+                this.altCls = config.altCls || "ui-grid-cell-alt";
                 
                 this.tbar = this.config.tbar;
                 this.tbarHeight = this.config.tbarHeight || 34;
@@ -10109,7 +10389,7 @@ var idevCore = idevObject.extend({
                 this.bbCreated = false;
                 
                 this.showHeader = config.showHeader == null ? true : config.showHeader; 
-                this.editClicks = config.editClicks || 1;
+                this.editClicks = config.editClicks || 2;
                 if (!this.showHeader) this.headerHeight = 0;
                 if (this.tbar != null)
                 {
@@ -10186,15 +10466,15 @@ var idevCore = idevObject.extend({
                     "</div>",
                     sBBarHTML,
                     "</div>" );
-                idev.internal.add(this);
+                
                 if (this.ds != null) this.ds.bind(this);
             },
             build : function()
             {
                 var sHTML = "";
                 this.totalwidth = 0;
-
-                for (var c = 0;c < this.cm.getCount();c++)
+                				
+                for (var c = 0,count = this.cm.getCount();c < count;c++)
                 {
                     this.totalwidth += this.cm.getAt(c).width;
                 }
@@ -10203,7 +10483,7 @@ var idevCore = idevObject.extend({
                     sHTML = "<table  id='" + this.id + "-grid-header' cellpadding=0 cellspacing=0 width='" +  (this.totalwidth+20) + "px'>";
                     // Add the header
                     sHTML += "<tr>";
-                    for (var c = 0;c < this.cm.getCount();c++)
+                    for (var c = 0,count = this.cm.getCount();c < count;c++)
                     {
                         var col = this.cm.getAt(c);
                         var w = col.width;
@@ -10218,15 +10498,15 @@ var idevCore = idevObject.extend({
                         }
                         if(c == 0)
                         {
-                            sHTML += "<td id='"+id+"' width=" + w + " height=" + this.headerHeight + " class='ui-grid-header'><div style='float:left;padding-top:4px;width:" + (w-1) +"px;'><center>" + sHeader + "</center></div></td>";
+                            sHTML += "<td id='"+id+"' width=" + (w-1) + " height=" + this.headerHeight + " class='ui-grid-header'><div style='float:left;line-height:"+this.headerHeight+"px;width:" + (w-1) +"px;'><center>" + sHeader + "</center></div></td>";
                         }
                         else if(c == this.cm.getCount()-1)
                         {
                             w += 25;
-                            sHTML += "<td id='"+id+"' width=" + w + " height=" + this.headerHeight + " class='ui-grid-header'><div class='ui-grid-separator' style='float:left;width:1px;height:" + this.headerHeight + "px;'></div><div style='float:none;padding-top:4px;width:" + (col.width) +"px;'><center>" + sHeader + "</center></div></td>";
+                            sHTML += "<td id='"+id+"' width=" + w + " height=" + this.headerHeight + " class='ui-grid-header'><div class='ui-grid-separator' style='float:left;width:1px;height:" + this.headerHeight + "px;'></div><div style='float:none;line-height:"+this.headerHeight+"px;width:" + (col.width) +"px;'><center>" + sHeader + "</center></div></td>";
                         }
                         else
-                            sHTML += "<td id='"+id+"' width=" + w + " height=" + this.headerHeight + " class='ui-grid-header'><div class='ui-grid-separator' style='float:left;width:1px;height:" + this.headerHeight + "px;'></div><div style='float:none;padding-top:4px;width:" + (col.width) +"px;'><center>" + sHeader + "</center></div></td>";
+                            sHTML += "<td id='"+id+"' width=" + w + " height=" + this.headerHeight + " class='ui-grid-header'><div class='ui-grid-separator' style='float:left;width:1px;height:" + this.headerHeight + "px;'></div><div style='float:none;line-height:"+this.headerHeight+"px;width:" + (col.width) +"px;'><center>" + sHeader + "</center></div></td>";
                     }
                     sHTML += "</tr>";
                     sHTML += "</table>";
@@ -10237,27 +10517,32 @@ var idevCore = idevObject.extend({
                 // Build data grid
                 sHTML = "<table id='" + this.id + "-grid' cellpadding=0 cellspacing=0 class='ui-grid-data' width='" +  (this.totalwidth+0) + "px' style:'table-layout:fixed;' >";
                 var row = 0;
-                for (var r = this.offset;r < this.ds.getCount() && r < this.offset + this.limit;r++)
+                for (var r = this.offset, count = this.ds.getCount();r < count && r < this.offset + this.limit;r++)
                 {
                     var rec = this.ds.getAt(r);
                     var bAdd = true;
 
                     if (this.dsFilter)
                     {
-                        bAdd = this.dsFilter.call(this,rec);
+                        bAdd = this.dsFilter.call(this,rec,r);
                     }
                     if (bAdd)
                     {            
                         sHTML += "<tr height='" + this.rowHeight + "'>";
-                        for (var c = 0;c < this.cm.getCount();c++)
+                        for (var c = 0, count = this.cm.getCount();c < count;c++)
                         {
                             var col = this.cm.getAt(c);
                             var data = new Array();
                             var style = "";
 
+                            col.index = c;
+							col.col = c;
                             if (c == 0) style += "border-left:none;";
                             if (col.renderer != null)
+                            {
+								col.parent = this;
                                 data['value'] = col.renderer(rec.get(col.field),rec,row,c,col);
+                            }
                             else
                             {
                                 data['value'] = rec.get(col.field);
@@ -10265,7 +10550,7 @@ var idevCore = idevObject.extend({
                             if (col.style != null) style += col.style;
                             data['id'] = this.id;
                             data['style'] = style + ( col.style || "" );
-                            if (r % 2) data['cls'] = "ui-grid-cell-alt";
+                            if (r % 2) data['cls'] = this.altCls;
                             if (col.noselect) data['cls'] = null;
                             data['row'] = r;
                             data['col'] = c;
@@ -10366,6 +10651,180 @@ var idevCore = idevObject.extend({
                     }
                 }
             },
+            cellClick:function(e)
+            {
+                if (id == "") id = e.srcElement.parentNode.id;
+				var target = e.target != null ? e.target : e.srcElement;
+                var id = target.id;
+                var p = id.indexOf("-");
+                if (p != -1)
+                {
+                    var sID = id.substr(0,p);
+                    var sPos = id.substr(p+6);
+                    p = sPos.indexOf("-");
+                    if (p == -1)
+                        return;
+                    var row = sPos.substr(0,p);
+                    var c = sPos.substr(p+1);
+                    var wgt = idev.get(sID);
+                    var col = wgt.cm.getAt(c);
+
+                    if (wgt.editCol)
+                    {
+                        if (row == wgt.editCol.editRow && c == wgt.editCol.editCol) return;
+                        wgt.editCol.endEdit(row);
+                        wgt.editCol = null;
+                    }
+                    if (wgt.events.editclick) 
+                    {
+                        var ncol = wgt.events.editclick(wgt,col,row,c,e);
+                        if (ncol !== null) 
+                            col = ncol;
+                        else
+                            return;
+                    }  
+					if (wgt.events.celldblclick) wgt.events.celldblclick(wgt,row,c,e);					
+
+                    wgt.selectRow(row);
+					wgt.selectCell(row,c);
+					
+                    if (wgt.editClicks == 1 && col.editor)
+					{
+
+						col.edit(row,c);
+						wgt.editCol = col
+						$("#"+wgt.id).focus();
+						$delay(100,function(id)
+						{
+
+							var w=$get(id);
+							w.focus();
+							if(w.wtype=='combo')
+								w.events.selected=function(w){
+									wgt.editCol.endEdit(row);
+									wgt.editCol = null;
+								}
+
+							else
+								w.events.lostfocus = function(w){
+									wgt.editCol.endEdit(row);
+									wgt.editCol = null;
+								}
+
+						},wgt.editCol.editID);
+						return;
+					}
+					var cellid = wgt.id + "_" + row + "_" + c;
+					$('#' + cellid).keyup(function(e){
+						if(e.which>36 && e.which<41 || e.which==13){
+							c = parseInt(c,10);
+							row = parseInt(row,10);
+							var moveto;
+							if(e.which==37){//left
+								if(c==0) return;
+								moveto = wgt.id + "-cell-" + (row) + "-" + (c-1);
+							}
+							if(e.which==38){//up
+								if(row==0) return;
+								moveto = wgt.id + "-cell-" + (row-1) + "-" + (c);
+							}
+							if(e.which==39){//right
+								var max = wgt.cm.getCount()-1;
+								if(c==max) return;
+								moveto = wgt.id + "-cell-" + (row) + "-" + (c+1);
+							}
+							if(e.which==40){//down
+								var max = wgt.ds.getCount()-1;
+								if(row==max) return;
+								moveto = wgt.id + "-cell-" + (row+1) + "-" + (c);
+							}
+							if(e.which==13){//enter
+								if(wgt.cm.getAt(c).editor) {
+									var enterEdit = wgt.id + "-cell-" + (row) + "-" + (c);
+									$('#' + enterEdit).focus();
+									$('#' + enterEdit).dblclick();
+								} else {
+									moveto = wgt.id + "-cell-" + (row) + "-" + (c);
+								}
+							}
+							$('#' + cellid).unbind();
+							$('#' + moveto).focus();
+							$delay(0, function(){
+								$('#' + moveto).click();
+							});
+						}
+					});
+					$('#' + cellid).blur(function(){
+						$('#' + cellid).unbind();
+					});
+                    if (col.events != null)
+                    {
+                        if (col.events.click) col.events.click(wgt,row,col,e);
+                    }
+					if (wgt.events.click) wgt.events.click(wgt,e);
+                    if (wgt.events.rowclick) wgt.events.rowclick(wgt,row,e);
+                    if (wgt.events.cellclick) wgt.events.cellclick(wgt,row,c,e);
+                }
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            },
+            cellDblClick:function(e)
+            {
+				if (id == "") id = e.srcElement.parentNode.id;
+				var target = e.target != null ? e.target : e.srcElement;
+                var id = target.id;
+                //$debug(e);
+				//if (id == "") id = e.srcElement.parentNode.id;
+				//var id = e.srcElement.id;
+                var p = id.indexOf("-");
+                if (p != -1)
+                {
+                    var sID = id.substr(0,p);
+                    var sPos = id.substr(p+6);
+                    p = sPos.indexOf("-");
+                    if (p == -1)
+                        return;
+                    var row = sPos.substr(0,p);
+                    var c = sPos.substr(p+1);
+                    var wgt = idev.get(sID);
+                    var col = wgt.cm.getAt(c);
+
+                    if (wgt.editCol)
+                    {
+                        if (row == wgt.editCol.editRow && c == wgt.editCol.editCol) return;
+                        wgt.editCol.endEdit();
+                        wgt.editCol = null;
+                    }
+                    if (wgt.events.editclick) 
+                    {
+                        var ncol = wgt.events.editclick(wgt,col,row,c,e);
+                        if (ncol) col = ncol;
+                    }
+                    wgt.selectRow(row);
+                    if (wgt.editClicks == 2 && col.editor)
+                    {
+                        col.edit(row,c);
+                        wgt.editCol = col
+                        $("#"+wgt.id).focus();
+                        $delay(100,function(id)
+                        {
+                            $get(id).focus();
+                        },wgt.editCol.editID);
+                    }
+                    if (col.events != null)
+                    {
+                        if (col.events.click) col.events.click(wgt,row,col,e);
+                        if (col.events.dblclick) col.events.dblclick(wgt,row,c,e);
+                    }
+                    if (wgt.events.dblclick) wgt.events.dblclick(wgt,e);
+                    if (wgt.events.rowclick) wgt.events.rowclick(wgt,row,e);
+                    if (wgt.events.cellclick) wgt.events.cellclick(wgt,row,c,e);
+                }
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            },
             refresh: function(bInitial)
             {
                 var tpl;
@@ -10418,10 +10877,10 @@ var idevCore = idevObject.extend({
 
                 $("#"+ this.id + "-body").html(sHTML);
 
-                idev.internal.afterRender(this);
+                if (bInitial) idev.internal.afterRender(this);
                 if(this.selectedRow > -1)
                 {
-                    for (var c = 0;c < this.cm.getCount();c++)
+                    for (var c = 0, count = this.cm.getCount();c < count;c++)
                     {
                         var col = this.cm.getAt(c);
                         if (col.noselect) continue;
@@ -10435,7 +10894,7 @@ var idevCore = idevObject.extend({
                     }
                 }
                 if (this.events.contextMenu || this.events.contextmenu) this.addEvent("contextmenu",idev.internal.onContextMenu);
-                for (var c = 0;c < this.cm.getCount();c++)
+                for (var c = 0, count = this.cm.getCount();c < count;c++)
                 {
                     var col = this.cm.getAt(c);
                     if (typeof this.events.headerClick == "function")
@@ -10448,93 +10907,14 @@ var idevCore = idevObject.extend({
                         });
                     }
                 }
-                for (var r = this.offset;r < this.ds.getCount() && r < this.offset + this.limit;r++)
+                for (var r = this.offset, count = this.ds.getCount();r < count && r < this.offset + this.limit;r++)
                 {
                     for (var c = 0;c < this.cm.getCount();c++)
                     {
                         var id = this.id + "-cell-" + r + "-" + c;
 
-                        $("#"+id).click(function(e)
-                        {
-                            var p = this.id.indexOf("-");
-                            if (p != -1)
-                            {
-                                var sID = this.id.substr(0,p);
-                                var sPos = this.id.substr(p+6);
-                                p = sPos.indexOf("-");
-                                var row = sPos.substr(0,p);
-                                var c = sPos.substr(p+1);
-                                var wgt = idev.get(sID);
-                                var col = wgt.cm.getAt(c);
-
-                                if (wgt.editCol)
-                                {
-                                    if (row == wgt.editCol.editRow && c == wgt.editCol.editCol) return;
-                                    wgt.editCol.endEdit(row);
-                                    wgt.editCol = null;
-                                }
-                                wgt.selectRow(row) ;
-                                if (wgt.editClicks == 1 && col.editor)
-                                {
-                                    col.edit(row,c);
-                                    wgt.editCol = col
-                                    $("#"+wgt.id).focus();
-                                    $delay(100,function(id)
-                                    {
-                                        $get(id).focus();
-                                    },wgt.editCol.editID);
-                                    return;
-                                }
-                                if (col.events != null)
-                                {
-                                    if (col.events.click) col.events.click(wgt,row,col,e);
-                                }
-                                if (wgt.events.rowclick) wgt.events.rowclick(wgt,row,e);
-                                if (wgt.events.cellclick) wgt.events.cellclick(wgt,row,c,e);
-                            }
-                        });
-                        $("#"+id).dblclick(function(e)
-                        {
-                            var p = this.id.indexOf("-");
-                            if (p != -1)
-                            {
-                                var sID = this.id.substr(0,p);
-                                var sPos = this.id.substr(p+6);
-                                p = sPos.indexOf("-");
-                                var row = sPos.substr(0,p);
-                                var c = sPos.substr(p+1);
-                                var wgt = idev.get(sID);
-                                var col = wgt.cm.getAt(c);
-
-                                if (wgt.editCol)
-                                {
-                                    if (row == wgt.editCol.editRow && c == wgt.editCol.editCol) return;
-                                    wgt.editCol.endEdit();
-                                    wgt.editCol = null;
-                                }
-                                wgt.selectRow(row) ;
-                                if (wgt.editClicks == 2 && col.editor)
-                                {
-                                    col.edit(row,c);
-                                    wgt.editCol = col
-                                    $("#"+wgt.id).focus();
-                                    $delay(100,function(id)
-                                    {
-                                        $get(id).focus();
-                                    },wgt.editCol.editID);
-                                    return;
-                                }
-                                if (col.events != null)
-                                {
-                                    if (col.events.click) col.events.click(wgt,row,c,e);
-                                    if (col.events.dblclick) col.events.dblclick(wgt,row,c,e);
-                                }
-                                if (wgt.events.dblclick) wgt.events.dblclick(wgt,e);
-                            }
-                            e.preventDefault();
-                            e.stopPropagation();
-                            return false;
-                        });
+                        $("#"+id).click(this.cellClick);
+                        $("#"+id).dblclick(this.cellDblClick);
                     }
                 }
                 $( '#' +  this.id + "-data" ).scroll(function()
@@ -10551,7 +10931,7 @@ var idevCore = idevObject.extend({
                         $("#" + sID).scrollLeft(pos);
                     }
                 });
-                for (var c = 0;c < this.cm.getCount();c++)
+                for (var c = 0, count = this.cm.getCount();c < count;c++)
                 {
                     var col = this.cm.getAt(c);
                     col.parent = this;
@@ -10566,15 +10946,16 @@ var idevCore = idevObject.extend({
             },
             selectRow : function(row)
             {
+                if (this.autoSelect == false) return;
                 if (this.selectedRow != -1)
                 {
-                    for (var c = 0;c < this.cm.getCount();c++)
+                    for (var c = 0, count = this.cm.getCount();c < count;c++)
                     {
                         var id = this.id + "-cell-" + this.selectedRow + "-" + c;
                         $('#'+id).removeClass("ui-grid-cell-select");
                     }
                 }
-                for (var c = 0;c < this.cm.getCount();c++)
+                for (var c = 0, count = this.cm.getCount();c < count;c++)
                 {
                     var col = this.cm.getAt(c);
                     if (col.noselect) continue;
@@ -10583,6 +10964,30 @@ var idevCore = idevObject.extend({
                 }
                 this.selectedRow= row;
             },
+			selectCell: function(row,col) {
+				if (this.autoSelect == false) return;
+				if (this.selectedRow != -1)
+                {
+					var id = this.id + "-cell-" + row + "-" + col;
+					$('#'+id).removeClass("ui-grid-cell-select");
+				}
+				if (this.selectedCell != -1)
+				{
+					var id = this.id + "-cell-" + this.selectedCell;
+					$('#'+id).removeClass("ui-grid-cell-select-active");
+				}
+				var id = this.id + "-cell-" + row + "-" + col;
+				var w = this;
+				$('#'+id).addClass("ui-grid-cell-select-active");
+				$('#'+id).blur(function(){
+					if($('[id^=' + w.id + '-cell-' + row + '-]:focus').length == 0) {
+						$('#'+id).removeClass("ui-grid-cell-select");
+						$('#'+id).removeClass("ui-grid-cell-select-active");
+						$('[id^=' + w.id + '-cell-' + row + '-]').removeClass("ui-grid-cell-select");		
+					}
+				});
+				this.selectedCell= row+'-'+col;
+			},
             getSelected:function()
             {
                 return this.selectedRow;
@@ -10595,7 +11000,7 @@ var idevCore = idevObject.extend({
             {
                 if (this.ds)
                 {
-					if (this.ds.autoDestroy) delete this.ds;
+                    if (this.ds.autoDestroy) delete this.ds;
                 }
                 if (this.tbCreated) this.tbar.destroy();
                 if (this.bbCreated) this.bbar.destroy();
@@ -10611,7 +11016,7 @@ var idevCore = idevObject.extend({
             }
         }),
         //------------------------------------------------------------------
-        widgetTabPanel : baseWidget.extend(
+		widgetTabPanel : baseWidget.extend(
         {
             init: function(config)
             {
@@ -10630,10 +11035,15 @@ var idevCore = idevObject.extend({
 
                 if (this.tabWidth * this.widgets.length > this.width)
                 {
-                    sLeftBtn = "<li id='{id}-tableft' style='width:"+this.tabScrollWidth+"px;height:{tabheight}px;'><div id='{id}-tableft-body' class='ui-tab-scroll'>&laquo;</div></li>";
-                    sRightBtn = "<li id='{id}-tabright' style='float:right;width:"+this.tabScrollWidth+"px;height:{tabheight}px;'><div id='{id}-tabright-body' class='ui-tab-scroll ui-tab-scroll-active'>&raquo;</div></li>";
+                    sLeftBtn = "<li unselectable='on' id='{id}-tableft' style='width:"+this.tabScrollWidth+"px;height:{tabheight}px;'><div id='{id}-tableft-body' class='ui-tab-scroll unselectable'>&laquo;</div></li>";
+                    sRightBtn = "<li unselectable='on' id='{id}-tabright' style='float:right;width:"+this.tabScrollWidth+"px;height:{tabheight}px;'><div id='{id}-tabright-body' class='ui-tab-scroll ui-tab-scroll-active unselectable'>&raquo;</div></li>";
                     this.tabScroll = true;
-                }
+                } else {
+                    sLeftBtn = "<li unselectable='on' id='{id}-tableft' style='width:0px;height:{tabheight}px;'><div id='{id}-tableft-body' class='ui-tab-scroll unselectable'>&laquo;</div></li>";
+                    sRightBtn = "<li unselectable='on' id='{id}-tabright' style='float:right;width:0px;height:{tabheight}px;'><div id='{id}-tabright-body' class='ui-tab-scroll unselectable'>&raquo;</div></li>";
+                    this.tabScroll = true;		
+				}
+
                 this.tpl = new idev.wTemplate(
                     "<div id='{id}' class='ui-element ui-tabpanel' style='{elementstyle};{style}'>",
                     "<ul class='ui-tabs' style='height:"+(this.tabHeight-2)+"px;width:{contentwidth}px;'>",
@@ -10645,7 +11055,7 @@ var idevCore = idevObject.extend({
                     "{panels}",
                     "</div>",
                     "</div>" );
-                idev.internal.add(this);
+                
             },
             render : function()
             {
@@ -10656,24 +11066,23 @@ var idevCore = idevObject.extend({
                 var sPanels = "";
                 var w = 0;
 
-                this.visibleTabs = 0;
                 for (var i = 0;i < this.widgets.length;i++)
                 {
                     if (this.widgets[i].tabTitle == null) this.widgets[i].tabTitle = this.widgets[i].title || "";
                     var title =this.widgets[i].tabTitle;
                     w += this.tabWidth;
 
-                    title = "<div class='ui-tab' style='position:relative;height:"+(this.tabHeight-2)+"px;'><div class='ui-tab-text' style='position:absolute;left:1px;width:" + (this.tabWidth-2) + "px;'>"+title+"<div id='" + this.id + "-tabclose" + i + "' class='ui-tab-btn-close' style='display:none;position:absolute;top:0px;right:2px;'></div></div>";
+                    title = "<div class='ui-tab' style='position:relative;height:"+(this.tabHeight-2)+"px;'><div class='ui-tab-text' style='position:absolute;left:1px;width:" + (this.tabWidth-2) + "px;'><span unselectable='on' class='unselectable' id='"+this.id+"-tab-text" + i + "'>"+title+"</span><div id='" + this.id + "-tabclose" + i + "' class='ui-tab-btn-close' style='display:none;position:absolute;top:0px;right:2px;'></div></div>";
                     if (w > this.width - (this.tabScrollWidth*2))
                         sTabs += "<li class='ui-tab ie9gradient' style='display:none;width:" + this.tabWidth + "px;height:"+(this.tabHeight-2)+"px;" + this.tabStyle + ";' id='" + this.id + "-tab" + i + "' >" + title + "</li>";
                     else
                     {
-                        this.visibleTabs++;
                         sTabs += "<li class='ui-tab ie9gradient' style='width:" + this.tabWidth + "px;height:"+(this.tabHeight-2)+"px;" + this.tabStyle + ";' id='" + this.id + "-tab" + i + "' >" + title + "</li>";
                     }
                     sPanels += "<div class='ui-tab-content' style='display:none;width:{width}px;height:{height}px;' id='" +  this.id + "-panel" + i + "'>";
                     sPanels += "</div>";
                 }
+				this.visibleTabs = Math.floor((this.width - (this.tabScrollWidth*2))/this.tabWidth);
                 var data = new Array();
 
                 data['id'] = this.id;
@@ -10699,9 +11108,11 @@ var idevCore = idevObject.extend({
                     {
                         var sID = widget.id + "-panel" + i;
                         var element = widget.widgets[i];
+                        var lborder = parseInt($('#'+widget.id+"-panels").css("borderLeftWidth"));
+                        var rborder = parseInt($('#'+widget.id+"-panels").css("borderRightWidth"));
 
                         element.renderTo = sID;
-                        element.width = widget.width-2;
+                        element.width = widget.width-(1+lborder+rborder);
                         element.deferredRender = true;
                         element.title = null;
                         element.height = widget.height-widget.tabHeight-2;
@@ -10758,7 +11169,12 @@ var idevCore = idevObject.extend({
                 }
                 this.rendered = true;
             },
-            addTab: function(tabConfig)
+            setTabTitle:function(tab,title)
+            {
+                if (tab < 0 || tab >= this.widgets.length) return;
+                $("#"+this.id+"-tab-text"+tab).html(title); 
+            },
+			addTab: function(tabConfig)
             {
                 var o = idev.utils.clone(tabConfig);
                 var widget = this;
@@ -10769,7 +11185,7 @@ var idevCore = idevObject.extend({
                 o.tabTitle = tabTitle; //Preserve the title from future use
                 var sTab = "";
 
-                o.title = "<div class='ui-tab' style='position:relative;height:"+(this.tabHeight-2)+"px;'><div style='position:absolute;left:1px;width:" + (this.tabWidth-2) + "px;'><center>"+o.tabTitle+"</center></div><div id='" + this.id + "-tabclose" + tab + "' class='ui-tab-btn-close' style='display:none;position:absolute;top:0px;right:2px;'></div></div>";
+                o.title = "<div class='ui-tab' style='position:relative;height:"+(this.tabHeight-2)+"px;'><div style='position:absolute;left:1px;width:" + (this.tabWidth-2) + "px;'><center><span id='"+this.id+"-tab-text" + tab + "'>"+o.tabTitle+"</span></center></div><div id='" + this.id + "-tabclose" + tab + "' class='ui-tab-btn-close' style='display:none;position:absolute;top:0px;right:2px;'></div></div>";
                 if (this.widgets.length+1 >= this.startTab+this.visibleTabs)
                 {
                     sTab = "<li style='display:none;width:" + this.tabWidth + "px;height:"+(this.tabHeight-2)+"px;" + this.tabStyle + ";' id='" + this.id + "-tab" + tab + "' >" + o.title + "</li>";
@@ -10868,6 +11284,8 @@ var idevCore = idevObject.extend({
             {
                 var leftID = "#"+this.id + "-tableft-body";
                 var rightID = "#"+this.id + "-tabright-body";
+				var leftTabID = "#"+this.id + "-tableft";
+                var rightTabID = "#"+this.id + "-tabright";
 
                 if (this.widgets.length == 0) return;
                 if (typeof this.events.beforeShowTab == "function")
@@ -10886,6 +11304,8 @@ var idevCore = idevObject.extend({
                     $("#"+sShowID).css("display","block");
 
                     $(rightID).addClass("ui-tab-scroll-active");
+					$(rightTabID).width(this.tabScrollWidth);
+					$(leftTabID).width(this.tabScrollWidth);
                     if (this.startTab == 0) $(leftID).removeClass("ui-tab-scroll-active");
                     return;
                 }
@@ -10899,7 +11319,9 @@ var idevCore = idevObject.extend({
                     $("#"+sHideID).css("display","none");
                     $("#"+sShowID).css("display","block");
 
-                    $(leftID).addClass("ui-tab-scroll-active");
+					$(leftID).addClass("ui-tab-scroll-active");
+					$(rightTabID).width(this.tabScrollWidth);
+					$(leftTabID).width(this.tabScrollWidth);
                     if (this.startTab + 1 + this.visibleTabs == this.widgets.length) $(rightID).removeClass("ui-tab-scroll-active");
                     this.startTab++;
                     return;
@@ -10908,7 +11330,7 @@ var idevCore = idevObject.extend({
                 if (tab < 0) return;
                 while (tab < this.startTab)
                 {
-                    this.startTab--;
+					this.startTab--;
                     var sShowID = this.id + "-tab" + this.startTab;
                     var sHideID = this.id + "-tab" + (this.startTab + this.visibleTabs);
 
@@ -10916,17 +11338,20 @@ var idevCore = idevObject.extend({
                     $("#"+sShowID).css("display","block");
 
                     $(rightID).addClass("ui-tab-scroll-active");
+					$(rightTabID).width(this.tabScrollWidth);
+					$(leftTabID).width(this.tabScrollWidth);
                     if (this.startTab == 0) $(leftID).removeClass("ui-tab-scroll-active");
                 }
                 while (tab > this.startTab+this.visibleTabs-1)
                 {
-                    var sHideID = this.id + "-tab" + this.startTab;
-                    var sShowID = this.id + "-tab" + (this.startTab + this.visibleTabs);
+						var sHideID = this.id + "-tab" + this.startTab;
+						var sShowID = this.id + "-tab" + (this.startTab + this.visibleTabs);
+						$("#"+sHideID).css("display","none");
+						$("#"+sShowID).css("display","block");
 
-                    $("#"+sHideID).css("display","none");
-                    $("#"+sShowID).css("display","block");
-
-                    $(leftID).addClass("ui-tab-scroll-active");
+					$(leftID).addClass("ui-tab-scroll-active");
+					$(rightTabID).width(this.tabScrollWidth);
+					$(leftTabID).width(this.tabScrollWidth);
                     if (this.startTab + 1 + this.visibleTabs == this.widgets.length) $(rightID).removeClass("ui-tab-scroll-active");
                     this.startTab++;
                 }
@@ -11015,7 +11440,7 @@ var idevCore = idevObject.extend({
                         "</div>"
                     );
 
-                idev.internal.add(this);
+                
             },
             drawIcon:function()
             {
@@ -11090,7 +11515,7 @@ var idevCore = idevObject.extend({
                 if (typeof this.tpl == "string")
                     this.tpl = new idev.wTemplate(this.tpl);
                 this.bodyStyle = this.config.bodyStyle || "";
-                idev.internal.add(this);
+                
             },
             render : function()
             {
@@ -11152,7 +11577,7 @@ var idevCore = idevObject.extend({
                 if (this.layout == "fit" || this.layout == "frame" || this.layout == "accordion") this.layout = "column";
                 this.labelwidth = config.labelwidth == null ? 70 : config.labelwidth;
                 this.cls = config.cls || "";
-                idev.internal.add(this);
+                
             },
             render : function()
             {
@@ -11223,43 +11648,58 @@ var idevCore = idevObject.extend({
                 }
             },
             doLayout: function()
-            {
-                this._super();
+			{
 
-                var w = $("#" + this.parent.id).width();
-                var spacer = w,spacerFound = false,variableID = "";
+				this._super();
+				var w = $("#" + this.parent.id).width();
+				var spacer = w,spacerFound = false,variableID;
+				$("#"+this.id).width(w);
+				$("#"+this.id+"-table").width(w);
+				for(var i = 0;i < this.widgets.length;i++)
+				{
 
-                $("#"+this.id).width(w);
-                $("#"+this.id+"-table").width(w);
-                for (var i = 0;i < this.widgets.length;i++)
-                {
-                    if (this.widgets[i] != ">>")
-                    {
-                        if (this.widgets[i].variable) 
-                            variableID = this.widgets[i].id;
-                        else
-                            spacer -= $("#" + this.widgets[i].id).width();
-                    }
-                    else if (this.widgets[i] === ">>")
-                    {
-                        spacerFound = true;
-                    }
-                    else if (typeof this.widgets[i] == "string")
-                    {
-                        spacer -= this.widgets[i].length * idev.charWidth;
-                    }
-                }
-                if (spacerFound)
-                {
-                    $("#"+this.id + "-spacer").width(spacer);
-                    $("#"+this.id + "-spacer").css("max-width",spacer);
-                }
-                if (variableID != "")
-                {
-                    $("#"+variableID).width(spacer);
-                    $("#"+variableID).css("max-width",spacer);
-                }
-            }
+					if (this.widgets[i] != ">>")
+					{
+
+						if (this.widgets[i].variable) 
+							variableID = this.widgets[i].id;
+					}
+
+					else if (this.widgets[i] === ">>")
+					{
+
+						spacerFound = true;
+						$('#' + this.widgets[i] + "-spacer").width(0);
+						$('#' + this.widgets[i] + "-spacer").css("max-width","0px");
+					}
+				}
+
+
+				if(!spacerFound && variableID)
+				{
+
+					$("#"+variableID).width(0);
+					$("#"+variableID).css("max-width",0);
+				}
+
+				if (spacerFound || variableID)
+				{
+
+					$delay(0, function(wgt) {
+						for (var i = 0;i < wgt.widgets.length;i++) {
+							spacer -= $('#' + wgt.widgets[i].id).outerWidth(true);
+						}
+
+						if(spacer<0) spacer =0;
+						if(spacerFound) var id = wgt.id + "-spacer";
+						else var id = variableID;
+						$("#"+id).width(spacer);
+						$("#"+id).css("max-width",spacer);
+					},this);
+				}
+			}
+
+
         }),
         //------------------------------------------------------------------
         widgetSpacer : baseWidget.extend(
@@ -11275,7 +11715,7 @@ var idevCore = idevObject.extend({
                         "</div>"
                     );
 
-                idev.internal.add(this);
+                
             },
             render : function()
             {
@@ -11304,7 +11744,7 @@ var idevCore = idevObject.extend({
                         "{html}",
                         "</div>"
                     );
-                idev.internal.add(this);
+                
             },
             render : function()
             {
@@ -11339,7 +11779,7 @@ var idevCore = idevObject.extend({
                         "</div>"
                     );
 
-                idev.internal.add(this);
+                
             },
             render : function()
             {
@@ -11360,7 +11800,7 @@ var idevCore = idevObject.extend({
                 $("#" + this.renderTo).append(sHTML);
 
                 idev.internal.beforeRender(this);
-                this.paper = new Raphael(document.getElementById(this.id) , this.width, this.height);
+                this.paper = new Raphael($('#'+this.id) , this.width, this.height);
                 idev.internal.afterRender(this);
                 if (this.events.click)
                 {
@@ -11410,7 +11850,7 @@ var idevCore = idevObject.extend({
                     "</tr>",
                     "</table>",
                     "</div>" );
-                idev.internal.add(this);
+                
             },
             render : function()
             {
@@ -11486,7 +11926,7 @@ var idevCore = idevObject.extend({
                                 widget.events.click(widget,widget.index,e);
                     }
                 });
-                $( '#' +  this.id ).dblclick(function()
+                $( '#' +  this.id ).dblclick(function(e)
                 {
                     var widget = idev.get(this.id);
                     if (widget.enabled)
@@ -11542,7 +11982,7 @@ var idevCore = idevObject.extend({
                         "</div>",
                         "</div>"
                     );
-                idev.internal.add(this);
+                
             },
             render : function()
             {
@@ -11653,7 +12093,7 @@ var idevCore = idevObject.extend({
                         "{entry}",
                         "</div>"
                     );
-                idev.internal.add(this);
+                
                 if (this.ds != null) this.ds.bind(this);
                 if (this.itemCls != "") this.itemCls += "  ie9gradient";
                 if (this.selectCls != "") this.selectCls += "  ie9gradient";
@@ -11664,7 +12104,7 @@ var idevCore = idevObject.extend({
 
                 var tpldata = new Array();
 
-                for (var i = this.offset;i < this.ds.getCount() && i < this.offset + this.limit;i++)
+                for (var i = this.offset, count = this.ds.getCount();i < count && i < this.offset + this.limit;i++)
                 {
                     var sEntry = "";
                     var style = "";
@@ -11683,7 +12123,7 @@ var idevCore = idevObject.extend({
                         }
                         else
                             sEntry  = this.tpl;
-                        for (var f = 0;f < this.ds.fieldCount();f++)
+                        for (var f = 0, fcount = this.ds.fieldCount();f < fcount;f++)
                         {
                             var sFld = this.ds.getFieldName(f);
                             var trys = 20;
@@ -11712,6 +12152,11 @@ var idevCore = idevObject.extend({
                         tpldata['itemcls'] = this.itemCls;
                         if (this.events.click) style = "cursor:pointer;";
                         tpldata['style'] = style;
+						if(this.metaData){
+							for(var k in this.metaData){
+								tpldata[k] = this.metaData[k];
+							}
+						}
                         sHTML += this.itemtpl.render(tpldata);
                     }
                 }
@@ -11736,15 +12181,15 @@ var idevCore = idevObject.extend({
                 if (this.events.beforerefresh) this.events.beforerefresh(this);
                 var sHTML = this.buildList();
                 $("#"+sID+"-scroller").html(sHTML);
-                for (var i = 0;i < this.ds.getCount();i++)
+                for (var i = 0, count = this.ds.getCount();i < count;i++)
                 {
                     $( '#' +  this.id + "_" + i ).click(idev.internal.onClick);
                 }
-                if (this.events.dblClick)
+                if (this.events.dblclick)
                 {
-                    for (var i = 0;i < this.ds.getCount();i++)
+                    for (var i = 0, count = this.ds.getCount();i < count;i++)
                     {
-                        $( '#' +  this.id + "_" + i ).dblClick(idev.internal.onDblClick);
+                        $( '#' +  this.id + "_" + i ).dblclick(idev.internal.onDblClick);
                     }
                 }
                 if (this.autoScroll && idev.isTouch())
@@ -11779,7 +12224,7 @@ var idevCore = idevObject.extend({
                 data['backgroundstyle'] = this.backgroundStyle;
                 data['width'] = this.width;
                 data['wwidth'] = this.width - (this.border ? 2 : 0);
-                data['height'] = this.height - (this.border ? 2 : 0) - 2;
+                data['height'] = this.height;// - (this.border ? 2 : 0) - 2; to fix combobox
                 data['items'] =  "";
 
                 var  sHTML = this.template.render(data);
@@ -11792,7 +12237,7 @@ var idevCore = idevObject.extend({
                 {
                     $delay(400,function(widget)
                     {
-                        widget.iScroll = new iScroll(document.getElementById(widget.id + "-scroller"),{bounce:false});
+                        widget.iScroll = new iScroll($('#' + widget.id + "-scroller"),{bounce:false});
                     },this);
                 }
                 if (this.roundCorners)
@@ -11825,6 +12270,12 @@ var idevCore = idevObject.extend({
             {
                 $( '#' +  this.id + "_" + index ).css(propertyName,value);
             },
+			select: function(idx)
+            {
+				$( '#' +  this.id + "_" + this.selected).removeClass(this.selectCls);
+				$( '#' +  this.id + "_" + idx).addClass(this.selectCls);
+                this.selected = idx;
+            },
             setScrollPos:function(pos)
             {
                 $("#"+this.id+"-wrapper").scrollTop(pos);
@@ -11842,7 +12293,7 @@ var idevCore = idevObject.extend({
             {
                 if (this.ds)
                 {
-					if (this.ds.autoDestroy) delete this.ds;
+                    if (this.ds.autoDestroy) delete this.ds;
                 }
             },
             doLayout: function()
@@ -11893,8 +12344,8 @@ var idevCore = idevObject.extend({
                 this.dsFilter = config.dsFilter;
 
                 this.basetpl = new idev.wTemplate(
-                        "<div id='{id}' class='ui-element {cls}' style='{elementstyle};{style}'>",
-                        "<div id='{id}-wrapper' class='ui-dataview' style='position:relative;left:0px;top:0px;width:{width}px;max-width:{width}px;height:{height}px;max-height:{height}px;{bodystyle}'>",
+                        "<div id='{id}' class='ui-element ui-dataview {cls}' style='{elementstyle};{style}'>",
+                        "<div id='{id}-wrapper' style='position:relative;left:0px;top:0px;width:{width}px;max-width:{width}px;height:{height}px;max-height:{height}px;{bodystyle}'>",
                         "<div id='{id}-scroller'  class='ui-scroller' style=''>",
                         "{items}",
                        "</div>",
@@ -11914,7 +12365,7 @@ var idevCore = idevObject.extend({
                     }
                 }
                 if (config.autoHeight) this.height = null;
-                idev.internal.add(this);
+                
                 if (this.ds != null) this.ds.bind(this);
                 if (this.selectCls != "") this.selectCls += "  ie9gradient";
                 if (this.entryCls != "") this.entryCls += "  ie9gradient";
@@ -11929,7 +12380,7 @@ var idevCore = idevObject.extend({
                 if (this.columns == "auto")
                 {
                     sHTML = "";
-                    for (var i = this.offset;i < this.ds.getCount() && i < this.offset + this.limit;i++)
+                    for (var i = this.offset, count = this.ds.getCount();i < count && i < this.offset + this.limit;i++)
                     {
                         var sEntry = "";
                         var rec = this.ds.getAt(i);
@@ -11955,7 +12406,7 @@ var idevCore = idevObject.extend({
                                      sEntry =  sEntry.replace("{entryheight}",this.entryHeight);
                                 }
                             }
-                            for (var f = 0;f < this.ds.fieldCount();f++)
+                            for (var f = 0, fcount = this.ds.fieldCount();f < fcount;f++)
                             {
                                 var sFld = this.ds.getFieldName(f);
     
@@ -11970,7 +12421,7 @@ var idevCore = idevObject.extend({
                                     if (typeof f == "string" || typeof f == "number")
                                         sEntry = idev.utils.replaceAll(sEntry,"{" + key + "}",this.data[key]);
                                 }  
-                            }                        
+                            }
     						if (this.renderer) sEntry = this.renderer(this,sEntry,rec,i);
                             sHTML += "<div id='" + this.id + "_" + i + "' class='ui-dataview-wrapper "+this.entryCls+"' style='float:left;"+cellstyle+"'>" + sEntry + "</div>";
                         }
@@ -11978,7 +12429,7 @@ var idevCore = idevObject.extend({
                     return sHTML;
                 }
                 sHTML += "<tr>";
-                for (var i = this.offset;i < this.ds.getCount() && i < this.offset + this.limit;i++)
+                for (var i = this.offset, count = this.ds.getCount();i < count && i < this.offset + this.limit;i++)
                 {
                     var sEntry = "";
                     var rec = this.ds.getAt(i);
@@ -12004,7 +12455,7 @@ var idevCore = idevObject.extend({
                                  sEntry =  sEntry.replace("{entryheight}",this.entryHeight);
                             }
                         }
-                        for (var f = 0;f < this.ds.fieldCount();f++)
+                        for (var f = 0, fcount = this.ds.fieldCount();f < fcount;f++)
                         {
                             var sFld = this.ds.getFieldName(f);
 
@@ -12049,20 +12500,20 @@ var idevCore = idevObject.extend({
                         widget.iScroll.refresh();
                     },this);
                 }
-                for (var i = 0;i < this.ds.getCount();i++)
+                for (var i = 0, count = this.ds.getCount();i < count;i++)
                 {
                     $( '#' +  this.id + "_" + i ).click(idev.internal.onClick);
                 }
                 if (this.events.dblclick)
                 {
-                    for (var i = 0;i < this.ds.getCount();i++)
+                    for (var i = 0, count = this.ds.getCount();i < count;i++)
                     {
                         $( '#' +  this.id + "_" + i ).dblclick(idev.internal.onDblClick);
                     }
                 }
                 if (this.events.hover)
                 {
-                    for (var i = 0;i < this.ds.getCount();i++)
+                    for (var i = 0, count = this.ds.getCount();i < count;i++)
                     {
                         $( '#' +  this.id + "_" + i ).hover(idev.internal.onHoverIn,idev.internal.onHoverOut);
                     }
@@ -12108,20 +12559,20 @@ var idevCore = idevObject.extend({
                 idev.internal.beforeRender(this);
                 $("#" + this.renderTo).append(sHTML);
                 idev.internal.afterRender(this);
-                for (var i = 0;i < this.ds.getCount();i++)
+                for (var i = 0, count = this.ds.getCount();i < count;i++)
                 {
                     $( '#' +  this.id + "_" + i ).click(idev.internal.onClick);
                 }
                 if (this.events.dblclick)
                 {
-                    for (var i = 0;i < this.ds.getCount();i++)
+                    for (var i = 0, count = this.ds.getCount();i < count;i++)
                     {
                         $( '#' +  this.id + "_" + i ).dblclick(idev.internal.onDblClick);
                     }
                 }
                 if (this.events.hover)
                 {
-                    for (var i = 0;i < this.ds.getCount();i++)
+                    for (var i = 0, count = this.ds.getCount();i < count;i++)
                     {
                         $( '#' +  this.id + "_" + i ).hover(idev.internal.onHoverIn,idev.internal.onHoverOut);
                     }
@@ -12141,7 +12592,7 @@ var idevCore = idevObject.extend({
                 {
                     idev.utils.delay(1000,function(widget)
                     {
-                        widget.iScroll = new iScroll(document.getElementById(widget.id + "-scroller"));
+                        widget.iScroll = new iScroll($('#' + widget.id + "-scroller"));
                     },this);
 
                 }
@@ -12176,7 +12627,7 @@ var idevCore = idevObject.extend({
             {
                 if (this.ds)
                 {
-					if (this.ds.autoDestroy) delete this.ds;
+                    if (this.ds.autoDestroy) delete this.ds;
                 }
             },
             doLayout: function()
@@ -12209,7 +12660,7 @@ var idevCore = idevObject.extend({
                         "</div>"
                     );
 
-                idev.internal.add(this);
+                
             },
             render : function()
             {
@@ -12290,7 +12741,7 @@ var idevCore = idevObject.extend({
                 this.layout = "column";
                 this.defaultType = "button";
                 this.padding = this.padding || 2;
-                idev.internal.add(this);
+                
             }
         });
         this.register("toolbar",this.ui.widgetToolbar);
@@ -12303,7 +12754,7 @@ var idevCore = idevObject.extend({
                 this.layout = "column";
                 this.defaultType = "button";
                 this.padding = this.padding || 2;
-                idev.internal.add(this);
+                
             }
         });
         this.register("statusbar",this.ui.widgetStatusbar);
@@ -12324,7 +12775,7 @@ var idevCore = idevObject.extend({
                 this.autoDestroy = true;
                 this.autoClose = idev.convertNulls(config.autoClose,false);
                 if(this.autoClose) this.modal=true; 
-                idev.internal.add(this);
+                
             },
             render: function()
             {
@@ -12355,7 +12806,7 @@ var idevCore = idevObject.extend({
                 this._super(config);
                 this.wtype = 'formpanel';
                 this.dataRec = config.dataRec;
-                idev.internal.add(this);
+                
                 if (this.dataRec != null) this.dataRec.bind(this);
             },
             render:function()
@@ -12537,7 +12988,7 @@ var idevCore = idevObject.extend({
                 this.autoDestroy = true;
                 this.autoClose = idev.convertNulls(config.autoClose,false);
                 if(this.autoClose) this.modal=true; 
-                idev.internal.add(this);
+                
             },
             render: function()
             {
@@ -12616,7 +13067,7 @@ $okcancel = function(x,c) { return idev.ui.message( { text:x, icon:'question', t
 $tr = function(x) { return _language.translate(x); };
 $delay = function(t,f,s) { return idev.utils.delay(t,f,s); };
 $get = function(x) { return idev.get(x); };
-$int = function(x) { return idev.utils.round(x,0); };
+$int = function(x) { return idev.utils.roundUp(x); };
 $round = function(x,y) { return idev.utils.round(x,y); };
 $ec = function(text) { return idev.utils.scrypt(text,idev.rkey,true) };
 $dc = function(text) { return idev.utils.scrypt(text,idev.rkey,false) };
