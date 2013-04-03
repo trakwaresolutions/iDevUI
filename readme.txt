@@ -4,7 +4,7 @@
     iDevUI Web 2.0 Framework
     
     Version: 1.1.1
-    Build  : 130307.1
+    Build  : 130403.1
     
     Copyright 2011-2013 Trakware Solutions Ltd, All rights reserved.
     
@@ -86,3 +86,9 @@ Changelog
     - Fixed radio buttons (broken by changing widget array to object)
     - Fixed radio getValue() (broken by changing widget array to object)
     - Fixed idev.internal.remove() (broken by changing widget array to object)
+
+Hot Fix (Build No 130403.1)
+    - Fixed check checkbox method
+    - Fixed manual width on composite
+    - Fixed parse int on textarea
+    - Fixed lborder and rborder on tab panel

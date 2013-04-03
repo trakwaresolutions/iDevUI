@@ -6,7 +6,7 @@
     Do not remove this copyright message
 
     version    : 1.1.1
-    build      : 130307.1
+    build      : 130403.1
 
     Started    : 5th March 2011
 
@@ -20,6 +20,7 @@
         1.0.2   2012-08-01  Milestone release
         1.1.0   2012-11-30  Milestone release
 		1.1.1	2013-03-07  Milestone release
+		1.1.1	2013-04-03  Hot Fix (Build 130403.1)
 
 
     iDevUI is distributed under the terms of the MIT license
@@ -8266,7 +8267,7 @@ var idevCore = idevObject.extend({
 					if (this.zeroreturn) return 0;
 					return '';
 				}
-				return parseInt(v);
+				return v;
             },
             setEditable:function(canedit)
             {
@@ -8946,7 +8947,7 @@ var idevCore = idevObject.extend({
             },
             check : function(checked)
             {
-                var isChecked = isChecked();
+                var isChecked = this.isChecked();
                 if (checked && !isChecked) {
                    $('#'+this.id+"-input").toggleClass("ui-checkbox-on");
                 }
@@ -11110,6 +11111,8 @@ var idevCore = idevObject.extend({
                         var element = widget.widgets[i];
                         var lborder = parseInt($('#'+widget.id+"-panels").css("borderLeftWidth"));
                         var rborder = parseInt($('#'+widget.id+"-panels").css("borderRightWidth"));
+                        if (isNaN(lborder)) lborder = 0;
+                        if (isNaN(rborder)) rborder = 0;	
 
                         element.renderTo = sID;
                         element.width = widget.width-(1+lborder+rborder);
@@ -11652,6 +11655,7 @@ var idevCore = idevObject.extend({
 
 				this._super();
 				var w = $("#" + this.parent.id).width();
+				if (this.width != null) w = this.width; 
 				var spacer = w,spacerFound = false,variableID;
 				$("#"+this.id).width(w);
 				$("#"+this.id+"-table").width(w);
