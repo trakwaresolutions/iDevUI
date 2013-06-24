@@ -17,7 +17,7 @@ idev.ux.widgetSignature = baseWidget.extend(
         this.penColor = config.penColor || "#145394";
         this.penWidth = config.penWidth || 2;
         this.lineColor = config.lineColor || "#ccc";
-        this.lineWidth = config.lineColor || 2;
+        this.lineWidth = config.lineWidth || 2;
         this.lineMargin = config.lineMargin || 2;
         this.value = config.value;
         this.lineTop = config.lineTop || 35;
@@ -44,9 +44,13 @@ idev.ux.widgetSignature = baseWidget.extend(
         var wgt = this;
         
         $("#" + this.renderTo).append(sHTML);
-        idev.internal.addScript(_preferences.libpath + "ux/signature/signaturepad.js",function()
+
+        window.FlashCanvasOptions = {};
+        window.FlashCanvasOptions.swfPath = _preferences.libpath + "ux/signature/";
+
+        idev.internal.addScript(_preferences.libpath + "ux/signature/json2.min.js",function()
         {
-            idev.internal.addScript(_preferences.libpath + "ux/signature/json2.js",function()
+            idev.internal.addScript(_preferences.libpath + "ux/signature/jquery.signaturepad.js",function()
             {
                 var options = {defaultAction:"drawIt",displayOnly:false}
                 
@@ -60,8 +64,9 @@ idev.ux.widgetSignature = baseWidget.extend(
                 options.lineTop = wgt.lineTop;
                 wgt.signature = $('#' + wgt.id).signaturePad(options);
                 if (wgt.value) wgt.setValue(wgt.value);
-            });
+            });     
         });
+
         if (this.events.afterrender) this.events.afterrender(this);
         if (this.events.click)
         {

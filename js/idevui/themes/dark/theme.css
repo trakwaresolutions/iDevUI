@@ -7,7 +7,7 @@
 /* some items already set to use !important see default.css for examples */
 
 * {
-    font-family: tahoma, Helvetica, Arial, sans-serif;
+    /*font-family: tahoma, Helvetica, Arial, sans-serif;*/
 }
 
 td {
@@ -797,12 +797,15 @@ html ul.ui-tabs li.active, html ul.ui-tabs li.active  { /*--Makes sure that the 
 .CodeMirror{
 	color: #000;
 }
-.treeview { color:#fff !important; }
-.treeview li { background-image: url(../../ux/treeview/images/treeviewwhiteline.gif) !important; }
-.treeview .hitarea, .treeview li.lastCollapsable, .treeview li.lastExpandable { background-image: url(../../ux/treeview/images/treeviewwhite.gif) !important; } 
+.treeview { color:#fff; }
+.treeview li { background-image: url(../../ux/treeview/images/treeviewwhiteline.gif); }
+.treeview .hitarea, .treeview li.lastCollapsable, .treeview li.lastExpandable { background-image: url(../../ux/treeview/images/treeviewwhite.gif); } 
 #myPlugin {
 	color:white;
 }
 .ui-table {
 	color: #fff;
+}
+.ui-richtext-input, .nicEdit-selectTxt {
+    color: #000;
 }

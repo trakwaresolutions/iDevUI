@@ -4,8 +4,8 @@ idev.ux.widgetTreeview = baseWidget.extend(
     init: function(config)
     {
         idev.ux.loadCSS("treeview/treeview.css");
-    this.background = config.background;
-    this.color = config.color;
+        this.background = config.background;
+        this.color = config.color;
         this._super( config );
         this.wtype = "treeview";
         this.tpl = new idev.wTemplate(
@@ -91,11 +91,12 @@ idev.ux.widgetTreeview = baseWidget.extend(
         var  sHTML = this.tpl.render(data);
         $("#" + this.renderTo).append(sHTML);
 
+        var that = this;
         idev.ux.loadScript("treeview/jqtreeview.js",function(widget)
         {
-            widget.refresh();
-            if (widget.events.afterrender) widget.events.afterrender(widget);
-            widget.rendered = true;        
+            that.refresh();
+            if (that.events.afterrender) that.events.afterrender(widget);
+            that.rendered = true;
         },this);
     },
     refresh:function()
@@ -203,8 +204,8 @@ idev.ux.widgetTreeview = baseWidget.extend(
     },
     getNodeId:function(node)
     {
-        if (this.root) return this.root.id;
-        return "";    
+        if (node.id) return node.id;
+        return false;    
     },
     findNodeById:function(node,id)
     {

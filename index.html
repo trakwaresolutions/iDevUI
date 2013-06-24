@@ -8,12 +8,20 @@
 <meta http-equiv="Content-Language" content="en-gb" />
 <meta http-equiv="imagetoolbar" content="false" />
 <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+<META HTTP-EQUIV="X-UA-Compatible" CONTENT="IE=edge" />
 <META HTTP-EQUIV="EXPIRES" CONTENT="-1">
-    <title>iDev UI</title>
-    <link rel="stylesheet" href="js/idevui/loading.css" type="text/css"/>
-    <script type="text/javascript" src="js/idevui/loading.js"></script>
+    <title>iDevUI</title>
+	<link rel="stylesheet" href="js/idevui/loader/loading.css" type="text/css"/>
+    <!--[if lt IE 9]>
+		<link rel="stylesheet" href="js/idevui/loader/legacy-loading.css" type="text/css"/>
+    <![endif]-->
+    <link rel="stylesheet" href="js/idevui/loader/jquery.percentageloader.css" type="text/css"/>
+    <script type="text/javascript" src="js/idevui/loader/loading.js"></script>
     <script type="text/javascript" src="js/preferences.js"></script>
     <script type="text/javascript" src="js/idevui/idevui.js"></script>
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="js/idevui/ux/signature/flashcanvas.js"></script>
+	<![endif]-->
 </head>
 <body noscroll style='margin:0;'> 
 <div id='mask'> 

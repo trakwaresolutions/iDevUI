@@ -115,10 +115,11 @@ idev.ux.widgetDatePicker = baseWidget.extend(
                 roundCorners:this.roundCorners,
                 value:'',
                 events: {
-                    focus: function(wgt)
+                    focus: function(w)
                     {
-                        $("#" + wgt.parent.id + "-calendar").show();
-                        wgt.parent.expanded = !wgt.parent.expanded;
+                        //$("#" + w.parent.id + "-calendar").show();
+                        //w.parent.expanded = !w.parent.expanded;
+                        wgt.btn.fireEvent('click');
                     }
                 }});  
             this.input.render();
@@ -144,11 +145,32 @@ idev.ux.widgetDatePicker = baseWidget.extend(
                             var pos = $("#" + btn.parent.id).offset();
                             var x =  pos.left;
                             var y =  pos.top + h;
-                            
+                            var ch = $("#" + btn.parent.id + "-calendar").height();
+                            if(y+ch > idev.pgHeight){
+                                y -= ch;
+                                y -= h;
+                            }
                             $("#" + btn.parent.id + "-calendar").css("left",x);
                             $("#" + btn.parent.id + "-calendar").css("top",y);
                             idev.autoHide(btn.parent,btn.parent.autoHide);
                             $("#" + btn.parent.id + "-calendar").show();
+                            var int = setInterval(function(){
+                                if($("#" + btn.parent.id + "-calendar").is(":visible")){
+                                    var pos = $("#" + btn.parent.id).offset();
+                                    var x =  pos.left;
+                                    var y =  pos.top + h;
+                                    if(y+ch > idev.pgHeight){
+                                        y -= ch;
+                                        y -= h;
+                                    }
+                                    if (btn.parent.roundCorners && !idev.isIE8()) x += 4;
+                                    $("#" + btn.parent.id + "-calendar").css("left",x);
+                                    $("#" + btn.parent.id + "-calendar").css("top",y);
+                                }
+                                else{
+                                    clearInterval(int);
+                                }
+                            },200)
                         }
                         else
                         {
@@ -168,6 +190,10 @@ idev.ux.widgetDatePicker = baseWidget.extend(
                 var pos = $("#" + wgt.id).offset();
                 var x =  pos.left;
                 var y =  pos.top + h;
+                if(y+200 > idev.pgHeight){
+                    y -= 200;
+                    y -= h;
+                }
                 sHTML = "<div id='"+wgt.id+"-calendar' class='ui-calendar' style='position:absolute;left:"+x+"px;top:"+y+"px;display:none;width:200px;height:auto;z-index:99999;'></div>";
                 $("#container").append(sHTML);
             }

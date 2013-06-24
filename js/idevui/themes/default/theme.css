@@ -1,5 +1,5 @@
 * {
-    font-family: tahoma, Helvetica, Arial, sans-serif;
+    /*font-family: tahoma, Helvetica, Arial, sans-serif;*/
 }
 
 td {
@@ -781,4 +781,10 @@ html ul.ui-tabs li.active, html ul.ui-tabs li.active  { /*--Makes sure that the 
     background: -ms-linear-gradient(left,  rgba(252,255,244,1) 0%,rgba(233,239,225,1) 40%,rgba(209,219,201,1) 100%); /* IE10+ */
     background: linear-gradient(left,  rgba(252,255,244,1) 0%,rgba(233,239,225,1) 40%,rgba(209,219,201,1) 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#d1dbc9',GradientType=1 ); /* IE6-8 */
+}
+.treeview { color:#000; }
+.treeview li { background-image: url(../../ux/treeview/images/treeviewdefaultline.gif); }
+.treeview .hitarea, .treeview li.lastCollapsable, .treeview li.lastExpandable { background-image: url(../../ux/treeview/images/treeviewdefault.gif); } 
+.ui-richtext-input, .nicEdit-selectTxt {
+    color: #000;
 }

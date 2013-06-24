@@ -1,12 +1,143 @@
-/*
- Shadow animation jQuery-plugin 1.7
- http://www.bitstorm.org/jquery/shadow-animation/
- Copyright 2011 Edwin Martin <edwin@bitstorm.org>
- Contributors: Mark Carver, Xavier Lepretre
- Released under the MIT and GPL licenses.
-*/
-jQuery(function(e,i){function j(){var a=e("script:first"),b=a.css("color"),c=false;if(/^rgba/.test(b))c=true;else try{c=b!=a.css("color","rgba(0, 0, 0, 0.5)").css("color");a.css("color",b)}catch(d){}return c}function k(a,b,c){var d=[];a.c&&d.push("inset");typeof b.left!="undefined"&&d.push(parseInt(a.left+c*(b.left-a.left),10)+"px "+parseInt(a.top+c*(b.top-a.top),10)+"px");typeof b.blur!="undefined"&&d.push(parseInt(a.blur+c*(b.blur-a.blur),10)+"px");typeof b.a!="undefined"&&d.push(parseInt(a.a+c*
-(b.a-a.a),10)+"px");if(typeof b.color!="undefined"){var g="rgb"+(e.support.rgba?"a":"")+"("+parseInt(a.color[0]+c*(b.color[0]-a.color[0]),10)+","+parseInt(a.color[1]+c*(b.color[1]-a.color[1]),10)+","+parseInt(a.color[2]+c*(b.color[2]-a.color[2]),10);if(e.support.rgba)g+=","+parseFloat(a.color[3]+c*(b.color[3]-a.color[3]));g+=")";d.push(g)}return d.join(" ")}function h(a){var b,c,d={};if(b=/#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})/.exec(a))c=[parseInt(b[1],16),parseInt(b[2],16),parseInt(b[3],
-16),1];else if(b=/#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])/.exec(a))c=[parseInt(b[1],16)*17,parseInt(b[2],16)*17,parseInt(b[3],16)*17,1];else if(b=/rgb\(\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*\)/.exec(a))c=[parseInt(b[1],10),parseInt(b[2],10),parseInt(b[3],10),1];else if(b=/rgba\(\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9\.]*)\s*\)/.exec(a))c=[parseInt(b[1],10),parseInt(b[2],10),parseInt(b[3],10),parseFloat(b[4])];d=(b=/(-?[0-9]+)(?:px)?\s+(-?[0-9]+)(?:px)?(?:\s+(-?[0-9]+)(?:px)?)?(?:\s+(-?[0-9]+)(?:px)?)?/.exec(a))?
-{left:parseInt(b[1],10),top:parseInt(b[2],10),blur:b[3]?parseInt(b[3],10):0,a:b[4]?parseInt(b[4],10):0}:{left:0,top:0,blur:0,a:0};d.c=/inset/.test(a);d.color=c;return d}e.extend(true,e,{support:{rgba:j()}});var f;e.each(["boxShadow","MozBoxShadow","WebkitBoxShadow"],function(a,b){a=e("html").css(b);if(typeof a=="string"&&a!=""){f=b;return false}});if(f)e.fx.step.boxShadow=function(a){if(!a.init){a.b=h(e(a.elem).get(0).style[f]||e(a.elem).css(f));a.end=e.extend({},a.b,h(a.end));if(a.b.color==i)a.b.color=
-a.end.color||[0,0,0];a.init=true}a.elem.style[f]=k(a.b,a.end,a.pos)}});
+/**!
+ * @preserve Shadow animation 20130124
+ * http://www.bitstorm.org/jquery/shadow-animation/
+ * Copyright 2011, 2013 Edwin Martin <edwin@bitstorm.org>
+ * Contributors: Mark Carver, Xavier Lepretre
+ * Released under the MIT and GPL licenses.
+ */
+
+jQuery(function($, undefined) {
+	/**
+	 * Check whether the browser supports RGBA color mode.
+	 *
+	 * Author Mehdi Kabab <http://pioupioum.fr>
+	 * @return {boolean} True if the browser support RGBA. False otherwise.
+	 */
+	function isRGBACapable() {
+		var $script = $('script:first'),
+				color = $script.css('color'),
+				result = false;
+		if (/^rgba/.test(color)) {
+			result = true;
+		} else {
+			try {
+				result = ( color != $script.css('color', 'rgba(0, 0, 0, 0.5)').css('color') );
+				$script.css('color', color);
+			} catch (e) {
+			}
+		}
+
+		// Bugfix: Remove style attribute after testing.
+		$script.removeAttr('style');
+
+		return result;
+	}
+
+	$.extend(true, $, {
+		support: {
+			'rgba': isRGBACapable()
+		}
+	});
+
+	/*************************************/
+
+	// First define which property to use
+	var styles = $('html').prop('style');
+	var boxShadowProperty;
+	$.each(['boxShadow', 'MozBoxShadow', 'WebkitBoxShadow'], function (i, property) {
+		var val = styles[property];
+		if (typeof val !== 'undefined') {
+			boxShadowProperty = property;
+			return false;
+		}
+	});
+
+	// Extend the animate-function
+	if (boxShadowProperty) {
+		$.Tween.propHooks['boxShadow'] = {
+			get: function(tween) {
+				return $(tween.elem).css(boxShadowProperty);
+			},
+			set: function(tween) {
+				var style = tween.elem.style;
+				var p_begin = parseShadow($(tween.elem).get(0).style[boxShadowProperty] || $(tween.elem).css(boxShadowProperty));
+				var p_end = $.extend({}, p_begin, parseShadow(tween.end));
+				if (p_begin.color == undefined) {
+					p_begin.color = p_end.color || [0, 0, 0];
+				}
+				tween.run = function(progress) {
+					style[boxShadowProperty] = calculateShadow(p_begin, p_end, progress);
+				}
+			}
+		}
+	}
+
+	// Calculate an in-between shadow.
+	function calculateShadow(begin, end, pos) {
+		var parts = [];
+		if (begin.inset) {
+			parts.push('inset');
+		}
+		if (typeof end.left != 'undefined') {
+			parts.push(parseInt(begin.left + pos * (end.left - begin.left), 10) + 'px '
+					+ parseInt(begin.top + pos * (end.top - begin.top), 10) + 'px');
+		}
+		if (typeof end.blur != 'undefined') {
+			parts.push(parseInt(begin.blur + pos * (end.blur - begin.blur), 10) + 'px');
+		}
+		if (typeof end.spread != 'undefined') {
+			parts.push(parseInt(begin.spread + pos * (end.spread - begin.spread), 10) + 'px');
+		}
+		if (typeof end.color != 'undefined') {
+			var color = 'rgb' + ($.support['rgba'] ? 'a' : '') + '('
+					+ parseInt((begin.color[0] + pos * (end.color[0] - begin.color[0])), 10) + ','
+					+ parseInt((begin.color[1] + pos * (end.color[1] - begin.color[1])), 10) + ','
+					+ parseInt((begin.color[2] + pos * (end.color[2] - begin.color[2])), 10);
+			if ($.support['rgba']) {
+				color += ',' + parseFloat(begin.color[3] + pos * (end.color[3] - begin.color[3]));
+			}
+			color += ')';
+			parts.push(color);
+		}
+		return parts.join(' ');
+	}
+
+	// Parse the shadow value and extract the values.
+	function parseShadow(shadow) {
+		var match, color, parsedShadow = {};
+
+		// Parse an CSS-syntax color. Outputs an array [r, g, b]
+		// Match #aabbcc
+		if (match = /#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})/.exec(shadow)) {
+			color = [parseInt(match[1], 16), parseInt(match[2], 16), parseInt(match[3], 16), 1];
+
+			// Match #abc
+		} else if (match = /#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])/.exec(shadow)) {
+			color = [parseInt(match[1], 16) * 17, parseInt(match[2], 16) * 17, parseInt(match[3], 16) * 17, 1];
+
+			// Match rgb(n, n, n)
+		} else if (match = /rgb\(\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*\)/.exec(shadow)) {
+			color = [parseInt(match[1], 10), parseInt(match[2], 10), parseInt(match[3], 10), 1];
+
+			// Match rgba(n, n, n, n)
+		} else if (match = /rgba\(\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9\.]*)\s*\)/.exec(shadow)) {
+			color = [parseInt(match[1], 10), parseInt(match[2], 10), parseInt(match[3], 10),parseFloat(match[4])];
+
+			// No browser returns rgb(n%, n%, n%), so little reason to support this format.
+        }
+
+		// Parse offset, blur and radius
+		if (match = /(-?[0-9]+)(?:px)?\s+(-?[0-9]+)(?:px)?(?:\s+(-?[0-9]+)(?:px)?)?(?:\s+(-?[0-9]+)(?:px)?)?/.exec(shadow)) {
+			parsedShadow = {left: parseInt(match[1], 10), top: parseInt(match[2], 10), blur: match[3] ? parseInt(match[3], 10) : 0, spread: match[4] ? parseInt(match[4], 10) : 0};
+		} else {
+			parsedShadow = {left: 0, top: 0, blur: 0, spread: 0};
+		}
+
+		// Inset or not
+		parsedShadow.inset = /inset/.test(shadow);
+
+		parsedShadow.color = color;
+
+		return parsedShadow;
+	}
+});

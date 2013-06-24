@@ -483,8 +483,17 @@ var nicEditorInstance = bkClass.extend({
     
     getRng : function() {
         var s = this.getSel();
-        if(!s) { return null; }
-        return (s.rangeCount > 0) ? s.getRangeAt(0) : s.createRange();
+        var rng;        
+
+        if(!s) { return null; } 
+        if (s.rangeCount > 0) {
+            rng = s.getRangeAt(0);
+        } else if ( typeof s.createRange === 'undefined' ) {
+            rng = document.createRange();
+        } else {
+            rng = s.createRange(); 
+        }       
+        return rng;
     },
     
     selRng : function(rng,s) {
@@ -1162,7 +1171,7 @@ var nicEditorFontFamilySelect = nicEditorSelect.extend({
     init : function() {
         this.setDisplay('Font&nbsp;Family...');
         for(itm in this.sel) {
-            this.add(itm,'<font face="'+itm+'">'+this.sel[itm]+'</font>');
+            this.add(itm,'<span style="font-family:'+itm+';">'+this.sel[itm]+'</font>');
         }
     }
 });

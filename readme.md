@@ -3,7 +3,7 @@
 #  iDevUI Web 2.0 Framework #
     
 Version: 1.1.1
-Build  : 130403.1
+Build  : 130620.1
     
 Copyright 2011-2013 Trakware Solutions Ltd, All rights reserved.
 
@@ -34,3 +34,5 @@ Check readme.txt file for important changes.
 4. Open app.js (in the js folder) in your favourite code editor to start creating your application.
 
 ----------
+## Documentation
+For all the beginner and advanced documentation, please see [here](http://www.idevui.com/docs).

@@ -30,6 +30,7 @@ var _preferences = {
         iconcolor:'#000',
         radius:6
     },
+    splashScreen: "",
     // Framework user eXtensions (loaded from libpath).
     ux:[
         "gauge/gauge.js",
@@ -46,7 +47,10 @@ var _preferences = {
         charts:false,
         norightclick:true,
         fitDocument:true,
-        pageFit:true
+        pageFit:true,
+        tooltip: {
+            clickIt: false
+        }
     }
 };
 

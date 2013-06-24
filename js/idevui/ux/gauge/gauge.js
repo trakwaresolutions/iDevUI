@@ -129,12 +129,12 @@ idev.ux.widgetGauge = baseWidget.extend(
         idev.utils.delay(100,function(widget)
         {
             var cx =  widget.width/2, cy =  widget.width/2;
-            var r = widget.width/2
+            var r = widget.width/2;
             
             widget.paper = Raphael(widget.id, widget.width, widget.width/2 + 5);
             widget.gauge = widget.paper.gauge(0, 180);
             widget.gauge.bg(widget.paper.circle(cx, cy, r).attr({fill:"90-#444-#999:60-#fff"}), [cx, cy]);
-            widget.gauge.bg(widget.paper.circle(cx, cy, r-15).attr({fill:"r("+cx+","+cy+")#111-#666"}), [cx, cy]);
+            widget.gauge.bg(widget.paper.circle(cx, cy, r-15).attr({fill:"r(0.25,0.75)#111-#666"}), [cx, cy]);
             widget.paper.path(widget.arc([cx, cy], cx-50, 170, 225)).attr({ "stroke":widget.startcolor,"stroke-width": "10",opacity:0.6 });  
             widget.paper.path(widget.arc([cx, cy], cx-50, 225, 313)).attr({ "stroke":widget.centercolor,"stroke-width": "10",opacity:0.9 });  
             widget.paper.path(widget.arc([cx, cy], cx-50, 313, 360)).attr({ "stroke":widget.endcolor,"stroke-width": "10",opacity:0.6 });  
