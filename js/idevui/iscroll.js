@@ -17,10 +17,14 @@ function iScroll (el, options) {
 	that.element = typeof el == 'object' ? el : document.getElementById(el);
 	that.wrapper = that.element.parentNode;
 
-	that.element.style.webkitTransitionProperty = '-webkit-transform';
-	that.element.style.webkitTransitionTimingFunction = 'cubic-bezier(0,0,0.25,1)';
-	that.element.style.webkitTransitionDuration = '0';
-	that.element.style.webkitTransform = translateOpen + '0,0' + translateClose;
+	var elem = that.element;
+	if(!elem || !elem.style) elem = that.element[0];
+	if(!elem) alert('iScroll error');
+
+	elem.style.webkitTransitionProperty = '-webkit-transform';
+	elem.style.webkitTransitionTimingFunction = 'cubic-bezier(0,0,0.25,1)';
+	elem.style.webkitTransitionDuration = '0';
+	elem.style.webkitTransform = translateOpen + '0,0' + translateClose;
 	// Default options
 	that.options = {
 		bounce: has3d,

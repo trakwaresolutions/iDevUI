@@ -788,3 +788,6 @@ html ul.ui-tabs li.active, html ul.ui-tabs li.active  { /*--Makes sure that the 
 .ui-richtext-input, .nicEdit-selectTxt {
     color: #000;
 }
+#myPlugin {
+    color: black;
+}

@@ -51,14 +51,13 @@ var idevLoader = {
                 return;
             }
 
-            if(!idev.isIE8())
+            if(!idev.isIE8() && !idev.isIE7())
             {
                 if(_preferences.splashScreen == "" || !_preferences.splashScreen)
-                {
-                    idev.internal.addStyle(_preferences.libpath+"loader/jquery.percentageloader.css");
-                    
+                {   
                     if(typeof jQuery != 'undefined')
                     {
+                        idev.internal.addStyle(idev.internal.addForceLoad(_preferences.libpath+"loader/jquery.percentageloader.css"));
                         this.loader = null;
                         this.progress = 0;
                         var that = this;
@@ -108,7 +107,7 @@ var idevLoader = {
             if (this.div == null) return;
             if (nStep > this.steps) return;
             
-            if(!idev.isIE8())
+            if(!idev.isIE8() && !idev.isIE7())
             {
                 if(_preferences.splashScreen == "" || !_preferences.splashScreen)
                 {
@@ -131,7 +130,9 @@ var idevLoader = {
                         else
                         {
                             that.progress = that.progress + 0.01;
-                            that.loader.setProgress(that.progress);
+                            try {
+                                that.loader.setProgress(that.progress);
+                            } catch(e){ }
                         }
                         loopCount++;
                     },25);
@@ -157,7 +158,7 @@ var idevLoader = {
         if (this.div == null) return;
         $delay(150,function(wgt)
         {
-            if(!idev.isIE8())
+            if(!idev.isIE8() && !idev.isIE7())
             {
                 var div = $('#_idevloader');
                 div.remove();

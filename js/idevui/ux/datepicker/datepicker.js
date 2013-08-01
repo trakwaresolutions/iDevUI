@@ -32,7 +32,7 @@ idev.ux.widgetDatePicker = baseWidget.extend(
         this.format = config.format || "d/m/yyyy";
         this.iconColor = config.iconColor || _preferences.button.iconcolor || "#000";
         this.mode = config.mode || 1;
-        if (this.mode == 2) this.width = 120;
+        //if (this.mode == 2) this.width = 120;
         this.selectedDate = config.selectedDate;
         this.yearsRange = config.yearsRange || new Array(1971,2100);
         this.cellColorScheme = config.colorScheme || "orange";
@@ -42,20 +42,20 @@ idev.ux.widgetDatePicker = baseWidget.extend(
         if (this.mode == 2)
         {
             this.tpl = new idev.wTemplate(
-                "<div id='{id}' class='ui-element {elementstyle}' style='{style};min-width:120px;'>",
+                "<div id='{id}' class='ui-element' style='{style};width:{width}px'>",
                 "<div id='{id}-input'>",
                 "</div>",
-                "<div id='{id}-button' style='float:left;'>",
+                "<div id='{id}-button'>",
                 "</div>",
                 "</div>" );
         }
         else
         {
             this.tpl = new idev.wTemplate(
-                "<div id='{id}' class='ui-element {elementstyle}' style='{style};min-width:120px;'>",
+                "<div id='{id}' class='ui-element' style='{style};min-width:120px;'>",
                 "<div id='{id}-input'>",
                 "</div>",
-                "<div id='{id}-button' style='float:left;'>",
+                "<div id='{id}-button'>",
                 "</div>",
                 "<div id='{id}-calendar' style='{calendarstyle}'>",
                 "</div>",
@@ -102,18 +102,25 @@ idev.ux.widgetDatePicker = baseWidget.extend(
         var sHTML = this.tpl.render(data);
         var wgt = this;
         
+        var defaultValue;
+        if(this.value instanceof Date)
+            defaultValue = this.value.format(this.format);
+        else
+            defaultValue = this.value;
+
         $("#" + this.renderTo).append(sHTML);
         if (this.mode == 2)
         {
             this.input = new idev.ui.widgetTextField({
                 renderTo: this.id + "-input",
-                width:this.width-35,
+                width:this.width-(this.inputHeight+2),
                 height:this.inputHeight,
                 parent:this,
                 editable:false,
                 cls:wgt.cls,
+                style: 'border-top-left-radius:4px;border-bottom-left-radius:4px;border-top-right-radius:0;border-bottom-right-radius:0;',
                 roundCorners:this.roundCorners,
-                value:'',
+                value:defaultValue,
                 events: {
                     focus: function(w)
                     {
@@ -125,8 +132,8 @@ idev.ux.widgetDatePicker = baseWidget.extend(
             this.input.render();
             this.btn = new idev.ui.widgetButton({
                 renderTo: this.id + "-button",
-                width:26,
-                height:24,
+                width:this.inputHeight+2, //26
+                height:this.inputHeight+2,
                 icon:'_calendar',
                 iconColor:wgt.iconColor,
                 ix:4,
@@ -134,50 +141,53 @@ idev.ux.widgetDatePicker = baseWidget.extend(
                 parent:this,
                 border:false,           
                 cls:this.buttonCls,
-                y:(this.inputHeight-24)/2,
+                style: 'border-top-left-radius:0;border-bottom-left-radius:0;border-top-right-radius:4px;border-bottom-right-radius:4px;border-left:0;',
+                y:0,//(this.inputHeight-24)/2
                 events: {
                     click: function(btn)
                     {
-                        if (!btn.parent.expanded)
-                        {
-                            var pos = btn.getPosition();
-                            var h =  $("#" + btn.parent.id).height();
-                            var pos = $("#" + btn.parent.id).offset();
-                            var x =  pos.left;
-                            var y =  pos.top + h;
-                            var ch = $("#" + btn.parent.id + "-calendar").height();
-                            if(y+ch > idev.pgHeight){
-                                y -= ch;
-                                y -= h;
-                            }
-                            $("#" + btn.parent.id + "-calendar").css("left",x);
-                            $("#" + btn.parent.id + "-calendar").css("top",y);
-                            idev.autoHide(btn.parent,btn.parent.autoHide);
-                            $("#" + btn.parent.id + "-calendar").show();
-                            var int = setInterval(function(){
-                                if($("#" + btn.parent.id + "-calendar").is(":visible")){
-                                    var pos = $("#" + btn.parent.id).offset();
-                                    var x =  pos.left;
-                                    var y =  pos.top + h;
-                                    if(y+ch > idev.pgHeight){
-                                        y -= ch;
-                                        y -= h;
+                        $delay(100, function(btn){
+                            if (!btn.parent.expanded)
+                            {
+                                var pos = btn.getPosition();
+                                var h =  $("#" + btn.parent.id).height();
+                                var pos = $("#" + btn.parent.id).offset();
+                                var x =  pos.left;
+                                var y =  pos.top + h;
+                                var ch = $("#" + btn.parent.id + "-calendar").height();
+                                if(y+ch > idev.pgHeight){
+                                    y -= ch;
+                                    y -= h;
+                                }
+                                $("#" + btn.parent.id + "-calendar").css("left",x);
+                                $("#" + btn.parent.id + "-calendar").css("top",y);
+                                idev.autoHide(btn.parent,btn.parent.autoHide);
+                                $("#" + btn.parent.id + "-calendar").show();
+                                var int = setInterval(function(){
+                                    if($("#" + btn.parent.id + "-calendar").is(":visible")){
+                                        var pos = $("#" + btn.parent.id).offset();
+                                        var x =  pos.left;
+                                        var y =  pos.top + h;
+                                        if(y+ch > idev.pgHeight){
+                                            y -= ch;
+                                            y -= h;
+                                        }
+                                        if (btn.parent.roundCorners && !idev.isIE8()) x += 4;
+                                        $("#" + btn.parent.id + "-calendar").css("left",x);
+                                        $("#" + btn.parent.id + "-calendar").css("top",y);
                                     }
-                                    if (btn.parent.roundCorners && !idev.isIE8()) x += 4;
-                                    $("#" + btn.parent.id + "-calendar").css("left",x);
-                                    $("#" + btn.parent.id + "-calendar").css("top",y);
-                                }
-                                else{
-                                    clearInterval(int);
-                                }
-                            },200)
-                        }
-                        else
-                        {
-                            idev.autoHide();
-                            $("#" + btn.parent.id + "-calendar").hide();
-                        }
-                        btn.parent.expanded = !btn.parent.expanded;
+                                    else {
+                                        clearInterval(int);
+                                    }
+                                },200)
+                            }
+                            else
+                            {
+                                idev.autoHide();
+                                $("#" + btn.parent.id + "-calendar").hide();
+                            }
+                            btn.parent.expanded = !btn.parent.expanded;
+                        },btn);
                     }
                 }});  
             this.btn.render();
@@ -209,6 +219,18 @@ idev.ux.widgetDatePicker = baseWidget.extend(
                     yearsRange:wgt.yearsRange,
                     cellColorScheme:wgt.cellColorScheme
                 });
+                if(wgt.value !== '') {
+                    //Fix for setting widget value using value property on render
+                    var d = { year:0, month:0, day:0 }
+                    
+                    var date = wgt.value;
+                    d.year = date.getFullYear();
+                    d.month = date.getMonth()+1;        
+                    d.day = date.getDate();
+                            
+                    wgt.calendarObject.setSelectedDay(d);
+                }
+                
                 wgt.calendarObject.wgt = wgt;
                 $delay(100,function(wgt) 
                 {                
@@ -235,7 +257,7 @@ idev.ux.widgetDatePicker = baseWidget.extend(
     },
     getValue : function()
     { 
-        return this.calendarObject.getSelectedDay();
+        return this.getDate();
     },
     getValue2String : function()
     { 
@@ -272,6 +294,13 @@ idev.ux.widgetDatePicker = baseWidget.extend(
     },
     setDate : function(date)
     {
+        if(typeof(date)=="string" && date == "")
+        {
+            this.calendarObject.unsetSelection();
+            this.input.setValue("");
+            return;
+        }
+        
         var d = { year:0, month:0, day:0 }
         
         d.year = date.getFullYear();
@@ -285,17 +314,7 @@ idev.ux.widgetDatePicker = baseWidget.extend(
     },
     setValue : function(date)
     {
-        if(typeof(date)=="string" && date == "")
-        {
-            this.calendarObject.unsetSelection();
-            this.input.setValue("");
-            return;
-        }
-        this.calendarObject.setSelectedDay(date);
-        var d = this.calendarObject.getSelectedDay();
-        
-        d = new Date(d.year, d.month-1, d.day);
-        if (this.mode == 2) this.input.setValue(d.format(this.format));
+        this.setDate(date);
     },
     ondestroy:function()
     {

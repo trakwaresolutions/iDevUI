@@ -6,6 +6,15 @@ body{
     background:#fff;
 }
 
+input[type='text'], input[type='email'], input[type='search'], input[type='password'], textarea {
+    -webkit-touch-callout: text;
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
 .unselectable{
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -560,7 +569,7 @@ img {
     text-decoration: none;
     display: block; 
     font-weight: normal; 
-    margin:0.1em;
+/*    margin:0.1em;*/
     -webkit-appearance: none;
 }
 

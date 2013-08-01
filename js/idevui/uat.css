@@ -1,0 +1,58 @@
+#inputTesting .ui-label {
+    font-size: 12pt;
+	height: 20px !important;
+	max-height: 20px !important;
+	margin-top: 10px;
+}
+
+#inputTesting .ui-labeltext {
+	font-size: 12pt !important;
+}
+
+#inputTesting button {
+	height: 24px !important;
+	max-height: 24px !important;
+}
+
+#inputTesting tr:nth-child(even) {
+	background-color: #EEEEEE;
+}
+
+#inputTesting td {
+	padding: 6px;
+}
+
+#inputTesting table { 
+  border-spacing:0;
+  border-collapse:collapse;
+}
+
+#checkboxTesting .ui-label {
+    font-size: 12pt;
+	height: 20px !important;
+	max-height: 20px !important;
+	margin-top: 10px;
+}
+
+#checkboxTesting .ui-labeltext {
+	font-size: 12pt !important;
+}
+
+#checkboxTesting button {
+	height: 24px !important;
+	max-height: 24px !important;
+}
+
+#checkboxTesting tr:nth-child(even) {
+	background-color: #EEEEEE;
+}
+
+#checkboxTesting td {
+	padding: 6px;
+}
+
+#checkboxTesting table { 
+  border-spacing:0;
+  border-collapse:collapse;
+}
+
