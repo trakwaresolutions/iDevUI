@@ -257,6 +257,7 @@ idev.ux.widgetDatePicker = baseWidget.extend(
     },
     getValue : function()
     { 
+        if(!this.calendarObject) return;
         return this.getDate();
     },
     getValue2String : function()
@@ -274,12 +275,14 @@ idev.ux.widgetDatePicker = baseWidget.extend(
     },
     getDate : function()
     { 
+        if(!this.calendarObject) return;
         var d = this.calendarObject.getSelectedDay();
         
         return new Date(d.year, (d.month-1), d.day);
     },
     setDateFromString : function(date)
     {
+        if(!this.calendarObject) return;
         var d = { year:0, month:0, day:0 }
         
         if (date == "")  return;
@@ -294,6 +297,7 @@ idev.ux.widgetDatePicker = baseWidget.extend(
     },
     setDate : function(date)
     {
+        if(!this.calendarObject) return;
         if(typeof(date)=="string" && date == "")
         {
             this.calendarObject.unsetSelection();
@@ -314,7 +318,14 @@ idev.ux.widgetDatePicker = baseWidget.extend(
     },
     setValue : function(date)
     {
-        this.setDate(date);
+        if(typeof(date) == "object")
+        {
+            if(date.getMonth)
+            {
+                this.setDate(date);
+                return;
+            }
+        }
     },
     ondestroy:function()
     {

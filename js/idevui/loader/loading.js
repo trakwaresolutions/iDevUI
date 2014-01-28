@@ -12,7 +12,9 @@ var idevLoader = {
         this.width = 300;
         this.html = "<div id='_idevloader' class='ui-loader-progress ui-modern ui-ie9' style='position:absolute;left:0px;width:0px;'>";
         this.html += "</div>";
-        if(navigator.userAgent.toLowerCase().indexOf('msie 8') != -1) this.html += "<span style='position:absolute;left:0px;width:"+this.width+"px;text-align:center;'>Loading...</span>";
+        this.loaderText = "Loading";
+
+        if(navigator.userAgent.toLowerCase().indexOf('msie 8') != -1) this.html += "<span style='position:absolute;left:0px;width:"+this.width+"px;text-align:center;'>"+this.loaderText+"</span>";
         this.div = null;
         this.first = true;
     },
@@ -32,6 +34,9 @@ var idevLoader = {
 
             if(this.first)
             {
+                if(_preferences.loaderText) this.loaderText = _preferences.loaderText;
+                if(navigator.userAgent.toLowerCase().indexOf('msie 8') == -1 && _preferences.legacyLoader) this.html += "<span style='position:absolute;left:0px;width:"+this.width+"px;text-align:center;'>"+this.loaderText+"</span>";
+
                 var oDiv=document.createElement("DIV");
                 oDiv.id = "loader";
                 oDiv.className = "ui-loader ui-modern ui-ie9";
@@ -41,23 +46,29 @@ var idevLoader = {
                 this.first = false;
             }
 
-            if(typeof jQuery == 'undefined' && !idev.isIE8())
+            if(typeof jQuery == 'undefined')
             {
                 idev.internal.addScript(_preferences.libpath+"jquery191min.js");
+                if(!jqueryCount) var jqueryCount = 0;
+                jqueryCount++;
                 $delay(100,function()
                 {
-                    idevLoader.render();
+                    if(jqueryCount < 20) 
+                        idevLoader.render();
+                    else
+                        idev.errorHandler('FATAL: Could not load jQuery.');
                 });
                 return;
             }
 
-            if(!idev.isIE8() && !idev.isIE7())
+            if((!idev.isIE8() && !idev.isIE7()) && !_preferences.legacyLoader)
             {
                 if(_preferences.splashScreen == "" || !_preferences.splashScreen)
                 {   
                     if(typeof jQuery != 'undefined')
                     {
-                        idev.internal.addStyle(idev.internal.addForceLoad(_preferences.libpath+"loader/jquery.percentageloader.css"));
+                        idev.internal.addStyleSheet(idev.internal.addForceLoad(_preferences.libpath+"loader/loading.css"));
+                        idev.internal.addStyleSheet(idev.internal.addForceLoad(_preferences.libpath+"loader/jquery.percentageloader.css"));
                         this.loader = null;
                         this.progress = 0;
                         var that = this;
@@ -66,7 +77,7 @@ var idevLoader = {
                                 width: 200,
                                 height: 200,
                                 progress: 0,
-                                value: 'Loading'
+                                value: that.loaderText
                             });
                             that.loader = loader;
                         });
@@ -89,6 +100,10 @@ var idevLoader = {
                     this.loader = loader;
                 }
             }
+            else
+            {
+                idev.internal.addStyleSheet(idev.internal.addForceLoad(_preferences.libpath+"loader/legacy-loading.css"));
+            }
 
             $delay(200,function()
             {
@@ -107,7 +122,7 @@ var idevLoader = {
             if (this.div == null) return;
             if (nStep > this.steps) return;
             
-            if(!idev.isIE8() && !idev.isIE7())
+            if((!idev.isIE8() && !idev.isIE7()) && !_preferences.legacyLoader)
             {
                 if(_preferences.splashScreen == "" || !_preferences.splashScreen)
                 {
@@ -158,7 +173,7 @@ var idevLoader = {
         if (this.div == null) return;
         $delay(150,function(wgt)
         {
-            if(!idev.isIE8() && !idev.isIE7())
+            if(!idev.isIE8() && !idev.isIE7() && !_preferences.legacyLoader)
             {
                 var div = $('#_idevloader');
                 div.remove();
@@ -171,7 +186,7 @@ var idevLoader = {
         },this);
         if(_preferences.splashScreen != "" && _preferences.splashScreen)
         {
-            this.loader.remove();
+            if(this.loader) this.loader.remove();
         }
     }
 };

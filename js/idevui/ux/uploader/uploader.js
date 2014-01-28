@@ -23,6 +23,10 @@
     130722.1
     - Fixed ie bug with clicks and cursors
     - Added token
+    131104.1
+    - Fixed webkit bug with clicking where uploader doesn't exist still triggers uploading. (IDEV-85)
+    140110.1
+    - Added getSize method to get the file size before upload.
 */
 ///////////////////////////////////////////////////////////////////////////////
 idev.ux.widgetUploader = baseWidget.extend(
@@ -54,10 +58,10 @@ idev.ux.widgetUploader = baseWidget.extend(
         this.svg = this.config.svg == true ? true : false;
         this.tpl = new idev.wTemplate(
             "<div id='{id}' class='ui-element' style='{elementstyle}{style};'>",
-            "<form id='{id}-form' name='{id}-form' action='{url}' method='post' enctype='multipart/form-data'>",
+            "<form id='{id}-form' name='{id}-form' action='{url}' method='post' enctype='multipart/form-data' style='height:" + this.height + "px;'>",
             "<input id='{id}-data' type='hidden'/>",
             "<div id='{id}-params'></div>",
-            "<input name='file' id='{id}-input' type='file' style='left:0px;top:0px;width:" + this.width +"px;height:" + this.height +"px;-moz-opacity:0;filter:alpha(opacity: 0);opacity: 0;z-index: 2;position:relative;cursor:pointer;font-size:500px;'/>",
+            "<input name='file' id='{id}-input' type='file' style='left:0px;top:0px;width:" + this.width +"px;height:" + this.height +"px;-moz-opacity:0;filter:alpha(opacity: 0);opacity: 0;z-index: 2;position:relative;cursor:pointer;overflow:hidden;'/>",
             "<div id='{id}-button' style='position: absolute;top: 0px;left: 0px;z-index: 1;'></div>",
             "<iframe id='{id}-upload_target' name='{id}-upload_target' src='' style='width:0;height:0;border:0px solid #fff;visibility:hidden;'></iframe>",
             "</form>",
@@ -175,6 +179,10 @@ idev.ux.widgetUploader = baseWidget.extend(
             return "";
         }
         return strName[0];
+    },
+    getSize:function(){
+        if(!window.FileReader) return false;
+        return document.getElementById(this.id + "-input" ).files[0].size;
     }
 });
 idev.register("uploader",idev.ux.widgetUploader);

@@ -39,6 +39,9 @@
 	
 	130402.1
 	- Updated onKeyEvent to capture Ctrl + Q correctly
+
+    130905.1
+    - Fixed bugs with loading multiple code editors at once onto a page.
 	
 */
 ///////////////////////////////////////////////////////////////////////////////
@@ -137,10 +140,28 @@ idev.ui.widgetCodeEditor = baseWidget.extend(
         
         $("#" + this.renderTo).append(sHTML);
         idev.ux.loadCSS("codeeditor/codemirror/theme/"+this.theme+".css");
-        idev.ux.loadCSS("codeeditor/codemirror/mode/"+this.mode+"/"+this.mode+".css");
+        
+        switch(this.mode)
+        {
+            case 'javascript':
+            case 'diff':
+            case 'rpm/spec':
+            case 'tiddlywiki':
+                idev.ux.loadCSS("codeeditor/codemirror/mode/"+this.mode+"/"+this.mode+".css");
+                break;
+            case 'php':
+                idev.ux.loadScript("codeeditor/codemirror/mode/xml/xml.js");
+                idev.ux.loadScript("codeeditor/codemirror/mode/javascript/javascript.js");
+                idev.ux.loadScript("codeeditor/codemirror/mode/css/css.js");
+                idev.ux.loadScript("codeeditor/codemirror/mode/clike/clike.js");
+                break;
+        }
+
         idev.ux.loadScript("codeeditor/codemirror/mode/"+this.mode+"/"+this.mode+".js",function()
         {
+            if(wgt.mode == "php") wgt.mode = "application/x-httpd-php";
             wgt.editor = CodeMirror.fromTextArea(document.getElementById(wgt.id+"-code"), {
+                mode:wgt.mode,
                 lineNumbers: wgt.lineNumbers,
                 indentUnit: 4,
                 indentWithTabs: true,

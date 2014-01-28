@@ -5,8 +5,8 @@
 
 	Do not remove this copyright message
 
-	version	: 1.1.1
-	build   : 130731.1
+	version	: 1.2
+	build   : 140124.1
 
 	Started	: 5th March 2011
 
@@ -20,12 +20,13 @@
 		1.0.2   2012-08-01  Milestone release
 		1.1.0   2012-11-30  Milestone release
 		1.1.1	2013-03-07  Milestone release
+		1.2     2014-01-24  Milestone release
 
-		1.1.2   (Coming Soon)
+		1.2.1   (Coming Soon)
 
 
 	iDevUI is distributed under the terms of the MIT license
-	
+
 */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -117,9 +118,7 @@ var dateFormat = function () {
 
 	// Regexes and supporting functions are cached through closure
 	return function (date, mask, utc) {
-		var dF = dateFormat;
-
-		// You can't provide utc if you skip other args (use the "UTC:" mask prefix)
+        // You can't provide utc if you skip other args (use the "UTC:" mask prefix)
 		if (arguments.length == 1 && Object.prototype.toString.call(date) == "[object String]" && !/\d/.test(date)) {
 			mask = date;
 			date = undefined;
@@ -127,9 +126,9 @@ var dateFormat = function () {
 
 		// Passing date through Date applies Date.parse, if necessary
 		date = date ? new Date(date) : new Date;
-		if (isNaN(date)) throw SyntaxError("invalid date");
+		if (isNaN(date)) throw new SyntaxError("invalid date");
 
-		mask = String(dF.masks[mask] || mask || dF.masks["default"]);
+		mask = String(dateFormat.masks[mask] || mask || dateFormat.masks["default"]);
 
 		// Allow setting the utc argument via the mask
 		if (mask.slice(0, 4) == "UTC:") {
@@ -150,12 +149,12 @@ var dateFormat = function () {
 			flags = {
 				d:	d,
 				dd:   pad(d),
-				ddd:  dF.i18n.dayNames[D],
-				dddd: dF.i18n.dayNames[D + 7],
+				ddd:  dateFormat.i18n.dayNames[D],
+				dddd: dateFormat.i18n.dayNames[D + 7],
 				m:	m + 1,
 				mm:   pad(m + 1),
-				mmm:  dF.i18n.monthNames[m],
-				mmmm: dF.i18n.monthNames[m + 12],
+				mmm:  dateFormat.i18n.monthNames[m],
+				mmmm: dateFormat.i18n.monthNames[m + 12],
 				yy:   String(y).slice(2),
 				yyyy: y,
 				h:	H % 12 || 12,
@@ -240,7 +239,7 @@ var _language = {
 	{
 		if (this.sLanguage == "english") return;
 
-		var el = document.createElement('script')
+		var el = document.createElement('script');
 		el.type = 'text/javascript';
 		el.src = _preferences.languagepath  + this.sLanguage +".js";
 		if (navigator.userAgent.toLowerCase().indexOf("msie 7") == -1 ||
@@ -265,13 +264,13 @@ var _language = {
 	},
 	translate : function(sWord)
 	{
-		var caps = false
+		var caps = false;
 		if (sWord == null) return "";
 		if (this.words == null) return sWord;
 		if (sWord == "") return "";
 		if (this.sLanguage == "english") return sWord;
 		if (sWord.charCodeAt(0) >= 65 && sWord.charCodeAt(0) <= 97) caps = true;
-		sForeignWord = this.words[sWord.toLowerCase()];
+        var sForeignWord = this.words[sWord.toLowerCase()];
 		if (sForeignWord == null) sForeignWord = sWord;
 		if (caps)
 		{
@@ -295,7 +294,7 @@ var idevColors = idevObject.extend({
 
 	init: function()
 	{
-		this.colors = new Array();
+		this.colors = {};
 
 		this.colors["blue"] = { startColor:"#000011", endColor:"#0099dd:45-#06c", borderColor:"#06c", fontColor:"#fff", border:true };
 		this.colors["silver"] = { startColor:"#ccc", endColor:"#ededed:45-#ddd", borderColor:"#ddd", fontColor:"#222", border:true };
@@ -356,33 +355,35 @@ var idevResize = idevObject.extend({
 
 			idev._isDraggable = this.widget.isDraggable();
 			idev._resizeTarget = this.widget;
-			var w = parseInt($("#" + this.widget.id).width()) - this.rsw;
-			var h = parseInt($("#" + this.widget.id).height())- this.rsh;
+            var jWidget = $("#" + this.widget.id);
+			var w = parseInt(jWidget.width()) - this.rsw;
+			var h = parseInt(jWidget.height())- this.rsh;
 
 			var sHTML = "<div id='" + this.widget.id + "-drframe' class='ui-drframe' style='top:" + (this.rsh/2) + "px;left:" + (this.rsw/2) + "px;border:1px dashed " + this.resizeColor  + ";width:" + w + "px;height:" + h + "px;'></div>";
 
 			if (this.resizable)
 			{
-				if (this.handlers.indexOf("nw,") != -1) sHTML += "<div id='" + this.widget.id + "-drhandlenw' class='ui-drhandlenw' style='width:" + this.rsw + "px;height:" + this.rsh + "px;'></div>"
-				if (this.handlers.indexOf("ne,") != -1) sHTML += "<div id='" + this.widget.id + "-drhandlene' class='ui-drhandlene' style='left:" + (w-2) + "px;width:" + this.rsw + "px;height:" + this.rsh + "px;'></div>"
-				if (this.handlers.indexOf("se,") != -1) sHTML += "<div id='" + this.widget.id + "-drhandlese' class='ui-drhandlese' style='top:" + (h-2) + "px;left:" + (w-2) + "px;width:" + this.rsw + "px;height:" + this.rsh + "px;'></div>"
-				if (this.handlers.indexOf("sw,") != -1) sHTML += "<div id='" + this.widget.id + "-drhandlesw' class='ui-drhandlesw' style='top:" + (h-2) + "px;left:0px;width:" + this.rsw + "px;height:" + this.rsh + "px;'></div>"
+				if (this.handlers.indexOf("nw,") != -1) sHTML += "<div id='" + this.widget.id + "-drhandlenw' class='ui-drhandlenw' style='width:" + this.rsw + "px;height:" + this.rsh + "px;'></div>";
+				if (this.handlers.indexOf("ne,") != -1) sHTML += "<div id='" + this.widget.id + "-drhandlene' class='ui-drhandlene' style='left:" + (w - 2) + "px;width:" + this.rsw + "px;height:" + this.rsh + "px;'></div>";
+				if (this.handlers.indexOf("se,") != -1) sHTML += "<div id='" + this.widget.id + "-drhandlese' class='ui-drhandlese' style='top:" + (h - 2) + "px;left:" + (w - 2) + "px;width:" + this.rsw + "px;height:" + this.rsh + "px;'></div>";
+				if (this.handlers.indexOf("sw,") != -1) sHTML += "<div id='" + this.widget.id + "-drhandlesw' class='ui-drhandlesw' style='top:" + (h - 2) + "px;left:0px;width:" + this.rsw + "px;height:" + this.rsh + "px;'></div>";
 
-				if (this.handlers.indexOf("n,") != -1) sHTML += "<div id='" + this.widget.id + "-drhandlen' class='ui-drhandlen' style='left:" + (w/2) + "px;width:" + this.rsw + "px;height:" + this.rsh + "px;'></div>"
-				if (this.handlers.indexOf("w,") != -1) sHTML += "<div id='" + this.widget.id + "-drhandlew' class='ui-drhandlew' style='top:" + (h/2) + "px;width:" + this.rsw + "px;height:" + this.rsh + "px;'></div>"
-				if (this.handlers.indexOf("e,") != -1) sHTML += "<div id='" + this.widget.id + "-drhandlee' class='ui-drhandlee' style='top:" + (h/2) + "px;left:" + (w-2) + "px;width:" + this.rsw + "px;height:" + this.rsh + "px;'></div>"
+				if (this.handlers.indexOf("n,") != -1) sHTML += "<div id='" + this.widget.id + "-drhandlen' class='ui-drhandlen' style='left:" + (w / 2) + "px;width:" + this.rsw + "px;height:" + this.rsh + "px;'></div>";
+				if (this.handlers.indexOf("w,") != -1) sHTML += "<div id='" + this.widget.id + "-drhandlew' class='ui-drhandlew' style='top:" + (h / 2) + "px;width:" + this.rsw + "px;height:" + this.rsh + "px;'></div>";
+				if (this.handlers.indexOf("e,") != -1) sHTML += "<div id='" + this.widget.id + "-drhandlee' class='ui-drhandlee' style='top:" + (h / 2) + "px;left:" + (w - 2) + "px;width:" + this.rsw + "px;height:" + this.rsh + "px;'></div>";
 				if (this.handlers.indexOf("s,") != -1) sHTML += "<div id='" + this.widget.id + "-drhandles' class='ui-drhandles' style='top:" + (h-2) + "px;left:" + (w/2) + "px;width:" + this.rsw + "px;height:" + this.rsh + "px;'></div>"
 			}
-			$("#" + this.widget.id).append(sHTML);
-			$('#' + this.widget.id).attr("draggable","Y");
-			$('#' + this.widget.id).attr("resizable","Y");
+			jWidget.append(sHTML);
+			jWidget.attr("draggable","Y");
+            jWidget.attr("resizable","Y");
 			// Keyboard Control for resizable pannels
 			var wgt = this;
 			var ctrl = false; // ctrl = resize
 			var shift = false; // shift = faster
-			$delay(0,function(){				
-				$('#'+wgt.widget.id+'-drframe').focus();
-				$('#'+wgt.widget.id+'-drframe').keydown(function(event){
+			$delay(0,function(){
+                var drframe = $('#'+wgt.widget.id+'-drframe');
+				drframe.focus();
+				drframe.keydown(function(event){
 					var key = event.keyCode;
 					var parentDiv = $('#'+event.target.id).parent();
 					var left = parseInt(parentDiv.css('left'));
@@ -436,8 +437,8 @@ var idevResize = idevObject.extend({
 						}
 					}
 				});
-				$('#'+wgt.widget.id+'-drframe').keyup(function(event){
-					var key = event.keyCode
+				drframe.keyup(function(event){
+					var key = event.keyCode;
 					if(key==17){
 						ctrl = false
 					}
@@ -463,8 +464,9 @@ var idevResize = idevObject.extend({
 				if (this.handlers.indexOf("n,") != -1) $('#' + this.widget.id + "-drhandlen").remove();
 				if (this.handlers.indexOf("s,") != -1) $('#' + this.widget.id + "-drhandles").remove();
 			}
-			$('#' + this.widget.id).attr("draggable","N");
-			$('#' + this.widget.id).attr("resizable","N");
+            var jWidget = $('#' + this.widget.id);
+			jWidget.attr("draggable","N");
+			jWidget.attr("resizable","N");
 			this.widget.setDraggable(idev._isDraggable);
 			this.resizing = false;
 			this.widget.afterResize();
@@ -472,10 +474,12 @@ var idevResize = idevObject.extend({
 		syncSize: function()
 		{
 			if (!this.resizable) return;
-			var w = parseInt($("#" + this.widget.id).width())-this.rsw;
-			var h = parseInt($("#" + this.widget.id).height())-this.rsh;
-			$('#' + this.widget.id + "-drframe").width(w);
-			$('#' + this.widget.id + "-drframe").height(h);
+            var jWidget = $("#" + this.widget.id);
+            var drframe = $('#' + this.widget.id + "-drframe");
+			var w = parseInt(jWidget.width())-this.rsw;
+			var h = parseInt(jWidget.height())-this.rsh;
+			drframe.width(w);
+			drframe.height(h);
 
 			$('#' + this.widget.id + "-drhandlene").css("left",(w-2));
 			$('#' + this.widget.id + "-drhandlee").css({ 'left': (w-2), 'top': (h/2) });
@@ -488,10 +492,10 @@ var idevResize = idevObject.extend({
 		},
 		change: function(left,top,width,height)
 		{
-			var wgt = $("#" + this.widget.id)
-			$("#" + this.widget.id).css({ 'left': left, 'top': top });
+			var wgt = $("#" + this.widget.id);
+			wgt.css({ 'left': left, 'top': top });
 			if (!this.resizable) return;
-			$("#" + this.widget.id).css({ 'width': width, 'height': height, 'max-width': width, 'max-height': height });
+			wgt.css({ 'width': width, 'height': height, 'max-width': width, 'max-height': height });
 			this.syncSize();
 			this.widget.doLayout();
 		}
@@ -528,17 +532,17 @@ var idevDD = idevObject.extend({
 			if (this.bShowDragTip)
 			{
 				var style = "background:#fff;border:2px solid #ccc;cursor:pointer;font-size:10pt;font-family:sans_serif;";
-				var data = new Array();
-	
-				data['id'] = this.widget.id + "-dd";
-				data['x'] = this.tx + 2;
-				data['y'] = this.ty + 2;
-				data['width'] = 100;
-				data['height'] = 20;
-				data['style'] = style;
-				data['text'] = this.dragText;
-				data['drag'] = _preferences.libpath + "images/drag.png";
-				data['nodrop'] = _preferences.libpath + "images/nodrop.png";
+				var data = {
+				    id: this.widget.id + "-dd",
+                    x: this.tx + 2,
+                    y: this.ty + 2,
+                    width: 100,
+                    height: 20,
+                    style: style,
+                    text: this.dragText,
+                    drag: _preferences.libpath + "images/drag.png",
+                    nodrop: _preferences.libpath + "images/nodrop.png"
+                };
 				var sHTML = this.tpl.render(data);
 				$("#container").append(sHTML);
 				if (this.allowDrop)
@@ -594,7 +598,7 @@ var idevDD = idevObject.extend({
 				}
 				catch(e)
 				{
-					idev.errorHandler("CanDrop Error:"+e.message)
+					idev.errorHandler("CanDrop Error:" + e.message);
 					$("#"+id+"-drag").hide();
 					$("#"+id+"-nodrop").show();
 					idev.dropWidget = null;
@@ -672,26 +676,29 @@ var idevLayoutManager = idevObject.extend({
 		collapseArea: function()
 		{
 			if (!this.widget.expanded) return;
-			if (this.area == "west")
+            var dx, id, area, w, wgt, elem, expand, body, filler;
+            if (this.area == "west")
 			{
-				var dx = this.widget.width-18;
+				dx = this.widget.width-18;
 
 				if (this.events.collapsed) this.events.collapsed(this.widget);
-				$('#'+this.id+"-expand").addClass("ui-panel-btn-expand-w");
-				$('#'+this.id+"-expand").removeClass("ui-panel-btn-collapse-w");
+                expand = $('#'+this.id+"-expand");
+				expand.addClass("ui-panel-btn-expand-w");
+				expand.removeClass("ui-panel-btn-collapse-w");
 				$("#"+this.parent.id+"-content-west").prop("width","18");
 				$("#"+this.id).css("margin-left",0-dx);
 				$("#"+this.id+"-filler").css("visibility","visible");
 				for (var i = 0;i < this.parent.widgets.length;i++)
 				{
-					var id =  this.parent.widgets[i].id;
-					var area = this.parent.widgets[i].area;
+					id =  this.parent.widgets[i].id;
+					area = this.parent.widgets[i].area;
 					if (area == "center")
 					{
-						var w = $("#"+id).width() + dx;
-						$("#"+id).width(w);
-						$("#"+id).css("max-width",w);
-						var wgt = $get(id);
+                        elem = $("#"+id);
+						w = elem.width() + dx;
+						elem.width(w);
+						elem.css("max-width",w);
+						wgt = $get(id);
 						if (wgt)
 						{
 							wgt.doLayout();
@@ -702,23 +709,25 @@ var idevLayoutManager = idevObject.extend({
 			}
 			else if (this.area == "east")
 			{
-				var dx = this.widget.width-18;
+				dx = this.widget.width-18;
 
 				if (this.events.collapsed) this.events.collapsed(this.widget);
-				$('#'+this.id+"-expand").addClass("ui-panel-btn-collapse-e");
-				$('#'+this.id+"-expand").removeClass("ui-panel-btn-expand-e");
+                expand = $('#'+this.id+"-expand");
+				expand.addClass("ui-panel-btn-collapse-e");
+				expand.removeClass("ui-panel-btn-expand-e");
 				$("#"+this.parent.id+"-content-east").prop("width","18");
 				$("#"+this.id+"-filler").css("visibility","visible");
 				for (var i = 0;i < this.parent.widgets.length;i++)
 				{
-					var id =  this.parent.widgets[i].id;
-					var area = this.parent.widgets[i].area;
+					id =  this.parent.widgets[i].id;
+					area = this.parent.widgets[i].area;
 					if (area == "center")
 					{
-						var w = $("#"+id).width() + dx;
-						$("#"+id).width(w);
-						$("#"+id).css("max-width",w);
-						var wgt = $get(id);
+                        elem = $("#"+id);
+						w = elem.width() + dx;
+						elem.width(w);
+						elem.css("max-width",w);
+						wgt = $get(id);
 						if (wgt)
 						{
 							wgt.doLayout();
@@ -731,27 +740,30 @@ var idevLayoutManager = idevObject.extend({
 			{
 				var h = $("#" + this.id + "-title").height();
 				var dy = $("#" + this.id).height() - h;
-				$("#"+this.id).css("height",h);
 				if (this.events.collapsed) this.events.collapsed(this.widget);
-				$('#'+this.id+"-expand").removeClass("ui-panel-btn-expand");
-				$('#'+this.id+"-expand").addClass("ui-panel-btn-collapse");
+                expand = $('#'+this.id+"-expand");
+				expand.removeClass("ui-panel-btn-expand");
+				expand.addClass("ui-panel-btn-collapse");
 				$("#"+this.parent.id+"-content-row-south").prop("height",h);
 				for (var i = 0;i < this.parent.widgets.length;i++)
 				{
-					var id =  this.parent.widgets[i].id;
-					var area = this.parent.widgets[i].area;
+					id =  this.parent.widgets[i].id;
+					area = this.parent.widgets[i].area;
 					if (area == "center" || area == "west" || area == "east")
 					{
-						var h = $("#"+id).height() + dy;
-						$("#"+id).css({ 'height':h, 'max-height':h });
-						var h = $("#"+id+"-body").height() + dy;
-						$("#"+id+"-body").css({ 'height':h, 'max-height':h });
+                        elem = $("#"+id);
+						h = elem.height() + dy;
+						elem.css({ 'height':h, 'max-height':h });
+                        body = $("#"+id+"-body");
+						h = body.height() + dy;
+						body.css({ 'height':h, 'max-height':h });
 						if (area == "west" || area == "east")
 						{
-							var h = $("#"+id+"-filler").height() + dy;
-							$("#"+id+"-filler").css("height",h);
+							filler = $("#"+id+"-filler");
+                            h = filler.height() + dy;
+							filler.css("height",h);
 						}
-						var wgt = $get(id);
+						wgt = $get(id);
 						if (wgt)
 						{
 							wgt.doLayout();
@@ -763,31 +775,34 @@ var idevLayoutManager = idevObject.extend({
 			}
 			else
 			{
-				var h = $("#" + this.id + "-title").height();
-				var dx = this.widget.height - h;
-
+				h = $("#" + this.id + "-title").height();
+				dx = this.widget.height - h;
 				$("#"+this.id).css("height",h);
 				if (this.events.collapsed) this.events.collapsed(this.widget);
-				$('#'+this.id+"-expand").addClass("ui-panel-btn-expand");
-				$('#'+this.id+"-expand").removeClass("ui-panel-btn-collapse");
-				$("#"+this.parent.id+"-content-row-north").prop("height",h);
+                expand = $('#'+this.id+"-expand");
+				expand.addClass("ui-panel-btn-expand");
+				expand.removeClass("ui-panel-btn-collapse");
+				$("#"+this.parent.id+"-content-row-north").attr("height",h);
 				this.widget.expanded = false;
 				for (var i = 0;i < this.parent.widgets.length;i++)
 				{
-					var id =  this.parent.widgets[i].id;
-					var area = this.parent.widgets[i].area;
+					id =  this.parent.widgets[i].id;
+					area = this.parent.widgets[i].area;
 					if (area == "center" || area == "west" || area == "east")
 					{
-						var h = $("#"+id).height() + dx;
-						$("#"+id).css({ 'height':h, 'max-height':h });
-						var h = $("#"+id+"-body").height() + dx;
-						$("#"+id).css({ 'height':h, 'max-height':h });
+                        elem = $("#"+id);
+                        h = elem.height() + dx;
+                        elem.css({ 'height':h, 'max-height':h });
+                        body = $("#"+id+"-body");
+                        h = body.height() + dx;
+                        body.css({ 'height':h, 'max-height':h });
 						if (area == "west" || area == "east")
 						{
-							var h = $("#"+id+"-filler").height() + dx;
-							$("#"+id+"-filler").css("height",h);
+							filler = $("#"+id+"-filler");
+                            h = filler.height() + dx;
+							filler.css("height",h);
 						}
-						var wgt = $get(id);
+						wgt = $get(id);
 						if (wgt)
 						{
 							wgt.doLayout();
@@ -800,6 +815,7 @@ var idevLayoutManager = idevObject.extend({
 		expandArea: function()
 		{
 			if (this.widget.expanded) return;
+            var expand, elem, wgt, id, area, w, ctrlHeight, body, filler;
 			if (this.area == "west")
 			{
 				var dx = this.widget.width-18;
@@ -807,19 +823,21 @@ var idevLayoutManager = idevObject.extend({
 				$("#"+this.parent.id+"-content-west").prop("width",this.widget.width);
 				$("#"+this.id).css("margin-left",0);
 				if (this.events.expanded) this.events.expanded(this.widget);
-				$('#'+this.id+"-expand").addClass("ui-panel-btn-collapse-w");
-				$('#'+this.id+"-expand").removeClass("ui-panel-btn-expand-w");
+                expand = $('#'+this.id+"-expand");
+				expand.addClass("ui-panel-btn-collapse-w");
+				expand.removeClass("ui-panel-btn-expand-w");
 				$("#"+this.id+"-filler").css("visibility","hidden");
 				for (var i = 0;i < this.parent.widgets.length;i++)
 				{
-					var id =  this.parent.widgets[i].id;
-					var area = this.parent.widgets[i].area;
+					id =  this.parent.widgets[i].id;
+					area = this.parent.widgets[i].area;
 					if (area == "center")
 					{
-						var w = $("#" +id ).width() - dx;
-						$("#"+id).width(w);
-						$("#"+id).css("max-width",w);
-						var wgt = $get(id);
+						elem = $("#"+id);
+                        w = elem.width() - dx;
+						elem.width(w);
+						elem.css("max-width",w);
+						wgt = $get(id);
 						if (wgt)
 						{
 							wgt.doLayout();
@@ -830,23 +848,25 @@ var idevLayoutManager = idevObject.extend({
 			}
 			else if (this.area == "east")
 			{
-				var dx = this.widget.width - 18;
+				dx = this.widget.width - 18;
 
 				$("#"+this.parent.id+"-content-east").prop("width",this.widget.width);
 				if (this.events.expanded) this.events.expanded(this.widget);
-				$('#'+this.id+"-expand").removeClass("ui-panel-btn-collapse-e");
-				$('#'+this.id+"-expand").addClass("ui-panel-btn-expand-e");
+                expand = $("#"+this.id+"-expand");
+				expand.removeClass("ui-panel-btn-collapse-e");
+				expand.addClass("ui-panel-btn-expand-e");
 				$("#"+this.id+"-filler").css("visibility","hidden");
 				for (var i = 0;i < this.parent.widgets.length;i++)
 				{
-					var id =  this.parent.widgets[i].id;
-					var area = this.parent.widgets[i].area;
+					id =  this.parent.widgets[i].id;
+					area = this.parent.widgets[i].area;
 					if (area == "center")
 					{
-						var w = $("#" +id ).width() - dx;
-						$("#"+id).width(w);
-						$("#"+id).css("max-width",w);
-						var wgt = $get(id);
+                        elem = $("#"+id);
+                        w = elem.width() - dx;
+						elem.width(w);
+						elem.css("max-width",w);
+						wgt = $get(id);
 						if (wgt)
 						{
 							wgt.doLayout();
@@ -857,66 +877,80 @@ var idevLayoutManager = idevObject.extend({
 			}
 			else if (this.area == "south")
 			{
-				var h = $("#" + this.id + "-title").height();
-				var ctrlHeight = this.widget.config.height;
-				var dx = ctrlHeight - h;
+				h = $("#" + this.id + "-title").height();
+				ctrlHeight = this.widget.config.height;
+				dx = ctrlHeight - h;
 
-				$("#"+this.id).css("height",ctrlHeight);
+			//	$("#"+this.id).css("height",ctrlHeight);
 				if (this.events.collapsed) this.events.collapsed(this.widget);
-				$('#'+this.id+"-expand").addClass("ui-panel-btn-expand");
-				$('#'+this.id+"-expand").removeClass("ui-panel-btn-collapse");
+                expand = $("#"+this.id+"-expand");
+				expand.addClass("ui-panel-btn-expand");
+				expand.removeClass("ui-panel-btn-collapse");
 				$("#"+this.parent.id+"-content-row-south").prop("height",this.height);
 				for (var i = 0;i < this.parent.widgets.length;i++)
 				{
-					var id =  this.parent.widgets[i].id;
-					var area = this.parent.widgets[i].area;
+					id =  this.parent.widgets[i].id;
+					area = this.parent.widgets[i].area;
 					if (area == "center" || area == "west" || area == "east")
 					{
-						var h = $("#"+id).height() - dx;
-						$("#"+id).css({ 'height':h, 'max-height':h });
-						var h = $("#"+id+"-body").height() - dx;
-						$("#"+id+"-body").css({ 'height':h, 'max-width':h });
+						elem = $("#"+id);
+                        h = elem.height() - dx;
+						elem.css({ 'height':h, 'max-height':h });
+                        body = $("#"+id+"-body");
+						h = body.height() - dx;
+						body.css({ 'height':h, 'max-width':h });
 						if (area == "west" || area == "east")
 						{
-							var h = $("#"+id+"-filler").height() - dx;
-							$("#"+id+"-filler").css("height",h);
+                            filler = $("#"+id+"-filler");
+							h = filler.height() - dx;
+							filler.css("height",h);
 						}
-						var wgt = $get(id);
+						wgt = $get(id);
 						if (wgt)
 						{
 							wgt.doLayout();
 						}
 					}
 				}
+                var pid = this.parent.id;
+                $('#' + pid).hide();
+                $delay(0,function(){
+                    $('#' + pid).show();
+                });
 				this.widget.expanded = true;
 			}
 			else
 			{
-				var h = $("#" + this.id + "-title").height();
-				var ctrlHeight = this.widget.config.height;
-				var dx = ctrlHeight - h;
+				h = $("#" + this.id + "-title").height();
+				ctrlHeight = this.widget.config.height;
+				dx = ctrlHeight - h;
 
-				$("#"+this.id).css("height",ctrlHeight);
+		//		$("#"+this.id).css("height",ctrlHeight);
+				$("#"+this.id).height(ctrlHeight);
 				if (this.events.collapsed) this.events.collapsed(this.widget);
-				$('#'+this.id+"-expand").removeClass("ui-panel-btn-expand");
-				$('#'+this.id+"-expand").addClass("ui-panel-btn-collapse");
-				$("#"+this.parent.id+"-content-row-north").prop("height",this.widget.height);
+                expand = $("#"+this.id+"-expand");
+				expand.removeClass("ui-panel-btn-expand");
+				expand.addClass("ui-panel-btn-collapse");
+				$("#"+this.parent.id+"-content-row-north").attr("height",this.widget.height);
 				for (var i = 0;i < this.parent.widgets.length;i++)
 				{
-					var id =  this.parent.widgets[i].id;
-					var area = this.parent.widgets[i].area;
+					id =  this.parent.widgets[i].id;
+					area = this.parent.widgets[i].area;
 					if (area == "center" || area == "west" || area == "east")
 					{
-						var h = $("#"+id).height() - dx;
-						$("#"+id).css({ 'height':h, 'max-height':h });
-						var h = $("#"+id+"-body").height() - dx;
-						$("#"+id+"-body").css({ 'height':h, 'max-height':h });
+						elem = $("#"+id);
+                        h = elem.height() - dx;
+					//	$("#"+id).css({ 'height':h, 'max-height':h });
+						elem.height(h);
+					//	var h = $("#"+id+"-body").height() - dx;
+						// $("#"+id+"-body").css({ 'height':h, 'max-height':h });
 						if (area == "west" || area == "east")
 						{
-							var h = $("#"+id+"-filler").height() - dx;
-							$("#"+id+"-filler").css("height",h);
+                            filler = $("#"+id+"-filler");
+							var h = filler.height() - dx;
+							filler.css("height",h);
 						}
-						var wgt = $get(id);
+						wgt = $get(id);
 						if (wgt)
 						{
 							wgt.doLayout();
@@ -930,11 +964,12 @@ var idevLayoutManager = idevObject.extend({
 		{
 			if (!this.widget.expanded) return;
 			var h = $("#" + this.id + "-title").height();
-			var dx = this.widget.height - h;
+			// var dx = this.widget.height - h;
 			$("#"+this.id).css({ 'height':h, 'max-height':h });
 			if (this.events.collapsed) this.events.collapsed(this.widget);
-			$('#'+this.id+"-expand").addClass("ui-panel-btn-plus");
-			$('#'+this.id+"-expand").removeClass("ui-panel-btn-minus");
+            var expand = $('#'+this.id+"-expand");
+			expand.addClass("ui-panel-btn-plus");
+			expand.removeClass("ui-panel-btn-minus");
 			this.widget.expanded = false;
 		},
 		expandPanel: function()
@@ -949,11 +984,13 @@ var idevLayoutManager = idevObject.extend({
 			// Set panel height
 			$("#"+this.id).css({ 'height':panelheight, 'max-height':panelheight });
 			if (this.events.collapsed) this.events.collapsed(this.widget);
-			$('#'+this.id+"-expand").removeClass("ui-panel-btn-plus");
-			$('#'+this.id+"-expand").addClass("ui-panel-btn-minus");
+            var expand = $('#'+this.id+"-expand");
+			expand.removeClass("ui-panel-btn-plus");
+			expand.addClass("ui-panel-btn-minus");
+            var wgt;
 			for (var i = 0;i < this.parent.widgets.length;i++)
 			{
-				var wgt = $get(this.parent.widgets[i].id);
+				wgt = $get(this.parent.widgets[i].id);
 				if (wgt.expanded)
 				{
 					wgt.layoutManager.collapsePanel();
@@ -1025,14 +1062,16 @@ var idevLayoutManager = idevObject.extend({
 		{
 			try
 			{
-				var pw = $("#" + this.id).width();
-				var ph = $("#" + this.id).height();
+                var elem = $("#" + this.id);
+				var pw = elem.width();
+				var ph = elem.height();
+                var bodyheight, w, h;
 	
 				this.widget.width = pw;
 				this.widget.height = ph;
 				if (this.layout == "fit")
 				{
-					var bodyheight = this.resizePanel();
+					bodyheight = this.resizePanel();
 					for (var c = 0;c < this.widget.children.length;c++)	  
 					{
 						this.widget.children[c].resize(pw,bodyheight);
@@ -1042,41 +1081,41 @@ var idevLayoutManager = idevObject.extend({
 				}
 				else if (this.layout == "frame")
 				{
-					var bodyheight = this.resizePanel();
+					bodyheight = this.resizePanel();
 					var hcenter = ph, wcenter = pw;
 					if (this.widget.title) hcenter -= $("#"+this.id+"-title").height();  
 					for (var c = 0;c < this.widget.children.length;c++)
 					{
 						if (this.widget.children[c].area == "west")
 						{
-							var w = this.widget.children[c].getWidth();
+							w = this.widget.children[c].getWidth();
 
 							if (!this.widget.children[c].expanded) w = 24;
 							wcenter -= w;
 						}
 						if (this.widget.children[c].area == "east")
 						{
-							var w = this.widget.children[c].getWidth();
+							w = this.widget.children[c].getWidth();
 
 							if (!this.widget.children[c].expanded) w = 24;
 							wcenter -= w;
 						}
 						if (this.widget.children[c].area == "north")
 						{
-							var h = this.widget.children[c].getHeight();
+							h = this.widget.children[c].getHeight();
 
 							if (!this.widget.children[c].expanded) h = $("#"+this.widget.children[c].id+"-title").height();
 							hcenter -= h;
 						}
 						if (this.widget.children[c].area == "south")
 						{
-							var h = this.widget.children[c].getHeight();
+							h = this.widget.children[c].getHeight();
 
 							if (!this.widget.children[c].expanded) h = $("#"+this.widget.children[c].id+"-title").height();
 							hcenter -= h;
 						}
 					}
-					$("#" + this.id+"-content-table").prop("width",w)
+					$("#" + this.id + "-content-table").prop("width", w);
 					for (var c = 0;c < this.widget.children.length;c++)
 					{
 						var id = this.widget.children[c].id;
@@ -1119,17 +1158,19 @@ var idevLayoutManager = idevObject.extend({
 				}
 				else if (this.layout == "accordion")
 				{
-					var bodyheight = this.resizePanel();
+					bodyheight = this.resizePanel();
 	
 					if (this.widget.children.length) bodyheight -= (this.widget.children.length-1) * idev.defaultTitleHeight;
+                    var child;
 					for (var c = 0;c < this.widget.children.length;c++)
 					{
 						if (this.widget.children[c].expanded)
 						{
 							$("#" + this.widget.children[c].id).css({ 'height':bodyheight, 'max-height':bodyheight });
 						}
-						$("#" + this.widget.children[c].id).css({ 'width':pw });
-						$("#" + this.widget.children[c].id).css({ 'max-width':pw });
+                        child = $("#" + this.widget.children[c].id);
+						child.css({ 'width':pw });
+						child.css({ 'max-width':pw });
 						if (!this.widget.children[c].expanded)
 							this.widget.children[c].resize(pw,this.widget.children[c].titleHeight);
 						else
@@ -1146,14 +1187,14 @@ var idevLayoutManager = idevObject.extend({
 					}
 					catch(e)
 					{
-						alert("DL Error:",e.description);
+						alert("DL Error: "+e.description);
 						alert(this.widget.children[c].wtype)
 					}
 				}
 			}
 			catch(e)
 			{
-				alert("LAYOUT Error:",e.description);
+				alert("LAYOUT Error: "+e.description);
 			}
 		}
 	});
@@ -1323,9 +1364,9 @@ var baseWidget = idevObject.extend(
 			this.layout = this.config.layout == null ? "" : this.config.layout ;
 			this.labelCls = this.config.labelCls || "";
 			this.resizer = new idevResize(this);
-			this.children = new Array();
+			this.children = [];
 			this.config.id = this.id;
-			if (this.events.dblclick) this.events.dblclick = this.events.dblclick;
+			if (this.events.dblClick) this.events.dblclick = this.events.dblClick;
 			if (this.events.afterRender) this.events.afterrender = this.events.afterRender;
 			this.layoutConfig = this.config.layoutConfig;
 			this.variable = this.config.variable;
@@ -1351,7 +1392,7 @@ var baseWidget = idevObject.extend(
 					var h = this.parent.getInnerHeight();
 					var w = this.parent.getInnerWidth();
 					
-					if (pos.left == 0 &&  this.parent.labelWidth) pos.left =  this.parent.labelWidth
+					if (pos.left == 0 &&  this.parent.labelWidth) pos.left = this.parent.labelWidth;
 					if (this.anchorMargin.left == null) this.anchorMargin.left = 0;
 					if (this.anchorMargin.top == null) this.anchorMargin.top = 0;
 					if (this.anchorMargin.right == null) this.anchorMargin.right = 0;
@@ -1406,7 +1447,7 @@ var baseWidget = idevObject.extend(
 		},
 		isDraggable: function()
 		{
-			return $('#' + this.id).attr("draggable") == "Y" ? true : false;
+			return $('#' + this.id).attr("draggable") == "Y";
 		},
 		remove: function()
 		{
@@ -1468,21 +1509,23 @@ var baseWidget = idevObject.extend(
 		},
 		bringForward:function()
 		{
-			var idx = $("#" + this.id).css("z-index");
+            var elem = $("#" + this.id);
+			var idx = elem.css("z-index");
 			if (idx == "auto")
 				idx = 0;
 			else
 				idx = parseInt(idx);
-			$("#" + this.id).css("z-index",idx+1);
+			elem.css("z-index",idx+1);
 		},
 		sendBack:function()
 		{
-			var idx = $("#" + this.id).css("z-index");
+            var elem = $("#" + this.id);
+            var idx = elem.css("z-index");
 			if (idx == "auto")
 				idx = 0;
 			else
 				idx = parseInt(idx);
-			$("#" + this.id).css("z-index",idx-1);
+			elem.css("z-index",idx-1);
 		},
 		hide : function()
 		{
@@ -1531,11 +1574,10 @@ var baseWidget = idevObject.extend(
 		fadeToggle : function(animSpeed,easing,callback)
 		{
 			if (animSpeed == null) animSpeed = this.animSpeed;
-			$('#' + this.id).fadeToggle(speed,easing,callback);
+			$('#' + this.id).fadeToggle(animSpeed,easing,callback);
 		},
 		moveTo : function(x,y,animSpeed,easing,callback)
 		{
-			var obj = this;
 			if (easing == null) easing = "linear";
 			if (animSpeed == null) animSpeed = "fast";
 			$('#' + this.id).animate({
@@ -1579,8 +1621,8 @@ var baseWidget = idevObject.extend(
 					if (idev.isFF())
 					{
 						var pos = el.val().length;
-                        el.focus();
-                        el.get(0).setSelectionRange(pos, pos);
+						el.focus();
+						el.get(0).setSelectionRange(pos, pos);
 					}
 					else
 						el.value = el.value; // Set cursor to the end
@@ -1694,15 +1736,17 @@ var baseWidget = idevObject.extend(
 		{
 			$('#' + this.id).animate({height: h + 'px'},this.expandTime);
 			this.expanded = false;
-			$('#'+this.id+"-expand").addClass("ui-panel-btn-expand");
-			$('#'+this.id+"-expand").removeClass("ui-panel-btn-collapse");
+            var expand = $('#'+this.id+"-expand");
+			expand.addClass("ui-panel-btn-expand");
+			expand.removeClass("ui-panel-btn-collapse");
 		},
 		expand : function()
 		{
 			$('#' + this.id).animate({height: this.height + 'px'},this.expandTime);
 			this.expanded = true;
-			$('#'+this.id+"-expand").removeClass("ui-panel-btn-expand");
-			$('#'+this.id+"-expand").addClass("ui-panel-btn-collapse");
+            var expand = $('#'+this.id+"-expand");
+			expand.removeClass("ui-panel-btn-expand");
+			expand.addClass("ui-panel-btn-collapse");
 		},
 		collapseWidth : function(w)
 		{
@@ -1726,6 +1770,10 @@ var baseWidget = idevObject.extend(
 		{	 
 			if (this.inLayout) return;
 			this.inLayout = true;
+			if(this.parent.wtype=='composite')
+			{
+				this.parent.doLayout();
+			}
 			if (this.bottom)
 			{
 				var y = 0;
@@ -1747,8 +1795,9 @@ var baseWidget = idevObject.extend(
 			if (this.anchor != "")
 			{
 				var dim = this.alignAchor();
-				$("#"+this.id).width(dim.width);
-				$("#"+this.id).height(dim.height);
+                var elem = $("#"+this.id);
+				elem.width(dim.width);
+				elem.height(dim.height);
 			}
 			if (this.events.onLayout) this.events.onLayout(this);
 			for (var c = 0;c < this.children.length;c++) this.children[c].doLayout();
@@ -1823,36 +1872,37 @@ var baseWidget = idevObject.extend(
 			this.refresh();
 		},
 		showBusy : function()
-	    {
+		{
 			var that = this;
+            var w, h, busy;
 			$delay(0, function(){
 				var wdgid = '#'+that.id;
-				var wdg = that;
-				var w = $(wdgid).width();
-				var h = $(wdgid).height();
+                w = $(wdgid).width();
+				h = $(wdgid).height();
 				var zindex = 100;
-				$(wdgid).append("<div class='ui-mask "+that.id+"-mask' style='width:" + (w-1) + "px;height:" + (h-1) + "px;z-index:" + zindex + "'>&nbsp;</div>")
+				$(wdgid).append("<div class='ui-mask " + that.id + "-mask' style='width:" + (w - 1) + "px;height:" + (h - 1) + "px;z-index:" + zindex + "'>&nbsp;</div>");
 				$('.'+that.id+'-mask').hide(0).fadeIn(500);
 				if (document.getElementById("_busy") == null) {
 					$(wdgid).append("<div id='_busy' class='ui-busy'></div>");
 					$('#_busy').hide(0).fadeIn(500);
 				}
-				var w = $(wdgid).width();
-				var h = $(wdgid).height();
-				var lw = $("#_busy").width();
-				var lh = $("#_busy").height();
-				$("#_busy").css({ 'left':(w/2)-(lw/2), 'top':(h/2)-(lh/2) });
+				w = $(wdgid).width();
+				h = $(wdgid).height();
+                busy = $("#_busy");
+                var lw = busy.width();
+				var lh = busy.height();
+				busy.css({ 'left':(w/2)-(lw/2), 'top':(h/2)-(lh/2) });
 			});
-	    },
-	    hideBusy : function()
-	    {
+		},
+		hideBusy : function()
+		{
 			$("#_busy").fadeOut(500);
 			var widget = this;
 			$('.'+this.id+'-mask').fadeOut(500,function(){
 				$("."+widget.id+"-mask").remove();
 				$("#_busy").remove();
 			});
-	    }
+		}
 	});
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1879,8 +1929,8 @@ var idevCore = idevObject.extend({
 		this.body = document.body;
 		this.pageManager = new this.pageManagerClass();
 		this.agent = navigator.userAgent.toLowerCase();
-		this.widgets = new Object();
-		this.plugins = new Array();
+		this.widgets = {};
+		this.plugins = [];
 		this.pgWidth = null;
 		this.pgHeight = null;
 		this.heightadj = 0;
@@ -1907,8 +1957,8 @@ var idevCore = idevObject.extend({
 		this.charWidth = 8;
 		this._dragging = false;
 		this.designMode = true;
-		this.dependancy = new Array();
-		this.loadedFiles = new Array();
+		this.dependancy = [];
+		this.loadedFiles = [];
 		this.hideWidget = null;
 		this.hideFN = null;
 		
@@ -1955,7 +2005,7 @@ var idevCore = idevObject.extend({
 		this.colors = new idevColors();
 		this.url = String(window.location);
 		this.rawUrl = String(window.location);
-		this.parameters = new Array();
+		this.parameters = {};
 		if (this.url.indexOf("?") > 0)
 		{
 			var p = this.url.indexOf("?");
@@ -1966,19 +2016,19 @@ var idevCore = idevObject.extend({
 			for (var i in a)
 			{
 				if (typeof a[i] != "string") break;
-				var b = a[i].split("=")
+				var b = a[i].split("=");
 				this.parameters[b[0]] = b[1];
 			}
 		}
 		this.standaloneOffset = 0;
 		this.events = {
-			onstartdrag:null,
-			ondrag:null,
-			onenddrag:null,
-			onmousemove:null,
-			onmousedown:null,
-			onmouseup:null
-		}
+            onstartdrag: null,
+            ondrag: null,
+            onenddrag: null,
+            onmousemove: null,
+            onmousedown: null,
+            onmouseup: null
+        };
 		// Shared data object to be used by widgets to share variables
 		this.dataShare = {};
 		// Set global functions and extensions to the idev object
@@ -2011,8 +2061,7 @@ var idevCore = idevObject.extend({
 		this.defaultMBbarCls = "ui-message-bbar";
 		this.defaultMShadow = false;
 		this.defaultTitleHeight = 24;
-		
-		this.focusHighlight = false,
+		this.focusHighlight = false;
 		this.highlightCSS = "0px 0px 8px #336699";
 		if (this.isIE9() || this.isIE10())
 		{
@@ -2070,11 +2119,12 @@ var idevCore = idevObject.extend({
 				if (e.preventDefault)
 				e.preventDefault();
 				return false;
-			};
-			return true;
+            }
+            return true;
 		},
 		load: function(scope,s)
 		{
+			idev.dependancyIndex++;
 			if (typeof idevLoader === "object") idevLoader.steps = idev.dependancy.length;
 			if (typeof idevLoader === "object") idevLoader.step(idev.dependancyIndex);
 			if (idev.dependancyIndex == idev.dependancy.length)
@@ -2086,19 +2136,16 @@ var idevCore = idevObject.extend({
 			if (typeof idev.dependancy[idev.dependancyIndex] == "object")
 			{
 				idev.internal.addMeta(idev.dependancy[idev.dependancyIndex]);
-				idev.dependancyIndex++;
 				return;
 			}
 			var url = idev.dependancy[idev.dependancyIndex].toLowerCase();
 			if (url == "")
 			{
-				idev.dependancyIndex++;
 				idev.internal.load();
 				return;
 			}
 			if(url.indexOf("jquery191min") != -1 && typeof jQuery !== 'undefined')
 			{
-				idev.dependancyIndex++;
 				idev.internal.load();
 				return;
 			}
@@ -2110,7 +2157,6 @@ var idevCore = idevObject.extend({
 			{
 				idev.internal.addScript(idev.dependancy[idev.dependancyIndex],idev.internal.load);
 			}
-			idev.dependancyIndex++;
 		},
 		refreshCSS:function(sName)
 		{
@@ -2134,7 +2180,7 @@ var idevCore = idevObject.extend({
 		loadDependants:function()
 		{
 			_language.setLanguage(_preferences.language);
-			idev.dependancyIndex = 0;
+			idev.dependancyIndex = -1;
 			if (_preferences.language != "english") idev.dependancy.push(_preferences.languagepath  + _preferences.language +".js");
 			if (idev.isIE7()) idev.dependancy.push(_preferences.libpath + "/charts/excanvasmin.js");
 			if (idev.isIE8()) idev.dependancy.push(_preferences.libpath + "/charts/excanvasmin.js");
@@ -2243,11 +2289,11 @@ var idevCore = idevObject.extend({
 				return;
 			}
 			idev.loadedFiles.push(s);
-			var el = document.createElement('link')
+			var el = document.createElement('link');
 			el.rel = "stylesheet";
 			el.href = idev.internal.addForceLoad(s);
-			el.callback = callback
-			$debug(el.href)
+			el.callback = callback;
+			$debug(el.href);
 			if (idev.isIE7() || idev.isIE8())
 			{
 				el.onreadystatechange= function ()
@@ -2255,7 +2301,7 @@ var idevCore = idevObject.extend({
 					if (this.readyState == 'loaded' || this.readyState == 'complete')
 					{
 						idev.loadedFiles.push(s);
-						this.callback(s);
+						if (callback) callback(s);
 					}
 				};
 			}
@@ -2277,11 +2323,11 @@ var idevCore = idevObject.extend({
 				return;
 			}
 			idev.loadedFiles.push(s);
-			var el = document.createElement('script')
+			var el = document.createElement('script');
 			el.type = 'text/javascript';
 			el.src = idev.internal.addForceLoad(s);
-			el.callback = callback
-			$debug(el.src)
+			el.callback = callback;
+			$debug(el.src);
 			if (idev.isIE7() || idev.isIE8())
 			{
 				el.onreadystatechange= function ()
@@ -2299,20 +2345,17 @@ var idevCore = idevObject.extend({
 			}
 			else
 			{
-				el.onload  = function()
-				{
-					if(typeof $ != "undefined" && idev.pgWidth == null)
-					{
-						idev.pgHeight = $(document).height();
-						if (window.navigator.standalone && idev.isIPad()) idev.pgHeight -= 20;
-						idev.pgWidth = $(document).width();
-					}
-					idev.loadedFiles.push(s);
-					$delay(0,function(callback)
-					{
-						if (callback) callback(s);
-					},callback);
-				}
+				el.onload = function () {
+                    if (typeof $ != "undefined" && idev.pgWidth == null) {
+                        idev.pgHeight = $(document).height();
+                        if (window.navigator.standalone && idev.isIPad()) idev.pgHeight -= 20;
+                        idev.pgWidth = $(document).width();
+                    }
+                    idev.loadedFiles.push(s);
+                    $delay(0, function (callback) {
+                        if (callback) callback(s);
+                    }, callback);
+                };
 				el.onerror = function()
 				{
 					idev.errorHandler("Failed to load script '" + s + "'");
@@ -2332,7 +2375,7 @@ var idevCore = idevObject.extend({
 		},
 		addMeta: function(s,callback)
 		{
-			var el = document.createElement('meta')
+			var el = document.createElement('meta');
 			el.name = s.name;
 			el.content = s.content;
 			document.getElementsByTagName('head')[0].appendChild(el);
@@ -2369,7 +2412,7 @@ var idevCore = idevObject.extend({
 				{
 				   alert("JavaScript error:\n\n" + message + "\n\nOn line " + linenumber + "\n\n" + url);
 				}
-				idev.errorHandler(message + "\n  On line " + linenumber + "\n  " + url)
+				idev.errorHandler(message + "\n  On line " + linenumber + "\n  " + url);
 				return true;
 			}; 
 			if (_preferences.config.trapunload)
@@ -2421,9 +2464,10 @@ var idevCore = idevObject.extend({
 					idev.hideWidget = null;
 				}
 				idev.orgEvent = e;
+                var target, draggable, mousePos;
 				if (idev.hideWidget)
 				{
-					var target = e.target != null ? e.target : e.srcElement;
+					target = e.target != null ? e.target : e.srcElement;
 
 					if (target)
 					{
@@ -2443,7 +2487,7 @@ var idevCore = idevObject.extend({
 				}
 				if (e.button == dragButton)
 				{
-					var target = e.target != null ? e.target : e.srcElement;
+					target = e.target != null ? e.target : e.srcElement;
 					var titleFound = false;
 
 					if (target.id && target.id.indexOf("-wrapper") != -1) return;
@@ -2462,13 +2506,13 @@ var idevCore = idevObject.extend({
 								idev.dd = true;
 								document.onselectstart = function () { return false; };
 								target.ondragstart = function() { return false; };
-								var mousePos = idev.utils.mousePosition(e);
+								mousePos = idev.utils.mousePosition(e);
 								idev._sX = mousePos.x;
 								idev._sY = mousePos.y;
-								return false;
+								return;
 							}
 						}
-						var draggable = $("#" + target.id).attr("draggable");
+						draggable = $("#" + target.id).attr("draggable");
 						if (draggable == "Y")
 						{
 							if (!titleFound && idev._dragWidget)
@@ -2484,7 +2528,7 @@ var idevCore = idevObject.extend({
 						{
 							if (idev._dragWidget.wtype == "button")
 							{
-								var draggable = $("#" + target.id).attr("draggable");
+								draggable = $("#" + target.id).attr("draggable");
 								if (draggable != "Y")
 								{
 									return;
@@ -2504,7 +2548,7 @@ var idevCore = idevObject.extend({
 					idev._resizable = false;
 					if (idev._dragWidgetId.indexOf("-drhandle") != -1)
 					{
-						idev._resizable = $("#" + target.id).attr("resizable") == "Y" ? true : false;
+						idev._resizable = $("#" + target.id).attr("resizable") == "Y";
 					}
 					if (idev._dragWidget.events.beforedrag)
 					{
@@ -2526,7 +2570,7 @@ var idevCore = idevObject.extend({
 									var hasVerticalScrollbar = div.scrollHeight>div.clientHeight;
 									if (hasVerticalScrollbar)
 									{
-										var mousePos  = idev.utils.mousePosition(e);
+										mousePos = idev.utils.mousePosition(e);
 										if (mousePos.x > $("#"+idev._dragWidgetId).width() - 20) 
 											return;
 									}
@@ -2536,7 +2580,7 @@ var idevCore = idevObject.extend({
 					}
 					idev._cursor = null;
 					var mpos = idev.internal.getMouseOffset(target,e);
-					var mousePos = idev.utils.mousePosition(e);
+					mousePos = idev.utils.mousePosition(e);
 
 					idev._startX = mpos.x;
 					idev._startY = mpos.y;
@@ -2610,8 +2654,9 @@ var idevCore = idevObject.extend({
 				{
 					if (idev._cursor == null)
 					{
-						idev._cursor = $('#' + idev._dragElement.id).css("cursor");
-						$('#' + idev._dragElement.id).css("cursor","move");
+						var dragElem = $('#' + idev._dragElement.id);
+                        idev._cursor = dragElem.css("cursor");
+                        dragElem.css("cursor","move");
 					}
 					var mousePos = idev.utils.mousePosition(e);
 					var left = parseInt(mousePos.x - idev._startX);
@@ -2622,8 +2667,8 @@ var idevCore = idevObject.extend({
 					idev._sY = mousePos.y;
 					if (idev._resizable)
 					{
-						var left = parseInt(idev._dragElement.style.left.replace("px","")) + dx;
-						var top = parseInt(idev._dragElement.style.top.replace("px",""))+ dy;
+						left = parseInt(idev._dragElement.style.left.replace("px","")) + dx;
+						top = parseInt(idev._dragElement.style.top.replace("px",""))+ dy;
 						var oldLeft = parseInt(idev._dragElement.style.left.replace("px",""));
 						var oldTop = parseInt(idev._dragElement.style.top.replace("px",""));
 						var oldWidth = parseInt(idev._dragElement.style.width.replace("px",""));
@@ -2663,8 +2708,8 @@ var idevCore = idevObject.extend({
 					}
 					else
 					{
-						var left = parseInt(idev._dragElement.style.left.replace("px",""));
-						var top = parseInt(idev._dragElement.style.top.replace("px",""));
+						left = parseInt(idev._dragElement.style.left.replace("px",""));
+						top = parseInt(idev._dragElement.style.top.replace("px",""));
 						idev._dragElement.style.left = (left + dx) + 'px';
 						idev._dragElement.style.top = (top + dy) + 'px';
 						e.preventDefault();
@@ -2737,16 +2782,17 @@ var idevCore = idevObject.extend({
 					idev.mousestarty = touch.pageY;
 					idev.mouseendx = touch.pageX;
 					idev.mouseendy = touch.pageY;
+                    var draggable;
 					while (target)
 					{
 						idev._dragWidget = idev.get(target.id);
-						var draggable = $("#" + target.id).attr("draggable");
+						draggable = $("#" + target.id).attr("draggable");
 						if (draggable == "Y") break;
 						if (idev._dragWidget)
 						{
 							if (idev._dragWidget.wtype == "button")
 							{
-								var draggable = $("#" + target.id).attr("draggable");
+								draggable = $("#" + target.id).attr("draggable");
 								if (draggable != "Y")
 								{
 									return;
@@ -2847,8 +2893,7 @@ var idevCore = idevObject.extend({
 			if (window.innerWidth != idev.currentWidth)
 			{
 				idev.currentWidth = window.innerWidth;
-				var orient = (idev.currentWidth < $(document).width()) ? "profile" : "landscape";
-				idev.orient = orient;
+				idev.orient = (idev.currentWidth < $(document).width()) ? "profile" : "landscape";
 				if (idev.app.events)
 				{
 					if (idev.app.events.onOrientation) idev.app.events.onOrientation(idev.orient);
@@ -2930,7 +2975,6 @@ var idevCore = idevObject.extend({
 			{
 				case 'list':
 				case 'dataview':
-					var id = this.id.substr(0,p);
 					var dsIndex = this.id.substr(p+1);
 					if (wgt.events == null) return;
 					wgt.dsIndex = parseInt(dsIndex);
@@ -3000,15 +3044,14 @@ var idevCore = idevObject.extend({
 			if(idev.widgetMoved) return;
 
 			var wgt = $get(this.id);
-			if(!wgt) wgt = idev.get(this.id);
+			var p = this.id.indexOf("_");
+			if(!wgt) wgt = $get(this.id.substr(0,p));
 			if(!wgt) return;
-			var p = wgt.id.indexOf("_");
 
 			switch(wgt.wtype)
 			{
 				case 'list':
 				case 'dataview':
-					var id = this.id.substr(0,p);
 					var dsIndex = this.id.substr(p+1);
 					if (wgt.events == null) return;
 					if (wgt.events.dblclick == null) return;
@@ -3019,9 +3062,6 @@ var idevCore = idevObject.extend({
 						wgt.events.dblclick(wgt,dsIndex,wgt.selected,e);
 						wgt.selected = dsIndex;
 					}
-					e.preventDefault();
-					e.stopPropagation();
-					return false;
 				break;
 
 				default:
@@ -3032,9 +3072,6 @@ var idevCore = idevObject.extend({
 					{
 						wgt.events.dblclick(wgt,e);
 					}
-					e.preventDefault();
-					e.stopPropagation();
-					return false;
 				break;
 			}
 
@@ -3144,7 +3181,7 @@ var idevCore = idevObject.extend({
 		nextUIID : function(prefix)
 		{
 			idev.uiid++;
-			sID = idev.uiid.toString();
+			var sID = idev.uiid.toString();
 			while (sID.length < 6) sID = "0" + sID;
 			if (prefix != null) return prefix + sID;
 			return "ID" + sID;
@@ -3277,7 +3314,7 @@ var idevCore = idevObject.extend({
 		},
 		renderWidgets : function(page, renderTo, widgets, layout, labelWidth, parent)
 		{
-			var tableID;
+			var tableID, wgt, fw, fh;
 
 			if (widgets == null) return;
 			if (labelWidth == null) labelWidth= 0;
@@ -3311,15 +3348,15 @@ var idevCore = idevObject.extend({
 						widget.parent = parent;
 						if (col == 0)
 						{
-							var sHTML = "";
-							var sAttr = widget.attr || "";
+							sHTML = "";
+							sAttr = widget.attr || "";
 
 							sHTML = "<tr>";
-							if (parent.rowHeight > 0) sHTML = "<tr height=" + parent.rowHeight + " >"
+							if (parent.rowHeight > 0) sHTML = "<tr height=" + parent.rowHeight + " >";
 							for (var c = 0;c < parent.columns;c++)
 							{
-								var cellStyle = "";
-								var wgt = widgets[i+c];
+								cellStyle = "";
+								wgt = widgets[i+c];
 
 								if (wgt != null)
 								{
@@ -3375,21 +3412,21 @@ var idevCore = idevObject.extend({
 			}
 			if (layout == "column")
 			{
-				var sWidth = "";
-				var cell = 0;
+				cell = 0;
 				var spacer = 0;
 				var spacerFound = false;
 				var variableIDX = -1;
 				var rowHeight = parent.rowHeight == null ? "" : parent.rowHeight;				
 				
 				parent.padding = parent.padding || 0;
-				var fw = $('#' + parent.id).width();
-				var fh = $('#' + parent.id + "-body").height();
+				fw = $('#' + parent.id).width();
+				fh = $('#' + parent.id + "-body").height();
 				if (parent.wtype == "panel")
 				{
-					fh = $('#' + parent.id + "-content").height() - (parent.padding * 2);;
-					fw = $('#' + parent.id + "-content").width() - (parent.padding * 2);;
-				}
+                    var contentElem = $('#' + parent.id + "-content");
+                    fh = contentElem.height() - (parent.padding * 2);
+                    fw = contentElem.width() - (parent.padding * 2);
+                }
 				if(fh == null)
 				   fh = parent.height - parent.padding;
 				if(fw == null)
@@ -3413,7 +3450,7 @@ var idevCore = idevObject.extend({
 						spacerFound = true;
 					}
 				}
-				var sHTML = "<table class='ui-table' id='" + renderTo + "-table' border=0 " + parent.attr + "><tbody id='" + renderTo + "-body'></tbody></table>";
+				sHTML = "<table class='ui-table' id='" + renderTo + "-table' border=0 " + parent.attr + "><tbody id='" + renderTo + "-body'></tbody></table>";
 				if (parent)
 				{
 					if (parent.wtype == "composite")
@@ -3431,9 +3468,7 @@ var idevCore = idevObject.extend({
 				if(renderTo=='ui-toolbar') wHeight=parent.height;
 				if (widgets.length > 0)
 				{
-					var sHTML = "";
-
-					sHTML = "<tr id='"+ renderTo +"-row' height='" + rowHeight+ "px'>";
+					sHTML = "<tr id='"+ renderTo +"-row' height='" + rowHeight+ "'>";
 					if (parent.rowHeight > 0) 
 					{
 						sHTML = "<tr height=" + parent.rowHeight + " >";
@@ -3453,8 +3488,8 @@ var idevCore = idevObject.extend({
 					}
 					for (var c = 0;c <  widgets.length;c++)
 					{
-						var widget = widgets[c];
-						var cellStyle = "";
+						widget = widgets[c];
+						cellStyle = "";
 						var sColumnAlign = "";
 
 						if (widget.wtype != null)
@@ -3475,9 +3510,7 @@ var idevCore = idevObject.extend({
 				}
 				else
 				{
-					var sHTML = "";
-
-					sHTML = "<tr id='"+ renderTo +"-row' height='" + rowHeight+ "px'>";
+					sHTML = "<tr id='"+ renderTo +"-row' height='" + rowHeight+ "'>";
 					if (parent.rowHeight > 0) 
 					{
 						sHTML = "<tr height=" + parent.rowHeight + " >";
@@ -3500,7 +3533,7 @@ var idevCore = idevObject.extend({
 				}
 				for (var i = 0;i < widgets.length;i++)
 				{
-					var widget = widgets[i];
+					widget = widgets[i];
 
 					if (widget.wtype != null)
 					{
@@ -3532,12 +3565,12 @@ var idevCore = idevObject.extend({
 					else if (widget == ">>")
 					{
 						renderTo = tableID + "-cell" + cell;
-						var wgt = {
-							wtype:'spacer',
-							id: parent.id + "-spacer",
-							renderTo: renderTo,
-							width:0
-						}
+						wgt = {
+                            wtype: 'spacer',
+                            id: parent.id + "-spacer",
+                            renderTo: renderTo,
+                            width: 0
+                        };
 						idev.internal.renderWidget( page, wgt );
 					}
 					else
@@ -3545,11 +3578,11 @@ var idevCore = idevObject.extend({
 						renderTo = tableID + "-cell" + cell;
 						if (typeof widget == "string")
 						{
-							var wgt = {
-								wtype:'html',
-								renderTo: renderTo,
-								html: widget
-							}
+							wgt = {
+                                wtype: 'html',
+                                renderTo: renderTo,
+                                html: widget
+                            };
 							idev.internal.renderWidget( page, wgt );
 						}
 					}
@@ -3565,9 +3598,10 @@ var idevCore = idevObject.extend({
 
 						if(spacer<0) spacer=0;
 						if(spacerFound) var id = parent.id + "-spacer";
-						else var id = widgets[variableIDX].id;
-						$('#' + id).width(spacer);
-						$('#' + id).css("max-width",spacer + "px");
+						else id = widgets[variableIDX].id;
+                        var elem = $('#' + id);
+						elem.width(spacer);
+						elem.css("max-width",spacer + "px");
 					});
 				}
 
@@ -3579,12 +3613,13 @@ var idevCore = idevObject.extend({
 				var hoffset = 0;//idev.isIE() ? 8 : 6;
 
 				parent.padding = parent.padding || 0;
-				var fw = $('#' + parent.id).width();
-				var fh = $('#' + parent.id + "-body").height();
+				fw = $('#' + parent.id).width();
+				fh = $('#' + parent.id + "-body").height();
 				if (parent.wtype == "panel")
 				{
-					fh = $('#' + parent.id + "-content").height() - (parent.padding * 2);;
-					fw = $('#' + parent.id + "-content").width() - (parent.padding * 2);;
+                    var contentElem = $('#' + parent.id + "-content");
+					fh = contentElem.height();
+					fw = contentElem.width();
 				}
 				if(fh == null)
 				   fh = parent.height - parent.padding;
@@ -3593,7 +3628,7 @@ var idevCore = idevObject.extend({
 				fw = fw - woffset;
 				fh = fh - hoffset;
 				parent.attr = parent.attr == null ? " cellspacing=0 cellpadding=0" : parent.attr ;
-				var sHTML = "<table class='ui-table' id='" + renderTo + "-table' border=0 " + parent.attr + " style='width:"+fw+"px;height:"+fh+"px;'><tbody id='" + renderTo + "-body'>";
+				sHTML = "<table class='ui-table' id='" + renderTo + "-table' border=0 " + parent.attr + " style='width:"+fw+"px;height:"+fh+"px;'><tbody id='" + renderTo + "-body'>";
 
 				tableID = renderTo + "-body";
 				var sNorth = "",sSouth = "",sWest = "",sCenter = "",sEast = "";
@@ -3603,7 +3638,7 @@ var idevCore = idevObject.extend({
 					if (widgets[c].area == "north" && sNorth == "")
 					{
 						nNorth = widgets[c].height || 0;
-						sNorth = "<tr id='" + renderTo + "-row-north' height='" + nNorth + "px'>";
+						sNorth = "<tr id='" + renderTo + "-row-north' height='" + nNorth + "'>";
 						sNorth += "<td id='" + renderTo + "-north' colspan='{CS}'></td></tr>";
 					}
 					if (widgets[c].area == "west" && sWest == "")
@@ -3630,7 +3665,7 @@ var idevCore = idevObject.extend({
 					if (widgets[c].area == "south" && sSouth == "")
 					{
 						nSouth = widgets[c].height || 0;
-						sSouth = "<tr id='" + renderTo + "-row-south' height='" + nSouth + "px'>";
+						sSouth = "<tr id='" + renderTo + "-row-south' height='" + nSouth + "'>";
 						sSouth += "<td id='" + renderTo + "-south' colspan='{CS}'></td></tr>";
 					}
 				}
@@ -3644,10 +3679,14 @@ var idevCore = idevObject.extend({
 				sHTML += sSouth;
 				sHTML += "</tbody></table>";
 				$('#' + renderTo).append(sHTML);
-				sNorth = "",sSouth = "",sWest = "",sCenter = "",sEast = "";
+				sNorth = "";
+                sSouth = "";
+                sWest = "";
+                sCenter = "";
+                sEast = "";
 				for (var i = 0;i < widgets.length;i++)
 				{
-					var widget = widgets[i];
+					widget = widgets[i];
 
 					widget.page = page;
 					widget.parent = parent;
@@ -3708,32 +3747,32 @@ var idevCore = idevObject.extend({
 						}
 					}
 				}
-				return;
 			}
 			else if (layout == "accordion")
 			{
 				parent.padding = parent.padding || 0;
-				var fw = $('#' + parent.id).width();
-				var fh = $('#' + parent.id + "-body").height();
+				fw = $('#' + parent.id).width();
+				fh = $('#' + parent.id + "-body").height();
 				if (parent.wtype == "panel")
 				{
-					fh = $('#' + parent.id + "-content").height() - (parent.padding * 2);;
-					fw = $('#' + parent.id + "-content").width() - (parent.padding * 2);;
-				}
+                    contentElem = $('#' + parent.id + "-content");
+                    fh = contentElem.height() - (parent.padding * 2);
+                    fw = contentElem.width() - (parent.padding * 2);
+                }
 				if(fh == null)
 				   fh = parent.height - parent.padding;
 				if(fw == null)
 				   fw = parent.width - (parent.padding * 2);
 
 				parent.attr = parent.attr == null ? " cellspacing=0 cellpadding=0" : parent.attr ;
-				var sHTML = "<table class='ui-table' id='" + renderTo + "-table' " + parent.attr + " border=0  style='width:"+fw+"px;table-layout:fixed;'><tbody id='" + renderTo + "-body'></tbody></table>";
+				sHTML = "<table class='ui-table' id='" + renderTo + "-table' " + parent.attr + " border=0  style='width:"+fw+"px;table-layout:fixed;'><tbody id='" + renderTo + "-body'></tbody></table>";
 				$('#' + renderTo).append(sHTML);
 				tableID = renderTo + "-body";
 				var panels = 0;
 
 				for (var i = 0;i < widgets.length;i++)
 				{
-					var widget = widgets[i];
+					widget = widgets[i];
 
 					if (widget == null)
 					{
@@ -3753,7 +3792,7 @@ var idevCore = idevObject.extend({
 				}
 				for (var i = 0;i < widgets.length;i++)
 				{
-					var widget = widgets[i];
+					widget = widgets[i];
 
 					if (widget == null)
 					{
@@ -3764,8 +3803,8 @@ var idevCore = idevObject.extend({
 					widget.parent = parent;
 					if (widget.wtype == "panel")
 					{
-						var sHTML = "";
-						var cellStyle = "";
+						sHTML = "";
+						cellStyle = "";
 
 						renderTo = tableID + "-cell" + i;
 						sHTML = "<tr>";
@@ -3776,13 +3815,10 @@ var idevCore = idevObject.extend({
 						{
 							widget.wtype = widget.wtype.toLowerCase();
 							if (widget.style == null) widget.style = "";
-							widget.style += "border:0px;"
+							widget.style += "border:0px;";
 							widget.width = parent.width;
 							widget.height = parent.height - (panels-1) * idev.defaultTitleHeight;
-							if (i > 0)
-								widget.collaped = true;
-							else
-								widget.collaped = false;
+							widget.collaped = i > 0;
 							widget.nofloat = true;
 							widget.expandable= true;
 							widget.renderTo = renderTo;
@@ -3798,13 +3834,14 @@ var idevCore = idevObject.extend({
 			else if (layout == "row")
 			{
 				parent.padding = parent.padding || 0;
-				var fw = $('#' + parent.id).width();
-				var fh = $('#' + parent.id + "-body").height();
+				fw = $('#' + parent.id).width();
+				fh = $('#' + parent.id + "-body").height();
 				if (parent.wtype == "panel")
 				{
-					fh = $('#' + parent.id + "-content").height() - (parent.padding * 2);;
-					fw = $('#' + parent.id + "-content").width() - (parent.padding * 2);;
-				}
+                    contentElem = $('#' + parent.id + "-content");
+                    fh = contentElem.height() - (parent.padding * 2);
+                    fw = contentElem.width() - (parent.padding * 2);
+                }
 				if(fh == null)
 				   fh = parent.height - parent.padding;
 				if(fw == null)
@@ -3813,7 +3850,7 @@ var idevCore = idevObject.extend({
 				parent.rowHeight = parent.rowHeight == null ? "" : parent.rowHeight;
 				parent.center = parent.center || false;
 				parent.attr = parent.attr == null ? " cellspacing=0 cellpadding=0" : parent.attr ;
-				var sHTML = "<table class='ui-table' id='" + renderTo + "-table' " + parent.attr + " border=0  style='width:"+fw+"px;'><tbody id='" + renderTo + "-body'></tbody></table>";
+				sHTML = "<table class='ui-table' id='" + renderTo + "-table' " + parent.attr + " border=0  style='width:"+fw+"px;'><tbody id='" + renderTo + "-body'></tbody></table>";
 				if (parent)
 				{
 					if (parent.wtype == "composite")
@@ -3828,7 +3865,7 @@ var idevCore = idevObject.extend({
 				tableID = renderTo + "-body";
 				for (var i = 0;i < widgets.length;i++)
 				{
-					var widget = widgets[i];
+					widget = widgets[i];
 
 					if (widget == null)
 					{
@@ -3839,8 +3876,8 @@ var idevCore = idevObject.extend({
 					widget.parent = parent;
 					if (widget.wtype != null)
 					{
-						var sHTML = "";
-						var cellStyle = "";
+						sHTML = "";
+						cellStyle = "";
 
 						if (widget.wtype != null)
 						{
@@ -3891,21 +3928,22 @@ var idevCore = idevObject.extend({
 			else if (layout == "form")
 			{
 				parent.padding = parent.padding || 0;
-				var fw = $('#' + parent.id).width();
-				var fh = $('#' + parent.id + "-body").height();
+				fw = $('#' + parent.id).width();
+				fh = $('#' + parent.id + "-body").height();
 				if (parent.wtype == "panel")
 				{
-					fh = $('#' + parent.id + "-content").height() - (parent.padding * 2);;
-					fw = $('#' + parent.id + "-content").width() - (parent.padding * 2);;
-				}
+                    contentElem = $('#' + parent.id + "-content");
+                    fh = contentElem.height() - (parent.padding * 2);
+                    fw = contentElem.width() - (parent.padding * 2);
+                }
 				if(fh == null)
 				   fh = parent.height - parent.padding;
 				if(fw == null)
 				   fw = parent.width - (parent.padding * 2);
 
 				var sAttr = parent.attr == null ? "" : parent.attr ;
-				if (idev.isChrome()) sAttr = "cellpadding=3 " + sAttr;
-				var sHTML = "<table class='ui-table' id='" + renderTo + "-table'  " +  sAttr + " border=0 style=''><tbody id='" + renderTo + "-body'></tbody></table>";
+				// if (idev.isChrome()) sAttr = "cellpadding=3 " + sAttr;
+				sHTML = "<table class='ui-table' id='" + renderTo + "-table'  " +  sAttr + " border=0 style=''><tbody id='" + renderTo + "-body'></tbody></table>";
 
 				if (parent)
 				{
@@ -3921,7 +3959,7 @@ var idevCore = idevObject.extend({
 				tableID = renderTo + "-body";
 				for (var i = 0;i < widgets.length;i++)
 				{
-					var widget = widgets[i];
+					widget = widgets[i];
 
 					if (widget == null)
 					{
@@ -3934,13 +3972,13 @@ var idevCore = idevObject.extend({
 					{
 						if (typeof widget == "string")
 						{
-							var wgt = new idev.ui.widgetHTML( { renderTo:renderTo , html: widget });
+							wgt = new idev.ui.widgetHTML( { renderTo:renderTo , html: widget });
 							wgt.render();
 						}
 					}
 					else
 					{
-						var sHTML = "";
+						sHTML = "";
 						var cellStyle = "";
 						var labelID;
 
@@ -3974,21 +4012,23 @@ var idevCore = idevObject.extend({
 			}
 			else if (layout == "fit")
 			{
-				var fw = $('#' + parent.id + "-content").width();
-				var fh = $('#' + parent.id + "-content").height();
+                contentElem = $('#' + parent.id + "-content");
+				fw = contentElem.width();
+				fh = contentElem.height();
 				var top = 0,bottom;
 				var padding = parent.padding || 0;
 
 				if(fh == null)  fh = parent.height;
 				if(fw == null)  fw = parent.width;
-				if (parent.wtype == "panel" || parent.wtype == "window")
+				// if (parent.wtype == "panel" || parent.wtype == "window")
+				if (parent.wtype == "window")
 				{
 					fh = $("#" + parent.id + "-body").height();
 				}
 				var cnt = 0;
 				for (var i = 0;i < widgets.length;i++)
 				{
-					var widget = widgets[i];
+					widget = widgets[i];
 					
 					if (widget == null) continue;
 
@@ -4017,7 +4057,7 @@ var idevCore = idevObject.extend({
 					{
 						if (typeof widget == "string")
 						{
-							var wgt = new idev.ui.widgetHTML( { renderTo:renderTo , html: widget });
+							wgt = new idev.ui.widgetHTML( { renderTo:renderTo , html: widget });
 							wgt.render();
 						}
 					}
@@ -4042,7 +4082,7 @@ var idevCore = idevObject.extend({
 			{
 				for (var i = 0;i < widgets.length;i++)
 				{
-					var widget = widgets[i];
+					widget = widgets[i];
 
 					if (widget == null)
 					{
@@ -4055,7 +4095,7 @@ var idevCore = idevObject.extend({
 					{
 						if (typeof widget == "string")
 						{
-							var wgt = new idev.ui.widgetHTML( { renderTo:renderTo , html: widget });
+							wgt = new idev.ui.widgetHTML( { renderTo:renderTo , html: widget });
 							wgt.render();
 						}
 					}
@@ -4069,7 +4109,7 @@ var idevCore = idevObject.extend({
 					   }
 						catch(err)
 						{
-							alert(widget.wtype)
+							alert(widget.wtype);
 							alert("error5:" + err.message );
 						}
 					}
@@ -4087,17 +4127,18 @@ var idevCore = idevObject.extend({
 			{
 				document.body.style.marginTop = 30;
 			}
+            var containerElem = $('#container');
 			if (_preferences.config.fitDocument || _preferences.config.fitdocument)
 			{
-				var h = $(document).innerHeight();
+				h = $(document).innerHeight();
 				var w = $(document).innerWidth();
 				if (window.navigator.standalone) h -= idev.standaloneOffset;
-				$('#container').width(w);
-				$('#container').height(h);
+				containerElem.width(w);
+				containerElem.height(h);
 			}
 			var sTheme = idev.app.theme == null ? "" : idev.app.theme;
 			if (sTheme != "") sTheme = "-" + sTheme ;
-			var cw = $('#container').width();
+			var cw = containerElem.width();
 			if (idev.app.toolbar)
 			{
 				if (idev.app.toolbar.height == null) idev.app.toolbar.height = 40;
@@ -4117,7 +4158,7 @@ var idevCore = idevObject.extend({
 						if (key != "id") idev.app.toolbar.proxy[key] = idev.app.toolbar[key];
 					}
 					idev.app.toolbar.proxy.renderTo = "ui-toolbar";
-					idev.app.toolbar.proxy.parent = idev.app.toolbar;					
+					idev.app.toolbar.proxy.parent = idev.app.toolbar;				
 					idev.internal.renderWidget(null,idev.app.toolbar.proxy);
 				}
 				// Get the actual height;
@@ -4125,7 +4166,7 @@ var idevCore = idevObject.extend({
 			}
 			else
 				idev.app.toolbar = { height: 0 };				
-			var h = $('#container').height();
+			var h = containerElem.height();
 			if (idev.app.statusbar)
 			{
 				if (idev.app.statusbar.height == null) idev.app.statusbar.height = 40;
@@ -4186,11 +4227,6 @@ var idevCore = idevObject.extend({
 			}
 			return {x:left, y:top};
 		},
-		mouseMove :function (ev)
-		{
-			ev = ev || window.event;
-			var mousePos = idev.utils.mousePosition(ev);
-		},
 		getMouseOffset : function (target, ev)
 		{
 			ev = ev || window.event;
@@ -4231,8 +4267,8 @@ var idevCore = idevObject.extend({
 
 	errorHandler:function(sErrDesc)
 	{
-		$debug("*******************************")
-		$debug(sErrDesc)
+		$debug("*******************************");
+		$debug(sErrDesc);
 		$debug("*******************************")
 	},
 	getParameter:function(param,def)
@@ -4264,24 +4300,25 @@ var idevCore = idevObject.extend({
 		}
 		return def;
 	},
-	isIE : function() { return this.agent.indexOf("ie") != -1 ? true : false; },
-	isIE7 : function() { return this.agent.indexOf("msie 7") != -1 ? true : false; },
-	isIE8 : function() { return this.agent.indexOf("msie 8") != -1 ? true : false; },
-	isIE9 : function() { return this.agent.indexOf("msie 9") != -1 ? true : false; },
-	isIE10 : function() { return this.agent.indexOf("msie 10") != -1 ? true : false; },
-	isWebkit : function() { return this.agent.indexOf("webkit") != -1 ? true : false; },
-	isChrome : function() { return this.agent.indexOf("chrome") != -1 ? true : false; },
-	isFF : function() { return this.agent.indexOf("firefox") != -1 ? true : false; },
-	isIEMobile : function() { return this.agent.indexOf("iemobile") != -1 ? true : false; },
-	isPalm : function() { return this.agent.indexOf("webos") != -1 ? true : false; },
-	isBlackberry : function() { return this.agent.indexOf("blackberry") != -1 ? true : false; },
-	isIPad : function() { return this.agent.indexOf("ipad") != -1 ? true : false; },
-	isIPhone : function() { return this.agent.indexOf("iphone") != -1 ? true : false; },
-	isAndroid : function() { return this.agent.indexOf("android") != -1 ? true : false; },
+	isIE : function() { return this.agent.indexOf("ie") != -1; },
+	isIE7 : function() { return this.agent.indexOf("msie 7") != -1; },
+	isIE8 : function() { return this.agent.indexOf("msie 8") != -1; },
+	isIE9 : function() { return this.agent.indexOf("msie 9") != -1; },
+	isIE10 : function() { return this.agent.indexOf("msie 10") != -1; },
+	isIE11 : function() { return this.agent.indexOf("msie 11") != -1; },
+	isWebkit : function() { return this.agent.indexOf("webkit") != -1; },
+	isChrome : function() { return this.agent.indexOf("chrome") != -1; },
+	isFF : function() { return this.agent.indexOf("firefox") != -1; },
+	isIEMobile : function() { return this.agent.indexOf("iemobile") != -1; },
+	isPalm : function() { return this.agent.indexOf("webos") != -1; },
+	isBlackberry : function() { return this.agent.indexOf("blackberry") != -1; },
+	isIPad : function() { return this.agent.indexOf("ipad") != -1; },
+	isIPhone : function() { return this.agent.indexOf("iphone") != -1; },
+	isAndroid : function() { return this.agent.indexOf("android") != -1; },
 	isTouch : function() {
 		if (this.agent.indexOf("ipad") != -1) return true;
 		if (this.agent.indexOf("iphone") != -1) return true;
-		if (this.agent.indexOf("android") != -1) return true;
+        if (this.agent.indexOf("android") != -1) return true;
 		return false;
 	},
 	isMobile : function() {
@@ -4295,12 +4332,10 @@ var idevCore = idevObject.extend({
 	isStandAlone : function() { return window.navigator.standalone; },
 	convertNulls : function(v,d) {
 		if (v == null) return d;
-		if (typeof v == "undefinded") return d;
 		return v;
 	},
 	isClass : function(obj) {
-		if (obj instanceof baseWidget) return true;
-		return false;
+		return obj instanceof baseWidget;
 	},
 	hideToolbar : function()
 	{
@@ -4308,9 +4343,9 @@ var idevCore = idevObject.extend({
 		{
 			if (!idev.app.toolbar.visible) return;
 			var h = idev.contentHeight + idev.app.toolbar.height;
-			var ph = idev.pageHeight + idev.app.toolbar.height;
-			$("#ui-toolbar").hide();
-			$("#ui-toolbar").height(0);
+            var toolbarElem = $("#ui-toolbar");
+			toolbarElem.hide();
+			toolbarElem.height(0);
 			$("#content").height(h);
 			if (this.pageManager.currentPage) this.pageManager.syncSize();
 			idev.app.toolbar.visible = false;
@@ -4321,8 +4356,9 @@ var idevCore = idevObject.extend({
 		if (idev.app.toolbar)
 		{
 			if (idev.app.toolbar.visible) return;
-			$("#ui-toolbar").show();
-			$("#ui-toolbar").height(idev.app.toolbar.height);
+            var toolbarElem = $("#ui-toolbar");
+			toolbarElem.show();
+			toolbarElem.height(idev.app.toolbar.height);
 			$("#content").height(idev.contentHeight);
 			if (this.pageManager.currentPage) this.pageManager.syncSize();
 			idev.app.toolbar.visible = true;
@@ -4334,9 +4370,9 @@ var idevCore = idevObject.extend({
 		{
 			if (!idev.app.statusbar.visible) return;
 			var h = idev.contentHeight + idev.app.statusbar.height;
-			var ph = idev.pageHeight + idev.app.statusbar.height;
-			$("#ui-statusbar").hide();
-			$("#ui-statusbar").height(0);
+            var statusbarElem = $("#ui-statusbar");
+            statusbarElem.hide();
+            statusbarElem.height(0);
 			$("#content").height(h);
 			
 			if (this.pageManager.currentPage) this.pageManager.syncSize();
@@ -4348,9 +4384,10 @@ var idevCore = idevObject.extend({
 		if (idev.app.statusbar)
 		{
 			if (idev.app.statusbar.visible) return;
-			$("#ui-statusbar").show();
+            var statusbarElem = $("#ui-statusbar");
+            statusbarElem.show();
 			$("#"+idev.app.statusbar.proxy.id).show();
-			$("#ui-statusbar").height(idev.app.statusbar.height);
+            statusbarElem.height(idev.app.statusbar.height);
 			$("#content").height(idev.contentHeight);
 			if (this.pageManager.currentPage) this.pageManager.syncSize();
 			idev.app.statusbar.visible = true;
@@ -4359,18 +4396,18 @@ var idevCore = idevObject.extend({
 	hideBars : function()
 	{
 		// Combines hideToolbar & hideStatusbar but only syncSize called once
+        var toolbarElem = $("#ui-toolbar");
+        var statusbarElem = $("#ui-statusbar");
 		if (idev.app.statusbar.visible)
 		{
-			var ph = idev.pageHeight + idev.app.statusbar.height;
-			$("#ui-statusbar").hide();
-			$("#ui-statusbar").height(0);
+            statusbarElem.hide();
+            statusbarElem.height(0);
 			idev.app.statusbar.visible = false;
 		}
 		if (idev.app.toolbar.visible)
 		{
-			var ph = idev.pageHeight + idev.app.toolbar.height;
-			$("#ui-toolbar").hide();
-			$("#ui-toolbar").height(0);
+            toolbarElem.hide();
+            toolbarElem.height(0);
 			idev.app.toolbar.visible = false;
 		}
 		var h = idev.contentHeight + idev.app.toolbar.height + idev.app.statusbar.height;
@@ -4380,19 +4417,21 @@ var idevCore = idevObject.extend({
 	showBars : function()
 	{
 		// Combines hideToolbar & hideStatusbar but only syncSize called once
+        var toolbarElem = $("#ui-toolbar");
+        var statusbarElem = $("#ui-statusbar");
 		if (!idev.app.statusbar.visible)
 		{
-			$("#ui-statusbar").show();
+            statusbarElem.show();
 			$("#"+idev.app.statusbar.proxy.id).show();
-			$("#ui-statusbar").height(idev.app.statusbar.height);
+            statusbarElem.height(idev.app.statusbar.height);
 			idev.app.statusbar.visible = true;
 		}
 		if (!idev.app.toolbar.visible)
 		{
-			$("#ui-toolbar").show();
+            toolbarElem.show();
 			$("#"+idev.app.toolbar.proxy.id).show();
 			idev.app.toolbar.children[0].show();
-			$("#ui-toolbar").height(idev.app.toolbar.height);
+            toolbarElem.height(idev.app.toolbar.height);
 			idev.app.toolbar.visible = true;
 		}
 		$("#content").height(idev.contentHeight);
@@ -4408,7 +4447,7 @@ var idevCore = idevObject.extend({
 	{
 		if (typeof Worker == "undefined")
 		{
-			idev.ui.message("Worker Not Supported")
+			idev.ui.message("Worker Not Supported");
 			return null;
 		}
 		var worker = new Worker(_preferences.apppath + sScript);
@@ -4524,7 +4563,7 @@ var idevCore = idevObject.extend({
 	{
 		if (widget == null)
 		{
-			idev.errorHandler("register null widget:"+key)
+			idev.errorHandler("register null widget:" + key);
 			return;
 		}
 		idev.plugins[key.toLowerCase()] = widget;
@@ -4532,15 +4571,17 @@ var idevCore = idevObject.extend({
 	bodyHeight : function()
 	{
 		var h = idev.pgHeight;
+        var toolbarElem = $("#ui-toolbar");
+        var statusbarElem = $("#ui-statusbar");
 
-		if ($("#ui-toolbar").height())
-			h -= $("#ui-toolbar").height();
+		if (toolbarElem.height())
+			h -= toolbarElem.height();
 		else
 		{
 			if (!idev.isIE()) h += 17;
 		}
-		if ($("#ui-statusbar").height())
-			h -= $("#ui-statusbar").height();
+		if (statusbarElem.height())
+			h -= statusbarElem.height();
 		else
 		{
 			if (!idev.isIE()) h += 17;
@@ -4619,7 +4660,6 @@ var idevCore = idevObject.extend({
 			try
 			{
 				if (typeof data != "object") return sHTML;
-				if (!data.constructor == Array) return sHTML;
 				for (var key in data)
 				{
 					if (typeof data[key] == "string" || typeof data[key] == "number")
@@ -4693,20 +4733,19 @@ var idevCore = idevObject.extend({
 		},
 		localSupport : function()
 		{
-			if(localStorage)
-				return true;
-			else
-				return false;
+			return localStorage;
 		},
 		storeLocal : function(key,value)
 		{
 			if (!this.localSupport()) return false;
+			if(_preferences.localNamespace) key = _preferences.localNamespace + "-" + key;
 			localStorage[key] = value;
 			return true;
 		},
 		removeLocal : function(key)
 		{
 			if (!this.localSupport()) return false;
+			if(_preferences.localNamespace) key = _preferences.localNamespace + "-" + key;
 			localStorage.removeItem(key);
 			return true;
 		},
@@ -4724,15 +4763,13 @@ var idevCore = idevObject.extend({
 		getLocal : function(key,vDefault)
 		{
 			if (!this.localSupport()) return vDefault;
+			if(_preferences.localNamespace) key = _preferences.localNamespace + "-" + key;
 			var value = localStorage[key];
 			return value == null ? vDefault : value;
 		},
 		dbSupport : function()
 		{
-			if (window.openDatabase)
-				return true;
-			else
-				return false;
+			return window.openDatabase;
 		},
 		dbOpen : function(dbName, dbSize, dbVersion)
 		{
@@ -4804,36 +4841,38 @@ var idevCore = idevObject.extend({
 			{
 				var rec = this.parent.ds.getAt(row);
 				var id = this.parent.id + "_"+row+"_"+this.col;
-				var data = new Array();
-				var topoffset = $("#"+this.parent.id + "-data").scrollTop();
-				var leftoffset = $("#"+this.parent.id + "-data").scrollLeft();
+				var data = {};
+                var dataElem = $("#"+this.parent.id + "-data");
+                var widgetElem = $("#"+id);
+                var topoffset = dataElem.scrollTop();
+				var leftoffset = dataElem.scrollLeft();
 				rec.set(this.field,value);
 				if (this.renderer != null) {
-					data['value'] = this.renderer(rec.get(this.field),rec,row,this.col,this);
+					data.value = this.renderer(rec.get(this.field),rec,row,this.col,this);
 				} else {
-					data['value'] = rec.get(this.field);
+					data.value = rec.get(this.field);
 				}
-				data['value'] = idev.utils.replaceAll(data['value'],"\n","<br/>");
-				data['id'] = this.parent.id;
-				data['style'] = this.style || "";
-				data['cls'] = "";
-				if (this.parent.autoSelect) data['cls'] = 'ui-grid-cell-select-active';
-				if (row % 2) data['cls'] = " " + this.parent.altCls + ' ui-grid-cell-select-active';
-				data['row'] = row;
-				data['col'] = this.col;
-				data['width'] = this.width-5;
-				
-				data['height'] = $("#"+id).parent().prop("height");
+				data.value = idev.utils.replaceAll(data.value,"\n","<br/>");
+				data.id = this.parent.id;
+				data.style = this.style || "";
+				data.cls = "";
+				if (this.parent.autoSelect) data.cls = 'ui-grid-cell-select-active';
+				if (row % 2) data.cls = " " + this.parent.altCls + ' ui-grid-cell-select-active';
+				data.row = row;
+				data.col = this.col;
+				data.width = this.width-5;
+				data.height = widgetElem.parent().prop("height");
 				var html = this.render(data, rec, row, this.col);
-				$("#"+id).html(html);
+                widgetElem.html(html);
 				var cellid = this.parent.id + "-cell-" + row + "-" + this.col;
-				$("#"+cellid).click(this.parent.cellClick);
-				$("#"+cellid).dblclick(this.parent.cellDblClick);
+                var cellElem = $("#"+cellid);
+                cellElem.click(this.parent.cellClick);
+                cellElem.dblclick(this.parent.cellDblClick);
 				this.editID = "";
 				if(topoffset > 0 || leftoffset > 0)
 				{
-					$("#"+this.parent.id + "-data").scrollTop(topoffset);
-					$("#"+this.parent.id + "-data").scrollLeft(leftoffset);
+                    dataElem.scrollTop(topoffset);
+                    dataElem.scrollLeft(leftoffset);
 				}
 				if (this.parent.events.afterEdit)
 				{
@@ -4847,8 +4886,9 @@ var idevCore = idevObject.extend({
 
 				this.editCol = parseInt(col);
 				var id = this.parent.id + "_"+row+"_"+col;
-				var w = $("#"+id).width();
-				var h = $("#"+id).height();
+                var widgetElem = $("#"+id);
+				var w = widgetElem.width();
+				var h = widgetElem.height();
 				var rec = this.parent.ds.getAt(row);
 				if (this.parent.events.beforeEdit)
 				{
@@ -4860,14 +4900,16 @@ var idevCore = idevObject.extend({
 					return;
 				}
 				var sHTML = "<div id='" +id+ "-edit' style='height:"+(h-2)+"px;max-height:"+h+"px;background-color:#fff;color:#000;border:1px solid #ccc;'></div>";
-				$("#"+id).html(sHTML);  
+                widgetElem.html(sHTML);
 				$delay(0, function() {
 					$('#'+id+'-edit').children().children().blur(function(){
 						var parentID = id.substr(0,id.indexOf('_'));
 						var currentPart = parentID + '-cell-' + row;
+                        var currentElem;
 						if($('[id^=' + currentPart + '-]:focus').length == 0) {
-							$('#'+currentPart+'-'+col).removeClass("ui-grid-cell-select");
-							$('#'+currentPart+'-'+col).removeClass("ui-grid-cell-select-active");
+                            currentElem = $('#'+currentPart+'-'+col);
+							currentElem.removeClass("ui-grid-cell-select");
+							currentElem.removeClass("ui-grid-cell-select-active");
 							$('[id^=' + currentPart + '-]').removeClass("ui-grid-cell-select");		
 						}
 					});	
@@ -4998,9 +5040,9 @@ var idevCore = idevObject.extend({
 		{
 			init: function(config)
 			{
-				this.fields = new Array();
-				this.data = new Array();
-				this.binds = new Array();
+				this.fields = [];
+				this.data = [];
+				this.binds = [];
 				this.modified = false;
 				this.store = config.store;
 				for(var i = 0;i < config.fields.length;i++)
@@ -5043,7 +5085,7 @@ var idevCore = idevObject.extend({
 			{
 				if (typeof record_data != "string") return;
 				if (separator == null) separator = ",";
-				var ta = record_data.split(separator)
+				var ta = record_data.split(separator);
 				this.data = [];
 				for(var i = 0;i < this.fields.length && i < ta.length;i++)
 				{
@@ -5083,22 +5125,23 @@ var idevCore = idevObject.extend({
 			{
 				type = type || "";
 				separator = separator || ",";
+                var result, v;
 				switch (type.toLowerCase())
 				{
 					case "csv" :
-						var result = "";
+						result = "";
 						for(var i in this.fields)
 						{
-							var v = this.data[i] == null ? "" : this.data[i];
+							v = this.data[i] == null ? "" : this.data[i];
 							if (i > 0 )  result += separator;
 							result += v;
 						}
 						return result;
 					default:
-						var result = "{";
+						result = "{";
 						for(var i in this.fields)
 						{
-							var v = this.data[i] == null ? "" : this.data[i];
+							v = this.data[i] == null ? "" : this.data[i];
 							if (i > 0 )  result += ",";
 							if(typeof v === "string") result += '"' + this.fields[i] + '":"' + v + '"';
 							else result += '"' + this.fields[i] + '":' + v;
@@ -5135,10 +5178,10 @@ var idevCore = idevObject.extend({
 		{
 			init: function(config)
 			{
-				this.records = new Array();
+				this.records = [];
 				this.fields = config.fields == null ? [] : config.fields;
 				this.separator = config.separator == null ? "," : config.separator;
-				this.binds = new Array();
+				this.binds = [];
 				if (config.data)
 				{
 					this.load(config.data);
@@ -5159,8 +5202,8 @@ var idevCore = idevObject.extend({
 				this.records = [];
 				if (typeof data == "string")
 				{
-					try { recs = $.parseJSON(data); data = recs}
-					catch(e){ }
+					try { data = $.parseJSON(data); }
+					catch(e){ return false; }
 				}
 				for(var i in data)
 				{
@@ -5177,6 +5220,11 @@ var idevCore = idevObject.extend({
 			},
 			fetch: function(callback)
 			{
+				if(this.events.beforeload)
+				{
+					if(this.events.beforeload(this) === false)
+						return;
+				}
 				if (this.url)
 				{
 					var ds = this;
@@ -5197,6 +5245,7 @@ var idevCore = idevObject.extend({
 							{
 								ds.load(data.results);
 							}
+							if (ds.events.load) ds.events.load(ds);
 							if (callback) callback(ds);
 						},
 						error:function(jqXHR, textStatus, errorThrown)
@@ -5233,7 +5282,7 @@ var idevCore = idevObject.extend({
 			},
 			getModified: function()
 			{
-				var mods = new Array();
+				var mods = [];
 				for (var i = 0;i < this.records.length;i++)
 				{
 					if (this.records[i].isModified()) mods.push(this.records[i]);
@@ -5297,7 +5346,7 @@ var idevCore = idevObject.extend({
 			removeAt : function(index)
 			{
 				if (index < 0) return false;
-				if (index >= this.records.length) return false
+				if (index >= this.records.length) return false;
 				this.records.splice(index,1);
 				this.updateBinds();
 				return true;
@@ -5348,10 +5397,11 @@ var idevCore = idevObject.extend({
 			asString: function(type,separator)
 			{
 				type = type || "";
+                var result;
 				switch (type.toLowerCase())
 				{
 					case "csv" :
-						var result = "";
+						result = "";
 						for(var i in this.records)
 						{
 							if (i > 0 )  result += "\r\n";
@@ -5360,7 +5410,7 @@ var idevCore = idevObject.extend({
 						return result;
 					case "json" :
 					default:
-						var result = "[";
+						result = "[";
 						for(var i in this.records)
 						{
 							if (i > 0 )  result += ",";
@@ -5389,7 +5439,7 @@ var idevCore = idevObject.extend({
 			{
 				var search = [];
 				if (start == null) start = 0;
-				if (matchAny == null) matchAny = true;
+				if (matchAny == null) matchAny = false;
 				if (caseSensitive == null) caseSensitive = true;
 				if (typeof sField == "string")
 				{
@@ -5438,7 +5488,29 @@ var idevCore = idevObject.extend({
 				} else {
 					return this.total;
 				}
-			}
+			},
+			insertAt: function(index,data,nobind)
+            {
+                if (index < 0) return this.add(data,nobind,true);
+                if (index >= this.records.length) return this.add(data,nobind,false); 
+                if (data instanceof idevObject)
+                {
+                    data.store = this;
+                    this.records.splice(index, 0, data);
+                }
+                else
+                {
+                    var rec = new idev.data.dataRecord( { fields: this.fields, store: this });
+                    if (typeof data == "string")
+                        rec.loadText(data);
+                    else
+                        rec.load(data);
+                    this.records.splice(index, 0, rec);
+                }
+                if (nobind) return;
+                this.updateBinds();
+                return true;
+            }
 		})
 	},
 	///////////////////////////////////////////////////////////////////////////////
@@ -5491,9 +5563,9 @@ var idevCore = idevObject.extend({
 			if (config.content == null) config.content = { height:0, hidden:true, cls:"", style:"" };
 			if (config.footer == null) config.footer = { height:0, hidden:true, cls:"", style:"" };
 
-			config.header.children = new Array();
-			config.content.children = new Array();
-			config.footer.children = new Array();
+			config.header.children = [];
+			config.content.children = [];
+			config.footer.children = [];
 
 			if (config.header.cls == null) config.header.cls = "";
 			if (config.content.cls == null) config.content.cls = "";
@@ -5509,18 +5581,20 @@ var idevCore = idevObject.extend({
 			{
 				config.content.height = idev.controlHeight - (idev.app.toolbar.height + idev.app.statusbar.height + config.header.height + config.footer.height);
 				config.contentstyle += "overflow:auto;";
-				controlledContent = true;
+				this.controlledContent = true;
 			}
 			else if (_preferences.config.pageFit || _preferences.config.pagefit)
 			{
 				var tb = idev.convertNulls($('#ui-toolbar').height(),0);
 				var sb = idev.convertNulls($('#ui-statusbar').height(),0);
-				config.content.height = $("#container").height() - (tb + sb + config.header.height + config.footer.height);
-				config.content.width = $("#container").width();
+                var containerElem = $("#container");
+                config.content.height = containerElem.height() - (tb + sb + config.header.height + config.footer.height);
+				config.content.width = containerElem.width();
 				if (idev.isIPad()) config.content.height += 10;
 			}
 			//-----------------------------------------------------------------
 			// Header
+            var tpl;
 			config.header.padding = 0;
 			if (config.header.hidden == null) config.header.hidden = false;
 			if (config.header.html == null)
@@ -5531,7 +5605,7 @@ var idevCore = idevObject.extend({
 				{
 					if (config.header.html != "")
 					{
-						var tpl = new idev.wTemplate(config.header.html);
+						tpl = new idev.wTemplate(config.header.html);
 
 						config.content.html = tpl.render(config.data.header);
 					}
@@ -5560,7 +5634,7 @@ var idevCore = idevObject.extend({
 				{
 					if (config.content.html != "")
 					{
-						var tpl = new idev.wTemplate(config.content.html);
+						tpl = new idev.wTemplate(config.content.html);
 
 						config.content.html = tpl.render(config.data.content);
 					}
@@ -5577,19 +5651,11 @@ var idevCore = idevObject.extend({
 			// Footer
 			config.footer.padding = 0;
 			if (config.footer.hidden == null) config.footer.hidden = false;
-			if (config.footer.html == null)
-				config.footer.html = "";
-			else   if (config.data)
+			if (config.footer.html == null)	config.footer.html = "";
+			else if (config.data && config.data.footer && config.footer.html)
 			{
-				if (config.data.footer != null)
-				{
-					if (config.footer.html != "")
-					{
-						var tpl = new idev.wTemplate(config.footer.html);
-
-						config.footer.html = tpl.render(config.data.footer);
-					}
-				}
+				tpl = new idev.wTemplate(config.footer.html);
+				config.footer.html = tpl.render(config.data.footer);
 			}
 			config.footerstyle += "position:relative;";
 			if (config.footer.height != null) config.footerstyle += "height:" + config.footer.height + "px;";
@@ -5605,8 +5671,9 @@ var idevCore = idevObject.extend({
 			var padding = this.config.content.padding || 0;
 
 			if (!idev.isIE()) padding = 0;
-			$("#container").css("overflow","hidden");
-			var cw = $("#container").innerWidth() - padding;
+            var containerElem = $("#container");
+            containerElem.css("overflow","hidden");
+			var cw = containerElem.innerWidth() - padding;
 			var ch = $("#content").height();
 			ch += idev.app.toolbar.visible ? 0 : idev.app.toolbar.height;
 			ch += idev.app.statusbar.visible ? 0 : idev.app.statusbar.height;
@@ -5625,7 +5692,7 @@ var idevCore = idevObject.extend({
 			}
 			sHTML += this.config.content.html;
 			if (this.controlledContent && idev.isTouch())
-		   {
+		    {
 				sHTML += "</div>";
 			}
 			sHTML += "</div>";
@@ -5651,8 +5718,7 @@ var idevCore = idevObject.extend({
 				idev.sy = -1;
 				idev.ex = -1;
 				idev.ey = -1;
-			});
-			$('#' + this.config.id + "-content").mousemove(function(event)
+			}).mousemove(function(event)
 			{
 				if (idev.sx == -1)
 				{
@@ -5661,8 +5727,7 @@ var idevCore = idevObject.extend({
 				}
 				idev.ex = event.pageX;
 				idev.ey = event.pageY;
-			});
-			$('#' + this.config.id + "-content").mouseup(function()
+			}).mouseup(function()
 			{
 				if (idev.sx > idev.ex)
 				{
@@ -5676,7 +5741,6 @@ var idevCore = idevObject.extend({
 				idev.sx = -1;
 				idev.sy = -1;
 				idev.ex = -1;
-				return;
 			});
 			var el = $('#' + this.config.id + '-content');
 
@@ -5713,7 +5777,6 @@ var idevCore = idevObject.extend({
 				idev.sx = -1;
 				idev.sy = -1;
 				idev.ex = -1;
-				return;
 			};
 		},
 		getHeaderWidget : function( index )
@@ -5743,7 +5806,7 @@ var idevCore = idevObject.extend({
 	pageManagerClass : idevObject.extend({
 		init : function()
 		{
-			this.pages = new Array();
+			this.pages = [];
 			this.activeIndex = -1;
 			this.currentPage = null;
 			this.lastPage = null;
@@ -5850,9 +5913,10 @@ var idevCore = idevObject.extend({
 			if (this.pages.length == 1) return false; //need 1 page
 			if (typeof index == "string")
 			{
+                var page;
 				for(var i = 0;i < this.pages.length;i++)
 				{
-					var page = this.pages[i];
+					page = this.pages[i];
 
 					if (page)
 					{
@@ -5878,13 +5942,14 @@ var idevCore = idevObject.extend({
 			delete pg;
 			if (force)
 			{
+				sName = sName.toLowerCase();
 				for(var i = 0;i < idev.app.pages.length;i++)
 				{
-					var page = idev.app.pages[i];
+					page = idev.app.pages[i];
 
 					if (page.name.toLowerCase() == sName)
 					{
-						idev.app.pages.splice(i,1)
+						idev.app.pages.splice(i, 1);
 						break;
 					}
 				}			
@@ -6122,17 +6187,18 @@ var idevCore = idevObject.extend({
 			if (idev.app == null) return false;
 			if (index == null) return false;
 			idev.pageManager.newPage = false;
+            var page;
 			if (typeof index == "string")
 			{
 				if (index == "") return false;
 				index = index.toLowerCase();
-				for(var i = 0;i < idev.app.pages.length;i++)
+                for(var i = 0;i < idev.app.pages.length;i++)
 				{
-					var page = idev.app.pages[i];
+					page = idev.app.pages[i];
 
 					if (page.name.toLowerCase() == index.toLowerCase())
 					{
-						var page = this.pages[i];
+						page = this.pages[i];
 						if (page == null)
 						{
 							page = idev.app.pages[i];
@@ -6151,14 +6217,14 @@ var idevCore = idevObject.extend({
 			else
 			{
 				if (index < 0 || index >= idev.app.pages.length) return false;
-				var page = this.pages[index];
+				page = this.pages[index];
 				if (page == null)
 				{
 					page = idev.app.pages[index];
 					this.pageIndex = index;
 					this.newPage = true;
-					return idev.pageManager.addPage(page,index);;
-				}
+                    return idev.pageManager.addPage(page, index);
+                }
 				else
 					this.pageIndex = index;
 				return page;
@@ -6184,31 +6250,23 @@ var idevCore = idevObject.extend({
 			idev.pgWidth = w;
 			idev.pgHeight = h;
 			var ch = h - ($('#ui-toolbar').height() + $('#ui-statusbar').height());			
-			$("#container").width(w);
-			$("#container").height(h);
-			$("#content").width(w);
-			$("#content").height(ch);
+			$("#container").width(w).height(h);
+			$("#content").width(w).height(ch);
 			$("#ui-toolbar").width(w);
 			$("#ui-statusbar").width(w);
-			if (idev.app && idev.app.toolbar)
+			if (idev.app && idev.app.toolbar && idev.app.toolbar.children)
 			{
-				if (idev.app.toolbar.children)
-				{
-					for(var c = 0;c < idev.app.toolbar.children.length;c++)
-					{
-						idev.app.toolbar.children[c].doLayout();
-					}
-				}
+                for(var c = 0;c < idev.app.toolbar.children.length;c++)
+                {
+                    idev.app.toolbar.children[c].doLayout();
+                }
 			}
-			if (idev.app.statusbar)
+			if (idev.app.statusbar && idev.app.statusbar.children)
 			{
-				if (idev.app.statusbar.children)
-				{
-					for(var c = 0;c < idev.app.statusbar.children.length;c++)
-					{
-						idev.app.statusbar.children[c].doLayout();
-					}
-				}
+                for(var c = 0;c < idev.app.statusbar.children.length;c++)
+                {
+                    idev.app.statusbar.children[c].doLayout();
+                }
 			}
 			for(var i = 0;i < this.pages.length;i++)
 			{
@@ -6217,13 +6275,11 @@ var idevCore = idevObject.extend({
 				if (page != null)
 				{
 					var pch = ch - ($('#'+page.id+'-header').height() + $('#'+page.id+'-footer').height());			
-					$("#"+page.id).height(ch); 
-					$("#"+page.id).width(w);  
+					$("#"+page.id).height(ch).width(w);
 
 					$("#"+page.id+'-header').width(w);  
-					$("#"+page.id+'-content').width(w);  
-					$("#"+page.id+'-content').height(pch);  
-					$("#"+page.id+'-footer').width(w);  
+					$("#"+page.id+'-content').width(w).height(pch);
+					$("#"+page.id+'-footer').width(w);
 
 					if (page.config.header)
 					{
@@ -6284,7 +6340,7 @@ var idevCore = idevObject.extend({
 			}
 			catch (e)
 			{
-				alert("AJAX Error")
+				alert("AJAX Error");
 				return null;
 			}
 		},
@@ -6330,11 +6386,10 @@ var idevCore = idevObject.extend({
 				if (config.url == "") return;
 				config.dataType = 'text';
 				config.data = params;
-				config.success  = function(data)
-				{
-					$('head').append("<script type='text/javascript'>" + data + "</script>");
-					if (typeof callback == "function") callback();
-				}
+				config.success = function (data) {
+                    $('head').append("<script type='text/javascript'>" + data + "</script>");
+                    if (typeof callback == "function") callback();
+                };
 				if (config.error)
 				{
 					config.failed = config.error;
@@ -6366,7 +6421,7 @@ var idevCore = idevObject.extend({
 			}
 			catch (e)
 			{
-				alert("JSON Decode Error: " + sJSON)
+				alert("JSON Decode Error: " + sJSON);
 				return null;
 			}
 		},
@@ -6408,7 +6463,7 @@ var idevCore = idevObject.extend({
 		},
 		ellipsis : function (text,chars)
 		{
-			text += "...";
+			if(text.length > chars) text += "...";
 			while (text.length > chars && text.substr(text.length-3,1) != " ")
 			{
 				text = text.substr(0,text.length-4) + "...";
@@ -6417,22 +6472,25 @@ var idevCore = idevObject.extend({
 		},
 		showBusy : function()
 		{
-			if ($("#_busy")[0] == null)
+			var containerElem = $("#container");
+			var busyElem = $("#_busy");
+            if (busyElem[0] == null)
 			{
-				$("#container").append("<div id='_busy' class='ui-busy'></div>");
+				containerElem.append("<div id='_busy' class='ui-busy'></div>");
 			}
-			var w = $("#container").width();
-			var h = $("#container").height();
-			var lw = $("#_busy").width();
-			var lh = $("#_busy").height();
-			$("#_busy").css({ 'left':(w/2)-(lw/2), 'top':(h/2)-(lh/2) });
-			$("#_busy").show();
+			var w = containerElem.width();
+			var h = containerElem.height();
+			var lw = busyElem.width();
+			var lh = busyElem.height();
+            busyElem.css({ 'left':(w/2)-(lw/2), 'top':(h/2)-(lh/2) });
+            busyElem.show();
 		},
 		hideBusy : function()
 		{
-			if ($("#_busy") != null)
+            var busyElem = $("#_busy");
+			if (busyElem != null)
 			{
-				$("#_busy").hide();
+                busyElem.hide();
 			}
 		},
 		delay : function(duration,callback,scope)
@@ -6450,7 +6508,8 @@ var idevCore = idevObject.extend({
 			if (typeof sText != "string") return sText == null ? "" : sText;
 			if (sSubstr != sWith && sSubstr != "")
 			{
-				sSubstr = sSubstr.replace(new RegExp("{","g"),"\\{");
+				sSubstr = sSubstr.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+				// sSubstr = sSubstr.replace(new RegExp("{","g"),"\\{");
 				sText = sText.replace(new RegExp(sSubstr, "g"),sWith);
 			}
 			return sText;
@@ -6458,8 +6517,7 @@ var idevCore = idevObject.extend({
 		round : function (num, dec)
 		{
 			if(dec===null) dec=0;
-			var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
-			return result;
+			return Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
 		},
 		roundUp : function (num)
 		{
@@ -6563,12 +6621,12 @@ var idevCore = idevObject.extend({
 		fromUDateTime: function(sDate)
 		{
 			var dateArray = [];
-			dateArray[0] = parseInt(sDate.substr(0,4));	
-			dateArray[1] = parseInt(sDate.substr(4,2));   
-			dateArray[2] = parseInt(sDate.substr(6,2));   
-			dateArray[3] = parseInt(sDate.substr(8,2));   
-			dateArray[4] = parseInt(sDate.substr(10,2));   
-			dateArray[5] = parseInt(sDate.substr(12,2));   
+			dateArray[0] = parseInt(sDate.substr(0,4), 10);	
+			dateArray[1] = parseInt(sDate.substr(4,2), 10);   
+			dateArray[2] = parseInt(sDate.substr(6,2), 10);   
+			dateArray[3] = parseInt(sDate.substr(8,2), 10);   
+			dateArray[4] = parseInt(sDate.substr(10,2), 10);   
+			dateArray[5] = parseInt(sDate.substr(12,2), 10);   
 			return new Date(
 				 dateArray[0],
 				 dateArray[1]-1, // Careful, month starts at 0!
@@ -6597,6 +6655,11 @@ var idevCore = idevObject.extend({
 			chars = chars || "\\s";
 			return str.replace(new RegExp("[" + chars + "]+$", "g"), "");
 		},
+		objectLength : function(obj)
+		{
+			$debug("objectLength() is deprecated, please use objLen() instead.");
+			idev.utils.objLen(obj);
+		},
 		objLen : function(obj)
 		{
 			var length = 0, key;
@@ -6607,38 +6670,27 @@ var idevCore = idevObject.extend({
 		},
 		urldecode: function  (str)
 		{
-			return decodeURIComponent((str+'').replace(/\+/g, '%20'));
+			var result;
+			try {
+				result = decodeURIComponent((str+'').replace(/\+/g, '%20'));
+			} catch(e){
+				idev.errorHandler('Error: Cannot decode URI: '+str);
+				result = "";
+			}
+			return result;
 		},
-
 		urlencode: function  (str)
 		{
 			return encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/%20/g, '+');
 		},
-
-		JSON2string: function(obj)
+		JSON2string:function(obj)
 		{
-			var t = typeof (obj);
-			if (t != "object" || obj === null)
-			{
-				// simple data type
-				if (t == "string") obj = '"'+obj+'"';
-				return String(obj);
-			}
-			else
-			{
-				// recurse array or object
-				var n, v, json = [], arr = (obj && obj.constructor == Array);
-				for (n in obj)
-				{
-					v = obj[n]; t = typeof(v);
-					if (t == "string")
-						v = '"'+v+'"';
-					else
-						if (t == "object" && v !== null) v = idev.utils.JSON2string(v);
-					json.push((arr ? "" : '"' + n + '":') + String(v));
-				}
-				return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
-			}
+			$debug("JSON2string() is deprecated, please use toJSONString() instead.");
+			idev.utils.toJSONString(obj);
+		},
+		toJSONString: function(obj)
+		{
+			return JSON.stringify(obj);
 		},
 		mousePos : function(ev)
 		{
@@ -6677,8 +6729,8 @@ var idevCore = idevObject.extend({
 		{
 			length = length || 9;
 			strength = strength || 0;
-			vowels = 'aeuy';
-			constants = 'bdghjmnpqrstvz';
+            var vowels = 'aeuy';
+            var constants = 'bdghjmnpqrstvz';
 			if (strength & 1) {
 				constants += 'BDGHJLMNPQRSTVWXZ';
 			}
@@ -6692,8 +6744,9 @@ var idevCore = idevObject.extend({
 				constants += '@#$!';
 			}
 
-			password = '';
-			alt = new Date().getTime() % 2;
+			var password = '';
+			var alt = new Date().getTime() % 2;
+            var p;
 			for (var i = 0; i < length; i++)
 			{
 				if (alt == 1)
@@ -6733,9 +6786,10 @@ var idevCore = idevObject.extend({
 					{
 						var pos = el.id.lastIndexOf("_");
 						if (pos == -1) return -1;	  
-						return parseInt(el.id.substr(pos+1));								
-					};
-				}	
+						return parseInt(el.id.substr(pos+1));
+
+}
+                }
 				el = el.parentNode;
 			}
 			return -1;
@@ -6880,7 +6934,7 @@ var idevCore = idevObject.extend({
 			// None public method
 			action:function(panel,scope)
 			{
-				if (scope.data == null) scope.data = new Array();
+				if (scope.data == null) scope.data = [];
 				
 				for (var i = 0;i < panel.children.length;i++)
 				{
@@ -6909,13 +6963,13 @@ var idevCore = idevObject.extend({
 									scope.data.push(panel.children[i].getValue()); 
 									if (typeof panel.children[i].field == "string" && panel.children[i].field != "")
 										scope.data[panel.children[i].field] = panel.children[i].getValue();   
-									break
+									break;
 								case 1:
 									panel.children[i].setValue("");	
-									break
+									break;
 								case 2:
 									panel.children[i].setValue(scope.rec.get(panel.children[i].field));	 
-									break
+									break;
 								case 3:
 									if (panel.children[i].field == scope.field)
 									{
@@ -7029,7 +7083,7 @@ var idevCore = idevObject.extend({
 			}
 			else
 				if (config.tpl == null) config.tpl =  new idev.wTemplate("<table width={width} cellpadding=5 cellspacing=0 style='width:{width}px;table-layout:fixed;'><tr><td><span style='word-wrap: break-word;'>{text}</span></td></tr></table>");
-			if (config.data == null ) config.data = new Array();
+			if (config.data == null ) config.data = [];
 
 			config.data['iconpath'] = _preferences.libpath + "images/";
 			config.data['iconsize'] = config.iconsize;
@@ -7436,7 +7490,6 @@ var idevCore = idevObject.extend({
 
 				if (this.title)
 				{
-					this.title = this.title;
 					if (this.parent)
 					{
 						if (this.parent.layout == 'frame')					
@@ -7446,7 +7499,7 @@ var idevCore = idevObject.extend({
 					}					
 					else
 						sTitleHTML = "<div id='{id}-title' class='ui-panel-titlebar {titlecls}' style='max-width:{titlewidth}px;width:{titlewidth}px;height:{titleheight}px;max-height:{titleheight}px;{titlestyle}'>";
-					sTitleHTML += "<table width='100%' class='ui-panel-title  {titletextcls}'><tr height={titletextheight}><td width='{iconwidth}px' align='right' valign=top id='{id}-icon'>{icon}</td><td id='{id}-titletext' valign=center>{title}</td><td width='{buttonwidth}px' align='right' valign=top id='{id}-buttons'>{buttons}</td></tr></table>",
+					sTitleHTML += "<table width='100%' class='ui-panel-title  {titletextcls}'><tr height={titletextheight}><td width='{iconwidth}px' align='right' valign=top id='{id}-icon'>{icon}</td><td id='{id}-titletext' valign=center>{title}</td><td width='{buttonwidth}px' align='right' valign=top id='{id}-buttons'>{buttons}</td></tr></table>";
 					sTitleHTML += "</div>";					
 					if (this.roundCorners)
 					{
@@ -7521,7 +7574,7 @@ var idevCore = idevObject.extend({
 				var style = this.style;
 				var bodystyle = this.bodyStyle;
 				var panelCls = this.panelCls;
-				var contentstyle = "background:transparent;" 
+				var contentstyle = "background:transparent;";
 				var buttons = "";
 				var buttonWidth = 10;
 				var iconWidth = 1;
@@ -7602,7 +7655,7 @@ var idevCore = idevObject.extend({
 				if (this.bbar) this.bodyheight = this.bodyheight - (parseInt(this.bbarHeight));
 				if (!this.autoScroll)
 				{
-					contentstyle += "overflow:hidden;width:" + this.width + "px;height:" + this.bodyheight + "px;";
+					contentstyle += "overflow:hidden;width:" + (this.width) + "px;height:" + (this.bodyheight-this.padding*2) + "px;";
 				}
 				if (this.shadow)
 				{
@@ -7620,44 +7673,44 @@ var idevCore = idevObject.extend({
 					sFullContent = " ui-panel-fit";
 				}
 				
-				var data = new Array();
-				data['id'] = this.id;
-				data['cls'] = this.cssQuirks(this.cls + sFullContent);
-				data['width'] = this.width;
-				data['height'] = this.height;
-				data['title'] = this.title == null ? "" : this.title;
-				data['bodyheight'] = this.bodyheight;
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = style;
-				data['icon'] = sIcon;
-				data['iconwidth'] = iconWidth;
-				data['fillerleft'] = fillerLeft;
-				data['fillerheight'] = this.height - this.titleHeight;
-				data['buttons'] = buttons;
-				data['buttonwidth'] = buttonWidth;
-				data['bodystyle'] = bodystyle;
-				data['backgroundstyle'] = this.backgroundStyle;
-				data['backgroundcls'] = this.cssQuirks(this.backgroundCls,bModern);
-				data['contentstyle'] = contentstyle + this.contentStyle;
-				data['tbarwidth'] = this.width;
-				data['titlewidth'] =  this.width;
-				data['titleheight'] = this.titleHeight;
-				data['titletextheight'] = this.titleHeight-4;
-				data['titlestyle'] =  this.titleStyle;
-				data['tbarcls'] = this.cssQuirks(this.tbarCls,bModern);
-				data['tbarheight'] = this.tbarHeight;
-				data['tbarstyle'] = this.tbarStyle;
-				data['bbarwidth'] = this.width;
-				data['bbarcls'] = this.cssQuirks(this.bbarCls,bModern);
-				data['bbarheight'] = this.bbarHeight;
-				data['bbarstyle'] = this.bbarStyle;
-				data['panelcls'] = this.frame ? this.cssQuirks(panelCls,bModern) + " ui-panel-frame" : this.cssQuirks(panelCls,bModern);
-				data['bodycls'] = this.cssQuirks(this.bodyCls,bModern);
-				data['titlecls'] = this.cssQuirks(this.titleCls,bModern);
-				data['titletextcls'] = this.titleTextCls;
-				data['html'] = this.html;
-				data['title'] = this.title;
-
+				var data = {
+                    id: this.id,
+                    cls: this.cssQuirks(this.cls + sFullContent),
+                    width: this.width,
+                    height: this.height,
+                    title: this.title == null ? "" : this.title,
+                    bodyheight: this.bodyheight,
+                    elementstyle: this.elementStyle,
+                    style: style,
+                    icon: sIcon,
+                    iconwidth: iconWidth,
+                    fillerleft: fillerLeft,
+                    fillerheight: this.height - this.titleHeight,
+                    buttons: buttons,
+                    buttonwidth: buttonWidth,
+                    bodystyle: bodystyle,
+                    backgroundstyle: this.backgroundStyle,
+                    backgroundcls: this.cssQuirks(this.backgroundCls,bModern),
+                    contentstyle: contentstyle + this.contentStyle,
+                    tbarwidth: this.width,
+                    titlewidth:  this.width,
+                    titleheight: this.titleHeight,
+                    titletextheight: this.titleHeight-4,
+                    titlestyle:  this.titleStyle,
+                    tbarcls: this.cssQuirks(this.tbarCls,bModern),
+                    tbarheight: this.tbarHeight,
+                    tbarstyle: this.tbarStyle,
+                    bbarwidth: this.width,
+                    bbarcls: this.cssQuirks(this.bbarCls,bModern),
+                    bbarheight: this.bbarHeight,
+                    bbarstyle: this.bbarStyle,
+                    panelcls: this.frame ? this.cssQuirks(panelCls,bModern) + " ui-panel-frame" : this.cssQuirks(panelCls,bModern),
+                    bodycls: this.cssQuirks(this.bodyCls,bModern),
+                    titlecls: this.cssQuirks(this.titleCls,bModern),
+                    titletextcls: this.titleTextCls,
+                    html: this.html
+                };
+                
 				idev.internal.beforeRender(this);
 				var  sHTML = this.tpl.render(data);
 
@@ -7732,11 +7785,11 @@ var idevCore = idevObject.extend({
 				}
 				if (this.expandable)
 				{
-					if (this.expandable && this.collapsed ) 
-					{
-						$('#' + this.id).css({height: this.titleHeight + 'px'});
-						this.expanded = false;
-					}
+					// if (this.expandable && this.collapsed ) 
+					// {
+					// 	$('#' + this.id).css({height: this.titleHeight + 'px'});
+					// 	this.expanded = false;
+					// }
 					$("#" + this.id + "-expand" ).click( function()
 					{
 						var wgt = idev.get(this.id.replace("-expand",""));
@@ -7783,7 +7836,7 @@ var idevCore = idevObject.extend({
 				{
 					for(var i = 0;i < this.widgets.length;i++)
 					{
-						if (this.widgets[i].wtype == "input" || this.widgets[i].wtype == "textarea" || this.widgets[i].wtype == "button")
+						if (this.widgets[i].wtype == "textfield" || this.widgets[i].wtype == "input" || this.widgets[i].wtype == "textarea" || this.widgets[i].wtype == "button")
 						{
 							if (this.focusID == this.widgets[i].id)
 							{
@@ -7829,8 +7882,9 @@ var idevCore = idevObject.extend({
 			},
 			innerHTML : function(sHTML)
 			{
-				$("#" + this.id + "-content").empty();
-				$("#" + this.id + "-content").append(sHTML);
+				var content = $("#" + this.id + "-content");
+                content.empty();
+				content.append(sHTML);
 			},
 			close : function()
 			{
@@ -7914,15 +7968,16 @@ var idevCore = idevObject.extend({
 				var wgt = $get(id);
 				if (wgt == null) return;
 				wgt.destroy(remove);
+                var id1, id2;
 				if (this.layout == "row")
 				{
 					$("#"+tableID + "-row" + cell).remove();
 					for (var i = cell+1;i <= this.widgets.length;i++)
 					{
-						var id1 = tableID + "-row" + i;
-						var id2 = tableID + "-row" + (i-1);
+						id1 = tableID + "-row" + i;
+						id2 = tableID + "-row" + (i-1);
 						$("#"+id1).prop("id",id2);
-						id1 = tableID + "-cell" + i
+						id1 = tableID + "-cell" + i;
 						id2 = tableID + "-cell" + (i-1);
 						$("#"+id1).prop("id",id2);
 					}
@@ -7932,8 +7987,8 @@ var idevCore = idevObject.extend({
 					$("#"+tableID + "-cell" + cell).remove();
 					for (var i = cell+1;i <= this.widgets.length;i++)
 					{
-						var id1 = tableID + "-cell" + i;
-						var id2 = tableID + "-cell" + (i-1);
+						id1 = tableID + "-cell" + i;
+						id2 = tableID + "-cell" + (i-1);
 						$("#"+id1).prop("id",id2);
 					}
 				}
@@ -7942,8 +7997,8 @@ var idevCore = idevObject.extend({
 					$("#"+tableID + "-cell" + cell).parent().remove();
 					for (var i = cell+1;i <= this.widgets.length;i++)
 					{
-						var id1 = tableID + "-cell" + i;
-						var id2 = tableID + "-cell" + (i-1);
+						id1 = tableID + "-cell" + i;
+						id2 = tableID + "-cell" + (i-1);
 						$("#"+id1).prop("id",id2);
 					}
 				}
@@ -7964,13 +8019,14 @@ var idevCore = idevObject.extend({
 				if (wgt.wtype == null) return false;
 
 				if(!this.widgets) this.widgets = [];
+                var tableID, cellStyle, sHTML, cell;
 				if (this.layout == "column")
 				{
 					var rowID = this.id + "-content-row";
-					var tableID = this.id + "-content-body";
-					var cellStyle = "";
-					var sHTML = "";
-					var cell = this.widgets.length;
+					tableID = this.id + "-content-body";
+					cellStyle = "";
+					sHTML = "";
+					cell = this.widgets.length;
 
 					if (wgt.cellStyle) cellStyle = wgt.cellStyle;
 					renderTo = tableID + "-cell" + cell;
@@ -7985,10 +8041,10 @@ var idevCore = idevObject.extend({
 				}
 				else if (this.layout == "row")
 				{
-					var sHTML = "";
-					var cellStyle = "";
-					var tableID = this.id + "-content-body";
-					var cell = this.widgets.length;
+					sHTML = "";
+					cellStyle = "";
+					tableID = this.id + "-content-body";
+					cell = this.widgets.length;
 
 					if (wgt.cellStyle) cellStyle = wgt.cellStyle;
 					renderTo = tableID + "-cell" + cell;
@@ -8005,10 +8061,10 @@ var idevCore = idevObject.extend({
 				}
 				else if (this.layout == "form")
 				{
-					var sHTML = "";
-					var cellStyle = "";
-					var tableID = this.id + "-content-body";
-					var cell = this.widgets.length;
+					sHTML = "";
+					cellStyle = "";
+					tableID = this.id + "-content-body";
+					cell = this.widgets.length;
 
 					if (wgt.cellStyle) cellStyle = wgt.cellStyle;
 					renderTo = tableID + "-cell" + cell;
@@ -8019,9 +8075,9 @@ var idevCore = idevObject.extend({
 				}
 				else if (this.layout == "table")
 				{
-					var sHTML = "";
-					var tableID = this.id + "-content-body";
-					var cell = this.widgets.length;
+					sHTML = "";
+					tableID = this.id + "-content-body";
+					cell = this.widgets.length;
 					var remainder =  this.widgets.length % this.columns;
 
 					if (remainder != 0)
@@ -8031,7 +8087,7 @@ var idevCore = idevObject.extend({
 					else
 					{
 						sHTML = "<tr>";
-						if (parent.rowHeight > 0) sHTML = "<tr height=" + parent.rowHeight + " >"
+						if (parent.rowHeight > 0) sHTML = "<tr height=" + parent.rowHeight + " >";
 						for (var c = 0;c < this.columns;c++)
 						{
 							if (wgt.cellStyle) cellStyle = wgt.cellStyle;
@@ -8130,17 +8186,18 @@ var idevCore = idevObject.extend({
 			},
 			setValue : function(value)
 			{
-				var v = $('#'+this.id+"-input").val();
+				var input = $('#'+this.id+"-input");
+                var v = input.val();
 
 				if (this.watermark == v)
 				{
-					$('#'+this.id+"-input").val("");
-					$('#'+this.id+"-input").css("color","");
+					input.val("");
+					input.css("color","");
 				}
 				if (value == "" && this.watermark != "")
 				{
-					$('#'+this.id+"-input").val(this.watermark);
-					$('#'+this.id+"-input").css("color",this.watermarkColor);
+					input.val(this.watermark);
+					input.css("color",this.watermarkColor);
 					if(this.inputType == "password" && !idev.isIE8()) $('#'+this.id+"-input").prop('type', 'text');
 				}
 				else
@@ -8231,28 +8288,27 @@ var idevCore = idevObject.extend({
 				if (this.uppercase) inputstyle += ";text-transform:uppercase;"; 
 				if (this.lowercase) inputstyle += ";text-transform:lowercase;"; 
 				if (this.capitalize) inputstyle += ";text-transform:capitalize;"; 
-				var data = new Array();
-				 
-				data['id'] = this.id;
-				data['cls'] = this.cssQuirks(this.cls);
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = style;
-				data['value'] = text;
-				data['width'] = this.width - 4;
-				data['height'] = this.height - 4;
-				data['inputcls'] = this.inputCls;
-				data['inputstyle'] = inputstyle;
-				data['title'] = this.title;
-				data['tabindex'] = this.tabindex;
-				data['maxlength'] = this.maxlength;
+				var data = {
+                    id: this.id,
+                    cls: this.cssQuirks(this.cls),
+                    elementstyle: this.elementStyle,
+                    style: style,
+                    value: text,
+                    width: this.width - 4,
+                    height: this.height - 4,
+                    inputcls: this.inputCls,
+                    inputstyle: inputstyle,
+                    title: this.title,
+                    tabindex: this.tabindex,
+                    maxlength: this.maxlength,
+                    inputtype: this.inputType
+                };
 				if (this.autoScroll)
 				{
-					data['inputstyle'] = this.style+";overflow:auto;";
+					data.inputstyle = this.style+";overflow:auto;";
 				}
-				// data['inputtype'] = this.inputType == "password" ? "password" : "text"; //uses text for number for pre HTML5 compatibility
-				data['inputtype'] = this.inputType;
 
-				var  sHTML = this.tpl.render(data);
+				var sHTML = this.tpl.render(data);
 
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
@@ -8276,48 +8332,52 @@ var idevCore = idevObject.extend({
 				{
 					$( '#' +  this.id ).dblclick(idev.internal.onDblClick);
 				}
-				$( '#' +  this.id + "-input").blur(idev.internal.onLostFocus);
-				$( '#' +  this.id + "-input").focus(idev.internal.onFocus);
+                var input = $( '#' +  this.id + "-input");
+				input.blur(idev.internal.onLostFocus);
+				input.focus(idev.internal.onFocus);
+                var widgetElem = $("#" + this.id);
 				if (this.events.change)
 				{
-					$( '#' +  this.id ).change(idev.internal.onChange);
+                    widgetElem.change(idev.internal.onChange);
 				}
-				$('#' +  this.id).keydown({ widget: this },function(event){
+                widgetElem.keydown({ widget: this },function(event){
 					if(event.data.widget.editable==false) return false;
 				});
-				$('#' +  this.id).keyup({ widget: this },function(event){
-					var wgt = event.data.widget;
-					var v = $('#'+wgt.id+"-input").val();
-					if(event.keyCode == 8) {
-						wgt.value = v;
-						return;
-					}
-					if (wgt.inputType == "number")
-					{
-						if (!(v.match(/^-{0,1}\d+\.{0,1}\d*$|^-{0,1}\d*$/))) $('#'+wgt.id+"-input").val(wgt.value);
-						else wgt.value = v;
-					}
-					if (wgt.inputType == "integer")
-					{
-						if (!(v.match(/^-{0,1}\d*$/))) $('#'+wgt.id+"-input").val(wgt.value);
-						else wgt.value = v;
-					}
-					if (wgt.inputType == "text")
-					{
-						wgt.value = v;
-					}
-					if (wgt.inputType == "currency")
-					{
-						if (!(v.match(/^-{0,1}\d+\.{0,1}\d{0,2}$|^-{0,1}\d*$/))) $('#'+wgt.id+"-input").val(wgt.value);
-						else wgt.value = v;
-					}
-					if (wgt.inputType == "custom" && wgt.customregex != "")
-					{
-						if (!(v.match(wgt.customregex))) $('#'+wgt.id+"-input").val(wgt.value);
-						else wgt.value = v;
-					}
-				})
-				$( '#' +  this.id ).keypress({ widget: this },function(event)
+				if(this.editable==false)
+				{
+					$('#' +  this.id + "-input").focus({ widget: this },function(event){
+						this.blur();
+						return false;
+					});
+				}
+                widgetElem.keyup({ widget: this }, function (event) {
+                    var wgt = event.data.widget;
+                    var v = $('#' + wgt.id + "-input").val();
+                    if (event.keyCode == 8) {
+                        wgt.value = v;
+                        return;
+                    }
+                    if (wgt.inputType == "number") {
+                        if (!(v.match(/^-{0,1}\d+\.{0,1}\d*$|^-{0,1}\d*$/))) $('#' + wgt.id + "-input").val(wgt.value);
+                        else wgt.value = v;
+                    }
+                    if (wgt.inputType == "integer") {
+                        if (!(v.match(/^-{0,1}\d*$/))) $('#' + wgt.id + "-input").val(wgt.value);
+                        else wgt.value = v;
+                    }
+                    if (wgt.inputType == "text") {
+                        wgt.value = v;
+                    }
+                    if (wgt.inputType == "currency") {
+                        if (!(v.match(/^-{0,1}\d+\.{0,1}\d{0,2}$|^-{0,1}\d*$/))) $('#' + wgt.id + "-input").val(wgt.value);
+                        else wgt.value = v;
+                    }
+                    if (wgt.inputType == "custom" && wgt.customregex != "") {
+                        if (!(v.match(wgt.customregex))) $('#' + wgt.id + "-input").val(wgt.value);
+                        else wgt.value = v;
+                    }
+                });
+                widgetElem.keypress({ widget: this },function(event)
 				{
 					var wgt = event.data.widget;
 					var key = event.keyCode;
@@ -8336,7 +8396,7 @@ var idevCore = idevObject.extend({
 						return false;
 					}
 				});
-				$( '#' +  this.id ).keyup({ widget: this },function(event)
+                widgetElem.keyup({ widget: this },function(event)
 				{
 					var wgt = event.data.widget;
 					if(wgt.events.keyup) wgt.events.keyup(wgt,event);
@@ -8349,11 +8409,13 @@ var idevCore = idevObject.extend({
 			},
 			doLayout: function()
 			{
-				var w = $("#" + this.id).width();
-				var h = $("#" + this.id).height();
+                var widgetElem = $("#" + this.id);
+                var inputElem = $("#" + this.id + "-input");
+				var w = widgetElem.width();
+				var h = widgetElem.height();
 
-				$("#" + this.id + "-input").width(w-4)
-				$("#" + this.id + "-input").height(h-4)
+                inputElem.width(w - 4);
+                inputElem.height(h - 4);
 
 				this._super();
 			}
@@ -8382,21 +8444,22 @@ var idevCore = idevObject.extend({
 			},
 			setValue : function(value)
 			{
-				var v = $('#'+this.id+"-input").val();
+                var input = $('#'+this.id+"-input");
+				var v = input.val();
 
 				if (this.watermark == v)
 				{
-					$('#'+this.id+"-input").val("");
-					$('#'+this.id+"-input").css("color","");
+					input.val("");
+					input.css("color","");
 				}
 
 				if (value == "" && this.watermark)
 				{
-					$('#'+this.id+"-input").val(this.watermark);
-					$('#'+this.id+"-input").css("color",this.watermarkColor);
+					input.val(this.watermark);
+					input.css("color",this.watermarkColor);
 				}
 				else
-					$('#'+this.id+"-input").val(value);
+					input.val(value);
 			},
 			getValue : function()
 			{
@@ -8436,20 +8499,21 @@ var idevCore = idevObject.extend({
 					inputstyle += ";overflow:auto;";
 				}
 				if (this.borderStyle != "") style += ";border:" + this.borderStyle;
-				var data = new Array();
-
-				data['id'] = this.id;
-				data['cls'] = this.cssQuirks(this.cls);
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = style;
-				data['inputstyle'] = inputstyle;
-				data['inputcls'] = this.inputCls;
-				data['width'] = idev.isWebkit() ? this.width-4 : this.width-2;
-				data['height'] = idev.isWebkit() ? this.height-8 : this.height-2;
-				data['value'] = text;
-				data['title'] = this.title;
-				data['tabindex'] = this.tabindex;
-				data['maxlength'] = this.maxlength;
+                
+				var data = {
+                    id: this.id,
+                    cls: this.cssQuirks(this.cls),
+                    elementstyle: this.elementStyle,
+                    style: style,
+                    inputstyle: inputstyle,
+                    inputcls: this.inputCls,
+                    width: idev.isWebkit() ? this.width-4 : this.width-2,
+                    height: idev.isWebkit() ? this.height-8 : this.height-2,
+                    value: text,
+                    title: this.title,
+                    tabindex: this.tabindex,
+                    maxlength: this.maxlength
+                };
 
 				var  sHTML = this.tpl.render(data);
 
@@ -8465,21 +8529,22 @@ var idevCore = idevObject.extend({
 				{				
 					idev.internal.limiter($("#"+this.id+"-input"), this.maxlength);
 				}
-				
-				
-				$( '#' +  this.id + "-input" ).blur(idev.internal.onLostFocus);
-				$( '#' +  this.id + "-input" ).focus(idev.internal.onFocus);
+
+                var input = $( '#' +  this.id + "-input" );
+				input.blur(idev.internal.onLostFocus);
+				input.focus(idev.internal.onFocus);
+
+                var widgetElem = $( '#' +  this.id );
 				if (this.events.click)
 				{
-
-					$( '#' +  this.id ).click(idev.internal.onClick);
+					widgetElem.click(idev.internal.onClick);
 				}
 
 				if (this.events.change)
 				{
-					$( '#' +  this.id ).change(idev.internal.onChange);
+                    widgetElem.change(idev.internal.onChange);
 				}
-				$( '#' +  this.id ).keydown({ widget: this },function(event)
+                widgetElem.keydown({ widget: this },function(event)
 				{
 					var wgt = event.data.widget;
 					if (!wgt.editable)
@@ -8487,14 +8552,15 @@ var idevCore = idevObject.extend({
 						event.preventDefault();
 						return false;
 					}
+                    var input = $('#'+wgt.id+"-input");
 					if (wgt.watermark != "")
 					{
-						var v = $('#'+wgt.id+"-input").val();
+						var v = input.val();
 
 						if (v == wgt.watermark )
 						{
-							$('#'+wgt.id+"-input").val("");
-							$('#'+wgt.id+"-input").css("color","");
+							input.val("");
+							input.css("color","");
 						}
 					}
 					// if (wgt.maxlength > 0)
@@ -8521,12 +8587,11 @@ var idevCore = idevObject.extend({
 						return false;
 					}
 				});
-				$( '#' +  this.id ).keypress({ widget: this },function(event)
+				widgetElem.keypress({ widget: this },function(event)
 				{
 					var wgt = event.data.widget;
 					if (wgt.invalidchars != "")
 					{
-						var key = event.keyCode;
 						if (wgt.invalidchars.indexOf(String.fromCharCode(event.keyCode)) != -1)
 						{
 							event.preventDefault();
@@ -8534,7 +8599,7 @@ var idevCore = idevObject.extend({
 						}
 					}
 				});
-				$( '#' +  this.id ).keyup({ widget: this },function(event)
+				widgetElem.keyup({ widget: this },function(event)
 				{
 					var wgt = event.data.widget;
 					if (wgt.wtype == "textarea")
@@ -8552,14 +8617,15 @@ var idevCore = idevObject.extend({
 			},
 			doLayout: function()
 			{
-				var w = $("#" + this.id).width();
-				var h = $("#" + this.id).height();
+                var widgetElem = $("#" + this.id);
+                var input = $("#" + this.id + "-input");
+				var w = widgetElem.width();
+				var h = widgetElem.height();
 
-				$("#" + this.id + "-input").width(w-10)
-				$("#" + this.id + "-input").height(h-10)
+				input.width(w - 10);
+				input.height(h - 10);
 
 				this._super();
-
 			}
 		}) ,
 		//------------------------------------------------------------------
@@ -8580,6 +8646,7 @@ var idevCore = idevObject.extend({
 				this.buttonCls = config.buttonCls || "ui-combo-button";
 				this.buttonStyle = config.buttonStyle || "";
 				this.ds = config.ds;
+				this.dsFilter = config.dsFilter;
 				this.listTpl = config.listTpl;
 				this.displayField = config.displayField || "";
 				this.inputStyle = config.inputStyle || "";
@@ -8638,11 +8705,12 @@ var idevCore = idevObject.extend({
 			},
 			setInputValue : function(value)
 			{
-				var v = $('#'+this.id+"-input").val();
+				var input = $('#'+this.id+"-input");
+                var v = input.val();
 						  
 				if (this.watermark == v)
 				{
-					$('#'+this.id+"-input").val("");
+					input.val("");
 					if (this.inpStyle.color == null)
 						$('#'+this.id+"-input").css("color","");
 					else
@@ -8650,8 +8718,8 @@ var idevCore = idevObject.extend({
 				}
 				if (value == "" && this.watermark != "")
 				{
-					$('#'+this.id+"-input").val(this.watermark);
-					$('#'+this.id+"-input").css("color",this.watermarkColor);
+					input.val(this.watermark);
+					input.css("color",this.watermarkColor);
 				}
 				else
 					$('#'+this.id+"-input").val(value);
@@ -8680,15 +8748,17 @@ var idevCore = idevObject.extend({
 				{
 					if (wgt.selected != -1)
 					{
-						$( '#' +  wgt.id + "_" + wgt.selected).addClass(wgt.entryCls);
-						wgt.selectCls && $( '#' +  wgt.id + "_" + wgt.selected).removeClass(wgt.selectCls);
+						var selectedElem = $( '#' +  wgt.id + "_" + wgt.selected);
+                        selectedElem.addClass(wgt.entryCls);
+						wgt.selectCls && selectedElem.removeClass(wgt.selectCls);
 						if (this.selectColor != "")
 							wgt.updateItem(wgt.selected,"background-color","");
 					}
 					if (wgt.selectCls != "")
 					{
-						wgt.entryCls && $( '#' +  wgt.id + "_" + match).removeClass(wgt.entryCls);
-						$( '#' +  wgt.id + "_" + match).addClass(wgt.selectCls);
+                        var matchElem = $( '#' +  wgt.id + "_" + match);
+						wgt.entryCls && matchElem.removeClass(wgt.entryCls);
+						matchElem.addClass(wgt.selectCls);
 					}
 					if (this.selectColor != "")
 						wgt.updateItem(match,"background-color",this.selectColor);
@@ -8753,28 +8823,29 @@ var idevCore = idevObject.extend({
 					inputstyle += "color:" + this.watermarkColor + ";";
 				}
 				if (this.borderStyle != "") style += ";border:" + this.borderStyle;
-				var data = new Array();
 
-				data['id'] = this.id;
-				data['cls'] = this.cssQuirks(this.cls);
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = style;
-				data['value'] = text;
-				data['width'] = this.width - this.btnWidth - 3;
-				data['height'] = this.height;
-				data['inputheight'] = this.height - 4;
-				data['buttonwidth'] = this.height;
-				data['inputstyle'] = inputstyle;
-				data['title'] = this.title;
-				data['tabindex'] = this.tabindex;
+				var data = {
+                    id: this.id,
+                    cls: this.cssQuirks(this.cls),
+                    elementstyle: this.elementStyle,
+                    style: style,
+                    value: text,
+                    width: this.width - this.btnWidth - 3,
+                    height: this.height,
+                    inputheight: this.height - 4,
+                    buttonwidth: this.height,
+                    inputstyle: inputstyle,
+                    title: this.title,
+                    tabindex: this.tabindex
+                };
 
 				if (this.autoScroll)
 				{
-					data['inputstyle'] = this.style+";overflow:auto;";
+					data.inputstyle = this.style+";overflow:auto;";
 				}
-				data['inputtype'] = this.inputType == "number" ? "text" : this.inputType;
+				data.inputtype = this.inputType == "number" ? "text" : this.inputType;
 
-				var  sHTML = this.tpl.render(data);
+				var sHTML = this.tpl.render(data);
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
 				if (this.roundCorners)
@@ -8783,12 +8854,12 @@ var idevCore = idevObject.extend({
 				}
 				$delay(100,function(widget)
 				{
-					cls = widget.buttonCls;
-					style = widget.buttonStyle;
+					var cls = widget.buttonCls;
+					var style = widget.buttonStyle;
 					widget.btn = new idev.ui.widgetButton({
 						parent:widget,
 						renderTo:widget.id + "-button",
-						width:widget.height,
+						width:widget.width,
 						height:widget.height,
 						icon:{
 							src:'_arrow'
@@ -8812,8 +8883,9 @@ var idevCore = idevObject.extend({
 										idev.hideWidget.parent.visible = false;
 										idev.hideWidget.hide();
 									}
-									var h =  $("#" + btn.parent.id).height();
-									var pos = $("#" + btn.parent.id).offset();
+                                    var parentElem = $("#" + btn.parent.id);
+                                    var h = parentElem.height();
+									var pos = parentElem.offset();
 									var x =  pos.left;
 									var y =  pos.top + h + 1;
 									if (btn.parent.roundCorners && !idev.isIE8()) x += 4;
@@ -8822,8 +8894,7 @@ var idevCore = idevObject.extend({
 										y -= widget.listHeight;
 										y -= widget.height;
 									}
-									$("#"+btn.parent.list.id).css("left",x);
-									$("#"+btn.parent.list.id).css("top",y);
+                                    $("#"+btn.parent.list.id).css({left:x,top:y});
 									btn.parent.list.show();
 									btn.parent.list.setScrollPos(pos);
 									idev.hideWidget = btn.parent.list;
@@ -8837,8 +8908,7 @@ var idevCore = idevObject.extend({
 												y -= widget.height;
 											}
 											if (btn.parent.roundCorners && !idev.isIE8()) x += 4;
-											$("#"+btn.parent.list.id).css("left",x);
-											$("#"+btn.parent.list.id).css("top",y);										
+                                            $("#"+btn.parent.list.id).css({left:x,top:y});
 										}
 										else{
 											clearInterval(interval);
@@ -8849,13 +8919,14 @@ var idevCore = idevObject.extend({
 							}
 						}
 					});
-					var data = new Array();
+					var data = {};
 
-					data['entryheight'] = widget.listEntryHeight;
+					data.entryheight = widget.listEntryHeight;
 
 					widget.btn.render();
-					var h =  $("#" + widget.id).height();
-					var pos = $("#" + widget.id).offset();
+                    var widgetElem = $("#" + widget.id);
+					var h = widgetElem.height();
+					var pos = widgetElem.offset();
 					var x =  pos.left;
 					var y =  pos.top + h + 1;
 					if(y+widget.listHeight > idev.pgHeight){
@@ -8889,6 +8960,7 @@ var idevCore = idevObject.extend({
 						selectCls:widget.selectCls,
 						selectColors:widget.selectCls,
 						ds:widget.ds,
+						dsFilter:widget.dsFilter,
 						border:true,
 						tpl:widget.listTpl,
 						itemStyle:'border:0px;',
@@ -8923,8 +8995,7 @@ var idevCore = idevObject.extend({
 					{
 						$( '#' +  widget.id ).dblclick(idev.internal.onDblClick);
 					}
-					$( '#' +  widget.id + "-input").blur(idev.internal.onLostFocus);
-					$( '#' +  widget.id + "-input").focus(idev.internal.onFocus);
+                    $( '#' +  widget.id + "-input").blur(idev.internal.onLostFocus).focus(idev.internal.onFocus);
 					if (widget.events.change)
 					{
 						$( '#' +  widget.id ).change(idev.internal.onChange);
@@ -8956,21 +9027,18 @@ var idevCore = idevObject.extend({
 							event.preventDefault();
 							return false;
 						}
-					});
-					$( '#' +  widget.id ).keyup(function(event)
+					}).keyup(function(event)
 					{
 						var wgt = idev.get(widget.id);
 						if (wgt.wtype == "combo")
 						{
 							if (wgt.watermark != "")
 							{
-								var v = $('#'+wgt.id+"-input").val();
+                                var el =  $('#'+wgt.id+"-input");
+                                var v = el.val();
 								if (v == "")
 								{
-									var el =  $('#'+wgt.id+"-input");
-
-									$('#'+wgt.id+"-input").val(wgt.watermark);
-									$('#'+wgt.id+"-input").css("color",wgt.watermarkColor);
+									el.val(wgt.watermark).css("color",wgt.watermarkColor);
 									if(el.createTextRange)
 									{
 										var range = el.createTextRange();
@@ -8996,9 +9064,8 @@ var idevCore = idevObject.extend({
 								return false;
 							}
 						}
-					});
-					$( '#' +  widget.id ).keypress(idev.internal.onKeypress);
-					widget.setValue(widget.value)
+					}).keypress(idev.internal.onKeypress);
+					widget.setValue(widget.value);
 					widget.rendered = true;
 
 				},this);
@@ -9009,17 +9076,14 @@ var idevCore = idevObject.extend({
 				{
 					var ent =  this.ds.getCount() || 1;
 					this.listHeight = (this.listEntryHeight + 4 ) * ent;
-					$("#" + this.list.id).height(this.listHeight);
-					$("#" + this.list.id).css('max-height', this.listHeight + 'px');
+					$("#" + this.list.id).height(this.listHeight).css('max-height', this.listHeight + 'px');
 					$get(this.list.id).doLayout();
 				}
 				else if(this.ds.getCount() > 1)
 				{
 					this.listHeight = (this.listEntryHeight + 4 ) * this.visibleEntrys;
-					$("#" + this.list.id).height(this.listHeight);
-					$("#" + this.list.id).css('max-height', this.listHeight + 'px');
-					$("#" + this.list.id + "-wrapper").height(this.listHeight);
-					$("#" + this.list.id + "-wrapper").css('max-height', this.listHeight + 'px');
+					$("#" + this.list.id).height(this.listHeight).css('max-height', this.listHeight + 'px');
+					$("#" + this.list.id + "-wrapper").height(this.listHeight).css('max-height', this.listHeight + 'px');
 					$get(this.list.id).doLayout();
 				}
 			},
@@ -9041,11 +9105,9 @@ var idevCore = idevObject.extend({
 				var w = $("#" + this.id).width();
 				var h = $("#" + this.id).height();
 
-				$("#" + this.id + "-input").width(w - this.btnWidth -4);
-				$("#" + this.id + "-input").height(h -4);
+				$("#" + this.id + "-input").width(w - this.btnWidth -4).height(h -4);
 
 				this._super();
-
 			}
 		}),
 		//------------------------------------------------------------------
@@ -9061,9 +9123,9 @@ var idevCore = idevObject.extend({
 				this.text = config.text || "";
 				this.textStyle = config.textStyle || "";
 				this.align = config.align || "left";
-				this.resizer.handlers = "n,s,w,e,"
+				this.resizer.handlers = "n,s,w,e,";
 				this.nvalue = config.nvalue === null ? "" : config.nvalue;
-				this.lock = config.lock === null ? false : config.lock
+				this.lock = config.lock === null ? false : config.lock;
 
 				this.resizer.resizeColor = "#fff";
 				if (this.align == "right")
@@ -9135,21 +9197,16 @@ var idevCore = idevObject.extend({
 			{
 				if (this.renderTo == null) return;
 
-				var style =  this.elementStyle;
+				var data = {
+                    id: this.id,
+                    cls: this.checked ? "ui-checkbox-on" : "",
+                    elementstyle: this.elementStyle,
+                    textStyle: this.textStyle,
+                    text: this.text,
+                    tabindex: this.tabindex
+                };
 
-				var data = new Array();
-
-				data['id'] = this.id;
-				if (this.checked)
-					data['cls'] = "ui-checkbox-on";
-				else
-					data['cls'] = "";
-				data['elementstyle'] = this.elementStyle;
-				data['textStyle'] = this.textStyle;
-				data['text'] = this.text;
-				data['tabindex'] = this.tabindex;
-
-				var  sHTML = this.tpl.render(data);
+				var sHTML = this.tpl.render(data);
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
 
@@ -9166,8 +9223,7 @@ var idevCore = idevObject.extend({
 					}
 					e.preventDefault();
 					return false;
-				});
-				$( '#' +  this.id + "-input").blur(idev.internal.onLostFocus);
+				}).blur(idev.internal.onLostFocus);
 				this.rendered = true;
 			}
 		}),
@@ -9216,18 +9272,16 @@ var idevCore = idevObject.extend({
 			{
 				if (this.renderTo == null) return;
 
-				var style =  this.elementStyle;
+				var data = {
+                    id: this.id,
+                    width: this.width,
+                    height: this.height,
+                    elementstyle: this.elementStyle,
+                    style: this.style,
+                    title: this.title
+                };
 
-				var data = new Array();
-
-				data['id'] = this.id;
-				data['width'] = this.width;
-				data['height'] = this.height;
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = this.style;
-				data['title'] = this.title;
-
-				var  sHTML = this.tpl.render(data);
+				var sHTML = this.tpl.render(data);
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
 
@@ -9258,7 +9312,7 @@ var idevCore = idevObject.extend({
 				this.text = config.text || "";
 				this.textStyle = config.textStyle || "";
 				this.align = config.align || "left";
-				this.resizer.handlers = "n,s,w,e,"
+				this.resizer.handlers = "n,s,w,e,";
 
 				if (this.align == "right")
 					this.tpl = new idev.wTemplate(
@@ -9303,23 +9357,23 @@ var idevCore = idevObject.extend({
 				return idev.widgets[id].value;
 			},
 			setValue : function(value)
-            {
-                for(var i = 0;i < idev.widgets.length;i++)
-                {
-                    var widget = idev.widgets[i];
-                    
-                    if (widget.wtype == "radio")
-                    {
-                        if (widget.group == this.group)
-                        {
-                            if (widget.value == value)
-                                widget.check(true);
-                            else
-                                widget.check(false);
-                        }
-                    }
-                }
-            },
+			{
+				for(var i in idev.widgets)
+				{
+					var widget = idev.widgets[i];
+					
+					if (widget.wtype == "radio")
+					{
+						if (widget.group == this.group)
+						{
+							if (widget.value == value)
+								widget.check(true);
+							else
+								widget.check(false);
+						}
+					}
+				}
+			},
 			check : function(checked)
 			{
 				var isChecked = $('#'+this.id+"-input").hasClass("ui-radio-on");
@@ -9339,21 +9393,18 @@ var idevCore = idevObject.extend({
 			{
 				if (this.renderTo == null) return;
 
-				var data = new Array();
-
-				data['id'] = this.id;
-				if (this.checked)
-					data['cls'] = "ui-radio-on";
-				else
-					data['cls'] = "";
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = this.style;
-				data['textStyle'] = this.textStyle;
-				data['text'] = this.text;
-				data['group'] = this.group;
-				data['tabindex'] = this.tabindex;
-
-				var  sHTML = this.tpl.render(data);
+				var data = {
+                    id: this.id,
+                    cls: this.checked ? "ui-radio-on" : "",
+                    elementstyle: this.elementStyle,
+                    style: this.style,
+                    textStyle: this.textStyle,
+                    text: this.text,
+                    group: this.group,
+                    tabindex: this.tabindex
+                };
+                
+				var sHTML = this.tpl.render(data);
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
 
@@ -9420,7 +9471,7 @@ var idevCore = idevObject.extend({
 				this.down = this.config.down == null ? false : this.config.down;
 				this.ix = this.config.ix ;
 				this.iy = this.config.iy ;
-				this.svg = this.config.svg == true ? true : false;
+				this.svg = this.config.svg == true;
 				if (this.color != "") 
 				{
 					idev.colors.gradientColors(this);
@@ -9468,7 +9519,6 @@ var idevCore = idevObject.extend({
 				if (!widget.transparent)
 				{
 					var borderOffset = widget.border ? 3 : 2;
-
 					if (widget.path != null)
 					{
 						widget.object = widget.paper.path(widget.path);
@@ -9514,8 +9564,8 @@ var idevCore = idevObject.extend({
 					if (widget.transparent && widget.image != null)
 					{
 						if (widget.textXOffset < 4) widget.textXOffset = 4;
-						widget.tx = widget.paper.text(widget.image.width + widget.textXOffset, (widget.height/2)+widget.textYOffset, widget.text).prop({'text-anchor': 'start'});;
-					}
+                        widget.tx = widget.paper.text(widget.image.width + widget.textXOffset, (widget.height / 2) + widget.textYOffset, widget.text).prop({'text-anchor': 'start'});
+                    }
 					else
 					{
 						widget.tx = widget.paper.text((widget.width/2)+widget.textXOffset, (widget.height/2)+widget.textYOffset, widget.text);
@@ -9563,7 +9613,7 @@ var idevCore = idevObject.extend({
 					if (widget.iconAlign == "center")
 					{
 						widget.ic.scale( widget.iconScale, widget.iconScale ); 
-						bbox = widget.ic.getBBox();
+						var bbox = widget.ic.getBBox();
 						var cx = (widget.width)/2;
 						var cy = (widget.height)/2;
 						
@@ -9594,7 +9644,6 @@ var idevCore = idevObject.extend({
 						else
 						{
 							widget.ic.translate(widget.width+8 + widget.ix,-4 + widget.iy);
-							cx = widget.width-8;
 							if (widget.iconRotation != 0)
 								widget.ic.rotate(widget.iconRotation,sx,sy);
 						}
@@ -9611,7 +9660,7 @@ var idevCore = idevObject.extend({
 			{
 				if (this.renderTo == null) return;
 
-				var sHTML = "",sColor = this.color,btnCls = "",btnBodyCls = this.btnBodyCls;
+				var btnCls = "",btnBodyCls = this.btnBodyCls;
 
 				if ((idev.agent.indexOf("android 2.") != -1 || _preferences.useCSS3 || Raphael == null)  && !this.svg)
 				{
@@ -9620,19 +9669,20 @@ var idevCore = idevObject.extend({
 					if (this.color && !this.transparent)  btnBodyCls += "-" + this.color.toLowerCase();
 					if (!this.enabled) btnBodyCls += " " + this.btnDisabledCls;
 				}
-				var data = new Array();
-				data['id'] = this.id;
-				data['width'] = this.width;
-				data['bodywidth'] = this.width;
-				data['height'] = this.height;
-				data['bodyheight'] = this.height;
-				data['elementstyle'] = this.elementStyle;
-				data['title'] = this.title;
-				data['style'] = this.style;
-				data['buttoncls'] = this.cssQuirks(btnCls);
-				data['buttonbodycls'] = this.transparent ? "" : this.cssQuirks(btnBodyCls);
-				data['buttonBodyStyle'] = this.buttonBodyStyle;
-				data['tabindex'] = this.tabindex;
+				var data = {
+                    id: this.id,
+                    width: this.width,
+                    bodywidth: this.width,
+                    height: this.height,
+                    bodyheight: this.height,
+                    elementstyle: this.elementStyle,
+                    title: this.title,
+                    style: this.style,
+                    buttoncls: this.cssQuirks(btnCls),
+                    buttonbodycls: this.transparent ? "" : this.cssQuirks(btnBodyCls),
+                    buttonBodyStyle: this.buttonBodyStyle,
+                    tabindex: this.tabindex
+                };
 
 				var sHTML = this.tpl.render(data);
 				idev.internal.beforeRender(this);
@@ -9749,12 +9799,6 @@ var idevCore = idevObject.extend({
 				{
 					this.paper.remove();
 				}
-			},
-			doLayout:function()
-			{
-				this._super();
-				var w = $("#" + this.id).width();
-				var h = $("#" + this.id).height();
 			}
 		}),
 		//------------------------------------------------------------------
@@ -9805,7 +9849,7 @@ var idevCore = idevObject.extend({
 			{
 				if (this.renderTo == null) return;
 		
-				var data = new Array();
+				var data = {};
 				var sImage="";
 				
 				if (this.icon.src != null)
@@ -9841,30 +9885,30 @@ var idevCore = idevObject.extend({
 				}
 				
 		
-				data['id'] = this.id;
-				data['width'] = this.width;
-				data['height'] = this.height;
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = this.style;
-				data['tooltip'] = this.tooltip;
-				data['cls'] = this.cssQuirks(this.transparent ? "ui-button-transparent" : this.cls);
-				data['togglecls'] = !this.toggle ? "" : this.down ? this.toggleCls : ""; 
+				data.id = this.id;
+				data.width = this.width;
+				data.height = this.height;
+				data.elementstyle = this.elementStyle;
+				data.style = this.style;
+				data.tooltip = this.tooltip;
+				data.cls = this.cssQuirks(this.transparent ? "ui-button-transparent" : this.cls);
+				data.togglecls = !this.toggle ? "" : this.down ? this.toggleCls : ""; 
 				if (this.icon.align == "right")
 				{
-					data['image1'] = "";
-					data['image2'] = sImage;
+					data.image1 = "";
+					data.image2 = sImage;
 				}
 				else
 				{
-					data['image1'] = sImage;
-					data['image2'] = "";
+					data.image1 = sImage;
+					data.image2 = "";
 				}
-				data['text'] = this.text;
-				data['textcls'] = this.textCls;
-				data['textstyle'] = this.textStyle;
-				data['tabindex'] = this.tabindex;
+				data.text = this.text;
+				data.textcls = this.textCls;
+				data.textstyle = this.textStyle;
+				data.tabindex = this.tabindex;
 				
-				var  sHTML = this.tpl.render(data);
+				var sHTML = this.tpl.render(data);
 				
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
@@ -9894,8 +9938,8 @@ var idevCore = idevObject.extend({
 			},
 			getText : function()
 			{
-				return this.text;;
-			},
+                return this.text;
+            },
 			setText : function(text)
 			{
 				this.text = text;
@@ -9960,17 +10004,17 @@ var idevCore = idevObject.extend({
 				if (this.renderTo == null) return;
 
 				var style = this.style;
-				var data = new Array();
+				var data = {};
 
 				if (this.events.click || this.events.dblclick) style += "cursor:pointer";
 				
-				data['id'] = this.id;
-				data['cls'] = this.cssQuirks(this.cls);
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = style;
-				data['text'] = this.text;
+				data.id = this.id;
+				data.cls = this.cssQuirks(this.cls);
+				data.elementstyle = this.elementStyle;
+				data.style = style;
+				data.text = this.text;
 
-				var  sHTML = this.tpl.render(data);
+				var sHTML = this.tpl.render(data);
 
 				idev.internal.beforeRender(this);
 				$('#' + this.renderTo).append(sHTML);
@@ -9991,8 +10035,7 @@ var idevCore = idevObject.extend({
 					this.text = sHTML.replace(/^\s+|\s+$/g,'');
 				else
 					this.text = sHTML;
-				$("#" + this.id).empty();
-				$("#" + this.id).html(this.text);
+				$("#" + this.id).empty().html(this.text);
 				if (this.title == true) $("#" + this.id).prop('title',this.text);
 			},
 			getText : function()
@@ -10003,7 +10046,7 @@ var idevCore = idevObject.extend({
 			{
 				this.setText(v);
 			},
-			getValue: function(v)
+			getValue: function()
 			{
 				return this.getText();
 			}
@@ -10023,7 +10066,7 @@ var idevCore = idevObject.extend({
 				this.imageHeight = config.imageHeight == null ? this.height : config.imageHeight;
 				this.tpl = new idev.wTemplate(
 					"<div class='ui-element' id='{id}' style='{style}'>",
-						"{prehtml}<img id='{id}-image' class='{cls}' src='{src}' style='width:{width}px;height:{height}px;' title='{title}'/>{html}",
+						"{prehtml}<img id='{id}-image' class='{cls}' src='{src}' style='width:{width}px;height:{height}px;' title='{title}'  tabindex='{tabindex}' />{html}",
 					"</div>" );
 			},
 			render : function()
@@ -10032,23 +10075,25 @@ var idevCore = idevObject.extend({
 				if (this.src == "") return;
 				if (this.src == "undefined") return;
 				if (this.src == null) return;
-				var sHTML = "",style = this.style + this.elementStyle;
+                
+				var style = this.style + this.elementStyle;
 
 				if (this.events.click)  style += "cursor:pointer;";
 
-				var data = new Array();
+				var data = {
+                    id: this.id,
+                    cls: this.cssQuirks(this.cls),
+                    width: this.imageWidth == null ? "" : this.imageWidth,
+                    height: this.imageHeight == null ? "" : this.imageHeight,
+                    src: this.src.toUpperCase() == "BLANK" || this.src == "" ? _preferences.blankimage : this.src,
+                    style: style,
+                    title: this.title,
+                    prehtml: this.prehtml,
+                    html: this.html,
+                    tabindex: this.tabindex
+                };
 
-				data['id'] = this.id;
-				data['cls'] = this.cssQuirks(this.cls);
-				data['width'] = this.imageWidth == null ? "" : this.imageWidth;
-				data['height'] = this.imageHeight == null ? "" : this.imageHeight;
-				data['src'] = this.src.toUpperCase() == "BLANK" || this.src == "" ? _preferences.blankimage : this.src;
-				data['style'] = style;
-				data['title'] = this.title;
-				data['prehtml'] = this.prehtml;
-				data['html'] = this.html;
-
-				var  sHTML = this.tpl.render(data);
+				var sHTML = this.tpl.render(data);
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
 				idev.internal.afterRender(this);
@@ -10071,20 +10116,22 @@ var idevCore = idevObject.extend({
 				else
 				{
 					var tpl = new idev.wTemplate("{prehtml}<img id='{id}-image' class='{cls}' src='{src}' style='width:{width}px;height:{height}px;' title='{title}'/>{html}");
-					var data = new Array();
-	
-					data['id'] = this.id;
-					data['cls'] = this.cssQuirks(this.cls);
-					data['width'] = width;
-					data['height'] = height;
-					data['src'] = sSrc.toUpperCase() == "BLANK" || sSrc == "" ? _preferences.blankimage : sSrc;
-					data['title'] = this.title;
-					data['prehtml'] = this.prehtml;
-					data['html'] = this.html;
-	
+					
+                    var data = {
+                        id: this.id,
+                        cls: this.cssQuirks(this.cls),
+                        width: width,
+                        height: height,
+                        src: sSrc.toUpperCase() == "BLANK" || sSrc == "" ? _preferences.blankimage : sSrc,
+                        title: this.title,
+                        prehtml: this.prehtml,
+                        html: this.html
+                    };
+						
 					var  sHTML = tpl.render(data);
 					$( '#' +  this.id).html(sHTML);
 				}
+				this.src = sSrc;
 			},
 			doLayout: function()
 			{
@@ -10092,8 +10139,7 @@ var idevCore = idevObject.extend({
 				var w = $("#" + this.id).width();
 				var h = $("#" + this.id).height();
 
-				$("#" + this.id + "-image").width(w);
-				$("#" + this.id + "-image").height(h);
+				$("#" + this.id + "-image").width(w).height(h);
 			}
 		}),
 		//------------------------------------------------------------------
@@ -10126,17 +10172,16 @@ var idevCore = idevObject.extend({
 				if (this.renderTo == null) return;
 				if (this.series == null) return;
 				if (this.options == null) return;
-				var sHTML = "",style = this.style + this.elementStyle;
 
-				var data = new Array();
+				var data = {
+                    id: this.id,
+                    width: this.width,
+                    height: this.height,
+                    elementstyle: this.elementStyle,
+                    style: "font-size: 16px,font-family: sans-serif," + this.style
+                };
 
-				data['id'] = this.id;
-				data['width'] = this.width;
-				data['height'] = this.height;
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = "font-size: 16px;font-family: sans-serif;" + this.style;
-
-				var  sHTML = this.tpl.render(data);
+				var sHTML = this.tpl.render(data);
 
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
@@ -10162,8 +10207,7 @@ var idevCore = idevObject.extend({
 				var w = $("#" + this.id).width();
 				var h = $("#" + this.id).height();
 
-				$("#" + this.id + "-chart").width(w);
-				$("#" + this.id + "-chart").height(h);
+				$("#" + this.id + "-chart").width(w).height(h);
 				//this.chart = $.plot($("#"+this.id+"-chart"), this.data, this.options );
 				this.chart.resize();
 				this.chart.setupGrid();
@@ -10192,18 +10236,19 @@ var idevCore = idevObject.extend({
 			{
 				if (this.renderTo == null) return;
 
-				var data = new Array();
+				var data = {
+                    id: this.id, 
+                    width: this.width-2, 
+                    height: this.height, 
+                    barheight: this.height/2, 
+                    sliderheight: this.height-2, 
+                    sliderwidth: this.height/2, 
+                    top: this.height/4, 
+                    elementstyle: this.elementStyle
+                };
 
-				data['id'] = this.id;
-				data['width'] = this.width-2;
-				data['height'] = this.height;
-				data['barheight'] = this.height/2;
-				data['sliderheight'] = this.height-2;
-				data['sliderwidth'] = this.height/2;
-				data['top'] = this.height/4;
-				data['elementstyle'] = this.elementStyle;
+				var sHTML = this.tpl.render(data);
 
-				var  sHTML = this.tpl.render(data);
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
 				idev.internal.afterRender(this);
@@ -10217,7 +10262,7 @@ var idevCore = idevObject.extend({
 					if (e.target.id.indexOf("-slider") != -1)
 					{
 						idev._sliderWidget = idev.get(this.id);
-						mpos = idev.utils.mousePosition(e);
+						var mpos = idev.utils.mousePosition(e);
 						idev._slider = e.target;
 						idev._sliderpos = parseInt(mpos.x);
 						idev._sliding = true;
@@ -10225,12 +10270,11 @@ var idevCore = idevObject.extend({
 						idev._sliderwidth = w - (parseInt($(e.target).css("width").replace("px","")) + 2);
 						e.preventDefault();
 					}
-				});
-				$( '#' +  this.id).mousemove(function(e)
+				}).mousemove(function(e)
 				{
 					if (idev._sliding)
 					{
-						mpos = idev.utils.mousePosition(e);
+						var mpos = idev.utils.mousePosition(e);
 						var dx = parseInt(mpos.x) - idev._sliderpos;
 						var left = parseInt(idev._sliderstart) + parseInt(dx);
 						if (left >= 0 && left < idev._sliderwidth)
@@ -10241,8 +10285,7 @@ var idevCore = idevObject.extend({
 							idev._sliderWidget.events.onchange(idev._sliderWidget,idev._sliderWidget.getValue());
 						}
 					}
-				});
-				$( '#' +  this.id).mouseup(function(e)
+				}).mouseup(function(e)
 				{
 					idev._sliding = false;
 				});
@@ -10312,12 +10355,9 @@ var idevCore = idevObject.extend({
 				var w = $("#" + this.id).width();
 				var h = $("#" + this.id).height();
 
-				$("#" + this.id + "-bar").width(w-2);
-				$("#" + this.id + "-bar").css("top",h/4);
-				$("#" + this.id + "-bar").height(h/2);
+				$("#" + this.id + "-bar").width(w-2).css("top",h/4).height(h/2);
 
-				$("#" + this.id + "-slider").width(h/2);
-				$("#" + this.id + "-slider").height(h-2);
+				$("#" + this.id + "-slider").width(h/2).height(h-2);
 
 				this.setValue(this.value);
 			},
@@ -10350,17 +10390,17 @@ var idevCore = idevObject.extend({
 			{
 				if (this.renderTo == null) return;
 
-				var data = new Array();
-
-				data['id'] = this.id;
-				data['width'] = this.width-2;
-				data['height'] = this.height;
-				data['pheight'] = this.height-2;
-				data['progressheight'] = this.height-2;
-				data['progresswidth'] = 0;
-				data['elementstyle'] = this.elementStyle;
-
-				var  sHTML = this.tpl.render(data);
+				var data = {
+                    id: this.id,
+                    width: this.width-2,
+                    height: this.height,
+                    pheight: this.height-2,
+                    progressheight: this.height-2,
+                    progresswidth: 0,
+                    elementstyle: this.elementStyle
+                };
+				
+				var sHTML = this.tpl.render(data);
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
 				if (this.roundCorners)
@@ -10397,8 +10437,7 @@ var idevCore = idevObject.extend({
 				var w = $("#" + this.id).width();
 				var h = $("#" + this.id).height();
 
-				$("#" + this.id + "-bar").width(w);
-				$("#" + this.id + "-bar").height(h);
+				$("#" + this.id + "-bar").width(w).height(h);
 				$("#" + this.id + "-progress").height(h);
 				this.setValue(this.value);
 			},
@@ -10428,21 +10467,24 @@ var idevCore = idevObject.extend({
 			{
 				if (this.renderTo == null) return;
 
-				var data = new Array();
-				var wgt = this;
+				var data = {
+                    id: this.id,
+                    width: this.width,
+                    height: this.height,
+                    src: this.src,
+                    elementstyle: this.elementStyle,
+                    style: this.style
+                };
 
-				data['id'] = this.id;
-				data['width'] = this.width;
-				data['height'] = this.height;
-				data['src'] = this.src;
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = this.style;
-
-				var  sHTML = this.tpl.render(data);
+				var sHTML = this.tpl.render(data);
+                
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
 				idev.internal.afterRender(this);
+                
 				this.rendered = true;
+
+                var wgt = this;
 				$('#'+this.id+'-frame').load(function()
 				{
 					if (wgt.events.loaded) wgt.events.loaded(wgt);
@@ -10499,8 +10541,7 @@ var idevCore = idevObject.extend({
 
 				if (!this.noResize)
 				{
-					$("#" + this.id + "-frame").width(w);
-					$("#" + this.id + "-frame").height(h);
+					$("#" + this.id + "-frame").width(w).height(h);
 				}
 			}
 		}),
@@ -10525,23 +10566,25 @@ var idevCore = idevObject.extend({
 			{
 				if (this.renderTo == null) return;
 
-				var data = new Array();
-				var wgt = this;
+				var data = {
+                    id: this.id,
+                    width: this.width,
+                    height: this.height,
+                    src: this.src,
+                    type: this.type,
+                    elementstyle: this.elementStyle,
+                    style: this.style,
+                    fallback: this.fallback
+                };
+				
+				var sHTML = this.tpl.render(data);
 
-				data['id'] = this.id;
-				data['width'] = this.width;
-				data['height'] = this.height;
-				data['src'] = this.src;
-				data['type'] = this.type;
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = this.style;
-				data['fallback'] = this.fallback;
-
-				var  sHTML = this.tpl.render(data);
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
 				idev.internal.afterRender(this);
+
 				this.rendered = true;
+                
 				$('#'+this.id+'-object').ready(function()
 				{
 					// Wait for content to render
@@ -10567,8 +10610,7 @@ var idevCore = idevObject.extend({
 
 				if (!this.noResize)
 				{
-					$("#" + this.id + "-object").width(w);
-					$("#" + this.id + "-object").height(h);
+					$("#" + this.id + "-object").width(w).height(h);
 				}
 			}
 		}),
@@ -10706,7 +10748,6 @@ var idevCore = idevObject.extend({
 					{
 						var col = this.cm.getAt(c);
 						var w = col.width;
-						var sp = 3;
 						var sHeader = col.header;
 						var id = this.id + "-header-" + c;
 	
@@ -10754,7 +10795,7 @@ var idevCore = idevObject.extend({
 						for (var c = 0, countC = this.cm.getCount();c < countC;c++)
 						{
 							var col = this.cm.getAt(c);
-							var data = new Array();
+							var data = {};
 							var style = "";
 
 							col.index = c;
@@ -10763,21 +10804,21 @@ var idevCore = idevObject.extend({
 							if (col.renderer != null)
 							{
 								col.parent = this;
-								data['value'] = col.renderer(rec.get(col.field),rec,row,c,col);
+								data.value = col.renderer(rec.get(col.field),rec,row,c,col);
 							}
 							else
 							{
-								data['value'] = rec.get(col.field);
+								data.value = rec.get(col.field);
 							}
 							if (col.style != null) style += col.style;
-							data['id'] = this.id;
-							data['style'] = style + ( col.style || "" );
-							if (r % 2) data['cls'] = this.altCls;
-							if (col.noselect) data['cls'] = null;
-							data['row'] = r;
-							data['col'] = c;
-							data['width'] = col.width-5;
-							data['height'] = this.rowHeight;
+							data.id = this.id;
+							data.style = style + ( col.style || "" );
+							if (r % 2) data.cls = this.altCls;
+							if (col.noselect) data.cls = null;
+							data.row = r;
+							data.col = c;
+							data.width = col.width-5;
+							data.height = this.rowHeight;
 							var value = col.render(data, rec, r, c);
 							sHTML += "<td id='" + this.id + "_" + r + "_" + c + "' style='width:" + col.width + "px;max-width:" + col.width + "px;'>" + value + "</td>";
 						}
@@ -10803,21 +10844,22 @@ var idevCore = idevObject.extend({
 				if (this.tbar) this.bodyheight = this.bodyheight - (parseInt(this.tbarHeight));
 				if (this.bbar) this.bodyheight = this.bodyheight - (parseInt(this.bbarHeight));
 
-				var data = new Array();
-				data['id'] = this.id;
-				data['cls'] = this.cssQuirks(this.cls);
-				data['width'] = this.width;
-				data['height'] = this.bodyheight - this.headerHeight - this.tbarHeight -  this.bbarHeight;
-				data['bodyheight'] = this.bodyheight;
-				data['tbarheight'] = this.tbarHeight;
-				data['tbarcls'] = this.cssQuirks(this.tbarCls,bModern);;
-				data['tbarstyle'] = this.tbarStyle;
-				data['bbarheight'] = this.bbarHeight;
-				data['bbarcls'] = this.cssQuirks(this.bbarCls,bModern);;
-				data['bbarstyle'] = this.bbarStyle;
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = this.style;
-
+				var data = {
+                    id: this.id,
+                    cls: this.cssQuirks(this.cls),
+                    width: this.width,
+                    height: this.bodyheight - this.headerHeight - this.tbarHeight -  this.bbarHeight,
+                    bodyheight: this.bodyheight,
+                    tbarheight: this.tbarHeight,
+                    tbarcls: this.cssQuirks(this.tbarCls, bModern),
+                    tbarstyle: this.tbarStyle,
+                    bbarheight: this.bbarHeight,
+                    bbarcls: this.cssQuirks(this.bbarCls, bModern),
+                    bbarstyle: this.bbarStyle,
+                    elementstyle: this.elementStyle,
+                    style: this.style
+                };
+				
 				var sHTML = this.tpl.render(data);
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
@@ -10916,7 +10958,7 @@ var idevCore = idevObject.extend({
 					{
 
 						col.edit(row,c);
-						wgt.editCol = col
+						wgt.editCol = col;
 						$("#"+wgt.id).focus();
 						$delay(100,function(id)
 						{
@@ -10924,10 +10966,10 @@ var idevCore = idevObject.extend({
 							var w=$get(id);
 							w.focus();
 							if(w.wtype=='combo')
-								w.events.selected=function(w){
-									wgt.editCol.endEdit(row);
-									wgt.editCol = null;
-								}
+								w.events.selected = function (w) {
+                                    wgt.editCol.endEdit(row);
+                                    wgt.editCol = null;
+                                };
 
 							else
 								w.events.lostfocus = function(w){
@@ -10971,8 +11013,7 @@ var idevCore = idevObject.extend({
 							if(e.which==13){//enter
 								if(wgt.cm.getAt(c).editor) {
 									var enterEdit = wgt.id + "-cell-" + (row) + "-" + (c);
-									$('#' + enterEdit).focus();
-									$('#' + enterEdit).dblclick();
+									$('#' + enterEdit).focus().dblclick();
 								} else {
 									moveto = wgt.id + "-cell-" + (row) + "-" + (c);
 								}
@@ -10983,8 +11024,7 @@ var idevCore = idevObject.extend({
 								$('#' + moveto).click();
 							});
 						}
-					});
-					$('#' + cellid).blur(function(){
+					}).blur(function(){
 						$('#' + cellid).unbind();
 					});
 					if (col.events != null)
@@ -11035,7 +11075,7 @@ var idevCore = idevObject.extend({
 					if (wgt.editClicks == 2 && col.editor)
 					{
 						col.edit(row,c);
-						wgt.editCol = col
+						wgt.editCol = col;
 						$("#"+wgt.id).focus();
 						$delay(100,function(id)
 						{
@@ -11067,7 +11107,7 @@ var idevCore = idevObject.extend({
 				if (this.showHeader)
 				{
 					tpl = new idev.wTemplate(
-						"<div id='{id}-header' class='ui-grid-header' style='height:{headerheight}px;overflow:none;'>",
+						"<div id='{id}-header' class='ui-grid-header' style='height:{headerheight}px;'>",
 						"{header}",
 						"</div>",
 						"<div id='{id}-data' class='ui-grid-data' style='width:{width}px;height:{height}px;overflow:auto;'>",
@@ -11083,25 +11123,29 @@ var idevCore = idevObject.extend({
 				}
 				if (this.border) this.style += "border:" + this.borderStyle;
 				this.build();
-				var data = new Array();
-				data['id'] = this.id;
-				data['width'] = this.width;
-				data['headerwidth'] = this.width + 250;
-				data['height'] = this.height - this.headerHeight - this.tbarHeight -  this.bbarHeight;
-				data['headerheight'] = this.headerHeight;
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = this.style;
-				data['header'] = this.htmlHeader;
-				data['data'] = this.htmlData;
-
+				var data = {
+                    id: this.id,
+                    width: this.width,
+                    headerwidth: this.width + 250,
+                    height: this.height - this.headerHeight - this.tbarHeight -  this.bbarHeight,
+                    headerheight: this.headerHeight,
+                    elementstyle: this.elementStyle,
+                    style: this.style,
+                    header: this.htmlHeader,
+                    data: this.htmlData
+                };
+				
 				var topoffset = 0;
 				var leftoffset = 0;
 				
 				if (bInitial) this.selectedRow = -1;
+                var dataElem = $("#"+this.id + "-data");
+                var id, col, widgetElem, sID;
+                widgetElem = $("#"+this.id);
 				if(this.selectedRow > -1)
 				{
-					topoffset = $("#"+this.id + "-data").scrollTop();
-					leftoffset = $("#"+this.id + "-data").scrollLeft();
+					topoffset = dataElem.scrollTop();
+					leftoffset = dataElem.scrollLeft();
 				}
 				var sHTML = tpl.render(data);
 
@@ -11112,24 +11156,24 @@ var idevCore = idevObject.extend({
 				{
 					for (var c = 0, count = this.cm.getCount();c < count;c++)
 					{
-						var col = this.cm.getAt(c);
+						col = this.cm.getAt(c);
 						if (col.noselect) continue;
-						var id = this.id + "-cell-" + this.selectedRow + "-" + c;
+						id = this.id + "-cell-" + this.selectedRow + "-" + c;
 						$('#'+id).addClass("ui-grid-cell-select");
 					}
 					if(topoffset > 0 || leftoffset > 0)
 					{
-					$("#"+this.id + "-data").scrollTop(topoffset);
-					$("#"+this.id + "-data").scrollLeft(leftoffset);
+                        dataElem.scrollTop(topoffset);
+                        dataElem.scrollLeft(leftoffset);
 					}
 				}
 				if (this.events.contextMenu || this.events.contextmenu) this.addEvent("contextmenu",idev.internal.onContextMenu);
 				for (var c = 0, count = this.cm.getCount();c < count;c++)
 				{
-					var col = this.cm.getAt(c);
+					col = this.cm.getAt(c);
 					if (typeof this.events.headerClick == "function")
 					{
-						var id = this.id + "-header-" + c;
+						id = this.id + "-header-" + c;
 
 						$("#"+id).click({ 'widget':this, 'column':col },function(e)
 						{
@@ -11141,29 +11185,28 @@ var idevCore = idevObject.extend({
 				{
 					for (var c = 0;c < this.cm.getCount();c++)
 					{
-						var id = this.id + "-cell-" + r + "-" + c;
+						id = this.id + "-cell-" + r + "-" + c;
 
-						$("#"+id).click(this.cellClick);
-						$("#"+id).dblclick(this.cellDblClick);
+						widgetElem.click(this.cellClick);
+                        widgetElem.dblclick(this.cellDblClick);
 					}
 				}
 				$( '#' +  this.id + "-data" ).scroll(function()
 				{
 					var p = this.id.indexOf("-");
-					var sID = this.id.substr(0,p);
+					sID = this.id.substr(0,p);
 					var wgt = idev.get(sID);
 					if (wgt.showHeader)
 					{
-						var sID = this.id.replace("-data","") + "-header";
-						var w = $("#" + this.id).width()
+						sID = this.id.replace("-data","") + "-header";
 	
-						pos = this.scrollLeft;
+						var pos = this.scrollLeft;
 						$("#" + sID).scrollLeft(pos);
 					}
 				});
 				for (var c = 0, count = this.cm.getCount();c < count;c++)
 				{
-					var col = this.cm.getAt(c);
+					col = this.cm.getAt(c);
 					col.parent = this;
 					if (col.events != null)
 					{
@@ -11197,16 +11240,14 @@ var idevCore = idevObject.extend({
 				var colObj = this.cm.getAt(col);
 				if (!colObj.noselect) $('#'+id).addClass("ui-grid-cell-select-active");
 				var tabKey = false;
-				var arrowKey = false
+				var arrowKey = false;
 				$('#'+id).keydown(function(e){
 					if(e.which == 9) tabKey = true;
 					if(e.which>36 && e.which<41 || e.which==13) arrowKey = true;
-				});
-				$('#'+id).keyup(function(e){
+				}).keyup(function(e){
 					if(e.which == 9) tabKey = false;
 					if(e.which>36 && e.which<41 || e.which==13) arrowKey = false;
-				});
-				$('#'+id).blur(function()
+				}).blur(function()
 				{
 					if(tabKey) {
 						col = parseInt(col);
@@ -11243,7 +11284,7 @@ var idevCore = idevObject.extend({
 			{
 				if (this.selectedRow != -1)
 				{
-					var count = this.cm.getCount()
+					var count = this.cm.getCount();
 					while(count--) {
 						var id = this.id + "-cell-" + this.selectedRow + "-" + count;
 						$('#'+id).removeClass("ui-grid-cell-select");
@@ -11279,8 +11320,7 @@ var idevCore = idevObject.extend({
 
 				var w = $("#" + this.id).width();
 				var h = $("#" + this.id).height();
-				$("#" + this.id + "-data").height(h - this.headerHeight);
-				$("#" + this.id + "-data").width(w);
+				$("#" + this.id + "-data").height(h - this.headerHeight - this.tbarHeight - this.bbarHeight).width(w);
 			}
 		}),
 		//------------------------------------------------------------------
@@ -11347,26 +11387,26 @@ var idevCore = idevObject.extend({
 					{
 						sTabs += "<li class='ui-tab ie9gradient' style='width:" + this.tabWidth + "px;height:"+(this.tabHeight-2)+"px;" + this.tabStyle + ";' id='" + this.id + "-tab" + i + "' >" + title + "</li>";
 					}
-					sPanels += "<div class='ui-tab-content' style='display:none;width:{width}px;height:{height}px;' id='" +  this.id + "-panel" + i + "'>";
+					sPanels += "<div class='ui-tab-panel' style='display:none;width:{width}px;height:{height}px;' id='" +  this.id + "-panel" + i + "'>";
 					sPanels += "</div>";
 				}
 				this.visibleTabs = Math.floor((this.width - (this.tabScrollWidth*2))/this.tabWidth);
-				var data = new Array();
-
-				data['id'] = this.id;
-				data['width'] = this.width-2;
-				data['height'] = this.height-this.tabHeight;
-				data['contentwidth'] = this.width-2;
-				data['contentheight'] = this.height-this.tabHeight-2;
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = this.style;
-				data['contentstyle'] = this.contentStyle;
-				data['tabheight'] = this.tabHeight;
-				data['tabwidth'] = this.tabWidth;
-				data['tabs'] = sTabs;
-				data['panels'] = sPanels;
-
-				var  sHTML = this.tpl.render(data);
+				var data = {
+                    id: this.id,
+                    width: this.width-2,
+                    height: this.height-this.tabHeight,
+                    contentwidth: this.width-2,
+                    contentheight: this.height-this.tabHeight-2,
+                    elementstyle: this.elementStyle,
+                    style: this.style,
+                    contentstyle: this.contentStyle,
+                    tabheight: this.tabHeight,
+                    tabwidth: this.tabWidth,
+                    tabs: sTabs,
+                    panels: sPanels
+                };
+				
+				var sHTML = this.tpl.render(data);
 
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
@@ -11463,7 +11503,7 @@ var idevCore = idevObject.extend({
 				}
 				else
 					sTab = "<li style='width:" + this.tabWidth + "px;" + this.tabStyle + ";' id='" + this.id + "-tab" + this.widgets.length + "' >" + o.title + "</li>";
-				var sPanel = "<div class='ui-tab-content' style='display:none;' id='" +  this.id + "-panel" + this.widgets.length + "'></div>";
+				var sPanel = "<div style='display:none;' id='" +  this.id + "-panel" + this.widgets.length + "'></div>";
 				o.renderTo = this.id + "-panel" + tab;
 				o.title = null;
 				o.width = this.width-2;
@@ -11480,7 +11520,7 @@ var idevCore = idevObject.extend({
 				$("#"+this.id + "-tabclose" + tab).click(this,function(ev)
 				{
 					var tab = this.id.replace(ev.data.id+"-tabclose","");
-					widget.closeTab(tab)
+					widget.closeTab(tab);
 					return false;
 				});
 				this.widgets.push(o);
@@ -11499,12 +11539,12 @@ var idevCore = idevObject.extend({
 					}
 				}
 			},
-			closeTab: function(tab)
+			closeTab: function(tab,force)
 			{
 				if (typeof tab == "string") tab = parseInt(tab);
 				if (tab < 0 || tab >= this.widgets.length) return false;
 
-				if (this.events.beforeCloseTab)
+				if (this.events.beforeCloseTab && !force)
 				{
 					if (this.events.beforeCloseTab(this,tab) === false) return;
 				}
@@ -11512,8 +11552,11 @@ var idevCore = idevObject.extend({
 				$("#"+id).remove();
 				id = this.id + "-panel" + tab;
 				$("#"+id).remove();
-				if(this.widgets[tab].id != null) try {$get(this.widgets[tab].id).destroy() } catch(e) {};
-				for (var i = tab+1;i < this.widgets.length;i++)
+                if (this.widgets[tab].id != null) try {
+                    $get(this.widgets[tab].id).destroy()
+                } catch (e) {
+                }
+                for (var i = tab+1;i < this.widgets.length;i++)
 				{
 					// Renumber tab elements
 					var id = this.id + "-tab" + i;
@@ -11570,6 +11613,8 @@ var idevCore = idevObject.extend({
 				var rightID = "#"+this.id + "-tabright-body";
 				var leftTabID = "#"+this.id + "-tableft";
 				var rightTabID = "#"+this.id + "-tabright";
+                var sShowID = "";
+                var sHideID = "";
 
 				if (this.widgets.length == 0) return;
 				if (typeof this.events.beforeShowTab == "function")
@@ -11581,8 +11626,8 @@ var idevCore = idevObject.extend({
 					if (this.startTab == 0) return;
 					this.startTab--;
 
-					var sShowID = this.id + "-tab" + this.startTab;
-					var sHideID = this.id + "-tab" + (this.startTab + this.visibleTabs);
+					sShowID = this.id + "-tab" + this.startTab;
+					sHideID = this.id + "-tab" + (this.startTab + this.visibleTabs);
 
 					$("#"+sHideID).css("display","none");
 					$("#"+sShowID).css("display","block");
@@ -11597,8 +11642,8 @@ var idevCore = idevObject.extend({
 				{
 					if (this.startTab + 1 + this.visibleTabs > this.widgets.length) return;
 
-					var sHideID = this.id + "-tab" + this.startTab;
-					var sShowID = this.id + "-tab" + (this.startTab + this.visibleTabs);
+					sHideID = this.id + "-tab" + this.startTab;
+					sShowID = this.id + "-tab" + (this.startTab + this.visibleTabs);
 
 					$("#"+sHideID).css("display","none");
 					$("#"+sShowID).css("display","block");
@@ -11615,8 +11660,8 @@ var idevCore = idevObject.extend({
 				while (tab < this.startTab)
 				{
 					this.startTab--;
-					var sShowID = this.id + "-tab" + this.startTab;
-					var sHideID = this.id + "-tab" + (this.startTab + this.visibleTabs);
+					sShowID = this.id + "-tab" + this.startTab;
+					sHideID = this.id + "-tab" + (this.startTab + this.visibleTabs);
 
 					$("#"+sHideID).css("display","none");
 					$("#"+sShowID).css("display","block");
@@ -11628,10 +11673,10 @@ var idevCore = idevObject.extend({
 				}
 				while (tab > this.startTab+this.visibleTabs-1)
 				{
-						var sHideID = this.id + "-tab" + this.startTab;
-						var sShowID = this.id + "-tab" + (this.startTab + this.visibleTabs);
-						$("#"+sHideID).css("display","none");
-						$("#"+sShowID).css("display","block");
+					sHideID = this.id + "-tab" + this.startTab;
+					sShowID = this.id + "-tab" + (this.startTab + this.visibleTabs);
+					$("#"+sHideID).css("display","none");
+					$("#"+sShowID).css("display","block");
 
 					$(leftID).addClass("ui-tab-scroll-active");
 					$(rightTabID).width(this.tabScrollWidth);
@@ -11652,16 +11697,17 @@ var idevCore = idevObject.extend({
 				{
 					$("#"+this.id + "-tabclose" +  tab ).css("display","block");
 				}
-				activeTab = this.id + "-panel" + this.activeTab;
+				var activeTab = this.id + "-panel" + this.activeTab;
+                var wgt;
 				if (this.widgets[tab].deferredRender)
 				{
-					var sID = this.id + "-panel" + tab;
+					sID = this.id + "-panel" + tab;
 					var element = this.widgets[tab];
 					element.deferredRender = false;
 					element.parent = this;
 					idev.internal.renderWidget( this.page, element );
 					$("#" + activeTab).show(); //Fade in the active ID content
-					var wgt = $get(element.id);
+					wgt = $get(element.id);
 					if (wgt.events)
 					{
 						if(wgt.events.show) 
@@ -11673,7 +11719,7 @@ var idevCore = idevObject.extend({
 				else
 				{
 					$("#" + activeTab).show(); //Fade in the active ID content
-					var wgt = $get(this.widgets[tab].id);
+					wgt = $get(this.widgets[tab].id);
 					if (wgt.events)
 					{
 						if(wgt.events.show) 
@@ -11686,6 +11732,29 @@ var idevCore = idevObject.extend({
 				{
 					this.events.showTab(this,activeTab);
 				}
+			},
+			getTabTitle:function(tabindex)
+			{
+				if(!tabindex || isNaN(tabindex)) return;
+
+				if(this.widgets && this.widgets[tabindex])
+				{
+					if(this.widgets[tabindex].tabTitle)
+						return this.widgets[tabindex].tabTitle;
+				}
+				return false;
+			},
+			getActiveTab:function()
+			{
+				if(this.widgets[this.activeTab])
+					return this.widgets[this.activeTab];
+				return false;
+			},
+			getTab:function(tabindex)
+			{
+				if(this.widgets[tabindex])
+					return this.widgets[tabindex];
+				return false;
 			},
 			onshow:function()
 			{
@@ -11720,11 +11789,9 @@ var idevCore = idevObject.extend({
 				this.yoffset = config.yoffset == null ? -5 : config.yoffset;
 				this.title = config.title || "";
 				this.tpl = new idev.wTemplate(
-						"<div id='{id}' class='ui-element {cls}' style='{elementstyle};{style}' title='{title}'>",
+						"<div id='{id}' class='ui-element {cls}' style='{elementstyle};{style}' title='{title}' tabindex='{tabindex}'>",
 						"</div>"
 					);
-
-				
 			},
 			drawIcon:function()
 			{
@@ -11762,14 +11829,18 @@ var idevCore = idevObject.extend({
 			{
 				if (this.renderTo == null) return;
 				if (this.icon == "") return;
-				var data = new Array();
-				data['id'] = this.id;
-				data['width'] = this.width;
-				data['height'] = this.height;
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = this.style  + (this.events.click ? "cursor:pointer;" : "");
-				data['cls'] = "";
-				data['title'] =  this.title;
+                
+				var data = {
+                    id: this.id,
+                    width: this.width,
+                    height: this.height,
+                    elementstyle: this.elementStyle,
+                    style: this.style  + (this.events.click ? "cursor:pointer," : ""),
+                    cls: "",
+                    title:  this.title,
+                    tabindex: this.tabindex
+                };
+				                
 				var sHTML = this.tpl.render(data);
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
@@ -11777,6 +11848,8 @@ var idevCore = idevObject.extend({
 				idev.utils.delay(100,function(widget)
 				{
 					widget.drawIcon();
+					if(widget.tabindex > -1)
+						$('#' + widget.id).children().attr('focusable', false);
 					idev.internal.afterRender(widget);
 				},this);
 				this.rendered = true;
@@ -11806,25 +11879,25 @@ var idevCore = idevObject.extend({
 				if (this.renderTo == null) return;
 				if (this.tpl == null) return;
 
-				var data = new Array();
-
-				data['id'] = this.id;
-				data['bodystyle'] = this.bodyStyle;
-				data['width'] = this.width;
-				data['height'] = this.height;
-				data['text'] = this.text;
-				data['color'] = this.color;
+				var data = {
+                    id: this.id,
+                    bodystyle: this.bodyStyle,
+                    width: this.width,
+                    height: this.height,
+                    text: this.text,
+                    color: this.color
+                };
+				                
 				if ( this.data != null )
 				{
-					for (var i = 0;i < this.data.length;i++)
-					{
-						data.push( this.data[i] );
-					}
+					for (var key in this.data)
+                    {
+                        data[key] = this.data[key];
+                    }
 				}
-				var sDIV = "<div id='{id}' class='ui-element'>";
 
-				sDIV = "<div id='{id}' class='ui-element' style='" + this.elementStyle + ";"+this.style+"'>";
-				var  sHTML = sDIV + this.tpl.render(data) + "</div>";
+				var sDIV = "<div id='{id}' class='ui-element' style='" + this.elementStyle + ";"+this.style+"'>";
+				var sHTML = sDIV + this.tpl.render(data) + "</div>";
 				sHTML = sHTML.replace("{id}",this.id);
 				idev.internal.beforeRender(this);
 				$('#' +this.renderTo).append(sHTML);
@@ -11873,22 +11946,24 @@ var idevCore = idevObject.extend({
 						this.width = this.parent.getWidth();
 					}
 				}
-				var data = new Array();
-
-				data['id'] = this.id;
-				data['bodystyle'] = this.bodyStyle;
-				data['width'] = this.width;
-				data['height'] = this.height;
-				data['text'] = this.text;
-				data['color'] = this.color;
+                
+				var data = {
+                    id: this.id,
+                    bodystyle: this.bodyStyle,
+                    width: this.width,
+                    height: this.height,
+                    text: this.text,
+                    color: this.color
+                };
+				                
 				if ( this.data != null )
 				{
-					for (var i = 0;i < this.data.length;i++)
-					{
-						data.push( this.data[i] );
-					}
+                    for (var key in this.data)
+                    {
+                        data[key] = this.data[key];
+                    }
 				}
-				sHTML = "<div id='{id}' class='ui-element "+this.cssQuirks(this.cls)+"' style='" + this.elementStyle + ";"+this.style+"'></div>";
+				var sHTML = "<div id='{id}' class='ui-element "+this.cssQuirks(this.cls)+"' style='" + this.elementStyle + ";"+this.style+"'></div>";
 				sHTML = sHTML.replace("{id}",this.id);
 				idev.internal.beforeRender(this);
 				$('#' +this.renderTo).append(sHTML);
@@ -11956,8 +12031,7 @@ var idevCore = idevObject.extend({
 				if(!spacerFound && variableID)
 				{
 
-					$("#"+variableID).width(0);
-					$("#"+variableID).css("max-width",0);
+					$("#"+variableID).width(0).css("max-width",0);
 				}
 
 				if (spacerFound || variableID)
@@ -11971,8 +12045,7 @@ var idevCore = idevObject.extend({
 						if(spacer<0) spacer =0;
 						if(spacerFound) var id = wgt.id + "-spacer";
 						else var id = variableID;
-						$("#"+id).width(spacer);
-						$("#"+id).css("max-width",spacer);
+						$("#"+id).width(spacer).css("max-width",spacer);
 					},this);
 				}
 			}
@@ -11996,13 +12069,16 @@ var idevCore = idevObject.extend({
 			render : function()
 			{
 				if (this.renderTo == null) return;
-				var data = new Array();
-				data['id'] = this.id;
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = this.style;
-				data['width'] = this.width || 1;
-				data['height'] = this.height || 1;
-				var  sHTML = this.tpl.render(data);
+                
+				var data = {
+                    id: this.id,
+                    elementstyle: this.elementStyle,
+                    style: this.style,
+                    width: this.width || 1,
+                    height: this.height || 1
+                };
+				
+				var sHTML = this.tpl.render(data);
 				idev.internal.beforeRender(this);
 				$('#' +this.renderTo).append(sHTML);
 				this.rendered = true;
@@ -12027,13 +12103,13 @@ var idevCore = idevObject.extend({
 				if (this.renderTo == null) return;
 				if (this.html == null) return;
 
-				var data = new Array();
-
-				data['id'] = this.id;
-				data['elementstyle'] = this.elementStyle;
-				data['html'] = this.html;
-
-				var  sHTML = this.tpl.render(data);
+				var data = {
+                    id: this.id,
+                    elementstyle: this.elementStyle,
+                    html: this.html
+                };
+				
+                var sHTML = this.tpl.render(data);
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
 				idev.internal.afterRender(this);
@@ -12050,12 +12126,10 @@ var idevCore = idevObject.extend({
 				this.paper = null;
 
 				this.tpl = new idev.wTemplate(
-						"<div id='{id}' class='ui-element{cls}' style='width:{width}px;height:{height}px;{style}'>",
-						"{text}",
-						"</div>"
-					);
-
-				
+                    "<div id='{id}' class='ui-element{cls}' style='width:{width}px;height:{height}px;{style}'>",
+                    "{text}",
+                    "</div>"
+                );			
 			},
 			render : function()
 			{
@@ -12063,15 +12137,15 @@ var idevCore = idevObject.extend({
 
 				if (this.renderTo == null) return;
 
-				var data = new Array();
-
-				data['id'] = this.id;
-				data['cls'] = this.cssQuirks(this.cls);
-				data['style'] = style;
-				data['width'] = this.width;
-				data['height'] = this.height;
-
-				var  sHTML = this.tpl.render(data);
+				var data = {
+                    id: this.id,
+                    cls: this.cssQuirks(this.cls),
+                    style: style,
+                    width: this.width,
+                    height: this.height
+                };
+				
+				var sHTML = this.tpl.render(data);
 
 				$("#" + this.renderTo).append(sHTML);
 
@@ -12125,8 +12199,8 @@ var idevCore = idevObject.extend({
 					"{item}",
 					"</tr>",
 					"</table>",
-					"</div>" );
-				
+					"</div>"
+                );
 			},
 			render : function()
 			{
@@ -12160,16 +12234,16 @@ var idevCore = idevObject.extend({
 					sItem = "<td id='" + this.id + "-text' align='left' valign=center width='" + (this.width-this.widgetWidth) + "'><div class='ui-listbox-text' style='" + this.textStyle + "'>" + this.html + "</div></td><td id='" + this.id + "-widget' width=" + this.widgetWidth + "></td>";
 				}
 
-				var data = new Array();
+				var data = {
+                    id: this.id,
+                    cls: sCls,
+                    width: this.width,
+                    itemheight: this.itemHeight,
+                    style: style,
+                    item: sItem
+                };
 
-				data['id'] = this.id;
-				data['cls'] = sCls;
-				data['width'] = this.width;
-				data['itemheight'] = this.itemHeight;
-				data['style'] = style;
-				data['item'] = sItem;
-
-				var  sHTML = this.tpl.render(data);
+				var sHTML = this.tpl.render(data);
 
 				$("#" + this.renderTo + "-body").append(sHTML);
 				if (this.widget)
@@ -12201,8 +12275,7 @@ var idevCore = idevObject.extend({
 							if (widget.events.click)
 								widget.events.click(widget,widget.index,e);
 					}
-				});
-				$( '#' +  this.id ).dblclick(function(e)
+				}).dblclick(function(e)
 				{
 					var widget = idev.get(this.id);
 					if (widget.enabled)
@@ -12248,33 +12321,34 @@ var idevCore = idevObject.extend({
 				this.background = config.background == null ? true : config.background;
 
 				this.tpl = new idev.wTemplate(
-						"<div id='{id}' class='ui-element ui-listbox {extracls} {cls}' style='overflow:hidden;{elementstyle};{style}'>",
-						"<div id='{id}-header' class='{headercls}' style='max-width:{width}px;width:{width}px;height:{titleheight}px;{titlestyle}text-align:center;'>",
-						"{title}",
-						"</div>",
-						"<div id='{id}-body' class='{bodycls}' style='width:{width}px;'>",
-						"</div>",
-						"</div>"
-					);
-				
+                    "<div id='{id}' class='ui-element ui-listbox {extracls} {cls}' style='overflow:hidden;{elementstyle};{style}'>",
+                    "<div id='{id}-header' class='{headercls}' style='max-width:{width}px;width:{width}px;height:{titleheight}px;{titlestyle}text-align:center;'>",
+                    "{title}",
+                    "</div>",
+                    "<div id='{id}-body' class='{bodycls}' style='width:{width}px;'>",
+                    "</div>",
+                    "</div>"
+                );
 			},
 			render : function()
 			{
 				if (this.renderTo == null) return;
-				var data = new Array();
-				data['id'] = this.id;
-				data['width'] = this.width;
-				data['height'] = this.height;
-				data['titleheight'] = this.titleHeight;
-				data['titlestyle'] = this.titleStyle;
-				data['extracls'] = "curved";
-				data['cls'] = this.cssQuirks(this.cls);
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = this.style;
-				data['headercls'] = "ui-listbox-header ie9gradient";
-				data['title'] = this.title;
-				data['bodycls'] = "ui-listbox-body";
-
+                
+				var data = {
+                    id: this.id,
+                    width: this.width,
+                    height: this.height,
+                    titleheight: this.titleHeight,
+                    titlestyle: this.titleStyle,
+                    extracls: "curved",
+                    cls: this.cssQuirks(this.cls),
+                    elementstyle: this.elementStyle,
+                    style: this.style,
+                    headercls: "ui-listbox-header ie9gradient",
+                    title: this.title,
+                    bodycls: "ui-listbox-body"
+                };
+				
 				var sHTML = this.tpl.render(data);
 
 				idev.internal.beforeRender(this);
@@ -12309,13 +12383,12 @@ var idevCore = idevObject.extend({
 			get : function( index )
 			{
 				if (index < 0) return null;
-				if (index >= this.items.length) return null
+				if (index >= this.items.length) return null;
 				return this.items[index].wgt ;
 			},
 			doLayout: function()
 			{
 				var w = $("#" + this.id).width();
-				var h = $("#" + this.id).height();
 
 				$("#" + this.id + "-header").width(w);
 				$("#" + this.id + "-body").width(w);
@@ -12376,7 +12449,7 @@ var idevCore = idevObject.extend({
 			{
 				var sHTML = "";
 
-				var tpldata = new Array();
+				var tpldata = {};
 
 				for (var i = this.offset, count = this.ds.getCount();i < count && i < this.offset + this.limit;i++)
 				{
@@ -12419,13 +12492,13 @@ var idevCore = idevObject.extend({
 							}  
 						}						
 						if (this.renderer) sEntry = this.renderer(this,sEntry,rec,i);
-						tpldata['id'] = this.id + "_" + i;
-						tpldata['width'] = this.width;
-						tpldata['entry'] = sEntry;
-						tpldata['itemstyle'] = this.itemStyle;
-						tpldata['itemcls'] = this.itemCls;
+						tpldata.id = this.id + "_" + i;
+						tpldata.width = this.width;
+						tpldata.entry = sEntry;
+						tpldata.itemstyle = this.itemStyle;
+						tpldata.itemcls = this.itemCls;
 						if (this.events.click) style = "cursor:pointer;";
-						tpldata['style'] = style;
+						tpldata.style = style;
 						if(this.metaData){
 							for(var k in this.metaData){
 								tpldata[k] = this.metaData[k];
@@ -12436,13 +12509,13 @@ var idevCore = idevObject.extend({
 				}
 				if(this.ds.getCount() == 0 && this.emptyText)
 				{
-					tpldata['id'] = this.id + "_emptyText";
-					tpldata['width'] = this.width;
-					tpldata['entry'] = this.emptyText;
-					tpldata['itemstyle'] = this.itemStyle + "font-style:italic;";
-					tpldata['itemcls'] = this.itemCls;
+					tpldata.id = this.id + "_emptyText";
+					tpldata.width = this.width;
+					tpldata.entry = this.emptyText;
+					tpldata.itemstyle = this.itemStyle + "font-style:italic;";
+					tpldata.itemcls = this.itemCls;
 					if (this.events.click) style = "cursor:pointer;";
-					tpldata['style'] = style;
+					tpldata.style = style;
 					sHTML += this.itemtpl.render(tpldata);
 				}
 				return sHTML;
@@ -12489,19 +12562,20 @@ var idevCore = idevObject.extend({
 				{
 					 style += "overflow:auto;overflow-x:hidden; overflow-y:auto;";
 				}
-				var data = new Array();
+                
+				var data = {
+                    id: this.id,
+                    style: style,
+                    cls: this.cssQuirks(this.cls),
+                    elementstyle: this.elementStyle,
+                    backgroundstyle: this.backgroundStyle,
+                    width: this.width,
+                    wwidth: this.width - (this.border ? 2 : 0),
+                    height: this.height,// - (this.border ? 2 : 0) - 2, to fix combobox
+                    items:  ""
+                };
 
-				data['id'] = this.id;
-				data['style'] = style;
-				data['cls'] = this.cssQuirks(this.cls);
-				data['elementstyle'] = this.elementStyle;
-				data['backgroundstyle'] = this.backgroundStyle;
-				data['width'] = this.width;
-				data['wwidth'] = this.width - (this.border ? 2 : 0);
-				data['height'] = this.height;// - (this.border ? 2 : 0) - 2; to fix combobox
-				data['items'] =  "";
-
-				var  sHTML = this.template.render(data);
+				var sHTML = this.template.render(data);
 
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
@@ -12573,7 +12647,7 @@ var idevCore = idevObject.extend({
 				var h = $("#" + this.id).height();
 
 				$("#" + this.id+"-wrapper").css({ 'width':w, 'max-width':w, 'height':h, 'max-height':h });
-				this.refresh()
+				this.refresh();
 				this._super();
 
 			},
@@ -12647,11 +12721,12 @@ var idevCore = idevObject.extend({
 				if (this.columns == "auto")
 				{
 					sHTML = "";
+                    var sEntry, rec, bAdd, sFld;
 					for (var i = this.offset, count = this.ds.getCount();i < count && i < this.offset + this.limit;i++)
 					{
-						var sEntry = "";
-						var rec = this.ds.getAt(i);
-						var bAdd = true;
+						sEntry = "";
+						rec = this.ds.getAt(i);
+						bAdd = true;
 	
 						if (this.dsFilter)
 						{
@@ -12675,7 +12750,7 @@ var idevCore = idevObject.extend({
 							}
 							for (var f = 0, fcount = this.ds.fieldCount();f < fcount;f++)
 							{
-								var sFld = this.ds.getFieldName(f);
+								sFld = this.ds.getFieldName(f);
 	
 								sEntry = idev.utils.replaceAll(sEntry,"{" + sFld + "}",rec.get(sFld));
 							}
@@ -12703,9 +12778,9 @@ var idevCore = idevObject.extend({
 				sHTML += "<tr>";
 				for (var i = this.offset, count = this.ds.getCount();i < count && i < this.offset + this.limit;i++)
 				{
-					var sEntry = "";
-					var rec = this.ds.getAt(i);
-					var bAdd = true;
+					sEntry = "";
+					rec = this.ds.getAt(i);
+					bAdd = true;
 
 					if (this.dsFilter)
 					{
@@ -12729,7 +12804,7 @@ var idevCore = idevObject.extend({
 						}
 						for (var f = 0, fcount = this.ds.fieldCount();f < fcount;f++)
 						{
-							var sFld = this.ds.getFieldName(f);
+							sFld = this.ds.getFieldName(f);
 
 							sEntry = idev.utils.replaceAll(sEntry,"{" + sFld + "}",rec.get(sFld));
 						}
@@ -12742,7 +12817,8 @@ var idevCore = idevObject.extend({
 								if (typeof f == "string" || typeof f == "number")
 									sEntry = idev.utils.replaceAll(sEntry,"{" + key + "}",this.data[key]);
 							}  
-						}						
+						}
+						if (this.renderer) sEntry = this.renderer(this,sEntry,rec,i);				
 						sHTML += "<td valign=top><div id='" + this.id + "_" + i + "' class='ui-dataview-wrapper ui-dataview-element "+ this.entryCls + "' style='"+cellstyle+"'>" + sEntry + "</div></td>";
 						col++;
 						if (col == this.columns)
@@ -12798,7 +12874,6 @@ var idevCore = idevObject.extend({
 			{
 				if (this.renderTo == null) return;
 				if (this.ds == null) return;
-
 				var style = this.style;
 				var bodystyle = "";
 				if (this.border) style += "border: 1px solid " + this.borderColor + ";";
@@ -12807,9 +12882,9 @@ var idevCore = idevObject.extend({
 				{
 					 bodystyle += ";overflow:auto;";
 				}
-				var data = new Array();
+				var data = {};
 				var w = this.width - (this.border ? 1 : 0);
-				var h = this.height - (this.border ? 1 : 0)
+				var h = this.height - (this.border ? 1 : 0);
 
 				if (this.roundCorners)
 				{
@@ -12817,17 +12892,19 @@ var idevCore = idevObject.extend({
 					h -= this.radius;
 					bodystyle += "margin:2px;";
 				}
-				data['id'] = this.id;
-				data['cls'] = this.cssQuirks(this.cls);
-				data['style'] = style;
-				data['bodystyle'] = bodystyle;
-				data['width'] = w;
-				data['height'] = h;
-				data['elementstyle'] = this.elementStyle;
-				data['items'] =  this.buildList();
+                
+				data.id = this.id;
+				data.cls = this.cssQuirks(this.cls);
+				data.style = style;
+				data.bodystyle = bodystyle;
+				data.width = w;
+				data.height = h;
+				data.elementstyle = this.elementStyle;
+				data.items = this.buildList();
 
-				var  sHTML = this.basetpl.render(data);
+				var sHTML = this.basetpl.render(data);
 				delete data;
+                
 				idev.internal.beforeRender(this);
 				$("#" + this.renderTo).append(sHTML);
 				idev.internal.afterRender(this);
@@ -12877,12 +12954,10 @@ var idevCore = idevObject.extend({
 			{
 				if(this.selected!=-1)
 				{
-					$( '#' +  this.id + "_" + this.selected).addClass(this.entryCls);
-					$( '#' +  this.id + "_" + this.selected).removeClass(this.selectCls);
+					$( '#' +  this.id + "_" + this.selected).addClass(this.entryCls).removeClass(this.selectCls);
 				}
 				if(row!=-1){
-					$( '#' +  this.id + "_" + row).removeClass(this.entryCls);
-					$( '#' +  this.id + "_" + row).addClass(this.selectCls);
+					$( '#' +  this.id + "_" + row).removeClass(this.entryCls).addClass(this.selectCls);
 				}
 				this.selected = row;
 			},
@@ -12903,7 +12978,7 @@ var idevCore = idevObject.extend({
 				var w = $("#" + this.id).width();
 				var h = $("#" + this.id).height();
 
-				$("#" + this.id+"-wrapper").css({ 'width':w, 'max-width':w, 'height':h, 'max-height':h })
+				$("#" + this.id + "-wrapper").css({ 'width': w, 'max-width': w, 'height': h, 'max-height': h });
 				this.refresh()
 			}
 		}),
@@ -12925,17 +13000,16 @@ var idevCore = idevObject.extend({
 			},
 			render : function()
 			{
-				var style = this.style + this.elementStyle;
-
 				if (this.renderTo == null) return;
 
-				var data = new Array();
-				data['id'] = this.id;
-				data['elementstyle'] = this.elementStyle;
-				data['style'] = this.style;
-				data['src'] = this.src;
-
-				var  sHTML = this.tpl.render(data);
+				var data = {
+                    id: this.id,
+                    elementstyle: this.elementStyle,
+                    style: this.style,
+                    src: this.src
+                };
+				
+				var sHTML = this.tpl.render(data);
 				$("#" + this.renderTo).append(sHTML);
 				idev.internal.afterRender(this);
 				this.rendered = true;
@@ -13177,7 +13251,7 @@ var idevCore = idevObject.extend({
 			// None public method
 			action:function(panel,scope)
 			{
-				if (scope.data == null) scope.data = new Array();
+				if (scope.data == null) scope.data ={};
 				
 				for (var i = 0;i < panel.children.length;i++)
 				{
@@ -13206,10 +13280,10 @@ var idevCore = idevObject.extend({
 									scope.data.push(panel.children[i].getValue()); 
 									if (typeof panel.children[i].field == "string" && panel.children[i].field != "")
 										scope.data[panel.children[i].field] = panel.children[i].getValue();   
-									break
+									break;
 								case 1:
 									panel.children[i].setValue("");	
-									break
+									break;
 								case 2:
 									if (typeof panel.children[i].field == "string" && panel.children[i].field != "")
 									{
@@ -13218,20 +13292,20 @@ var idevCore = idevObject.extend({
 										else	 
 											panel.children[i].setValue("");
 									}
-									break
+									break;
 								case 3:
 									if (panel.children[i].field == scope.field)
 									{
 										scope.widget = panel.children[i];
 										return;
 									}	 
-									break
+									break;
 								case 4:
 									if (typeof panel.children[i].field == "string" && panel.children[i].field != "")
 									{
 										scope.rec.set(panel.children[i].field,panel.children[i].getValue(),true);
 									}
-									break
+									break;
 								case 5:
 									if (panel.children[i].wtype == "input" || panel.children[i].wtype == "textarea")
 									{
@@ -13349,8 +13423,8 @@ $delay = function(t,f,s) { return idev.utils.delay(t,f,s); };
 $get = function(x) { return idev.get(x); };
 $int = function(x) { return idev.utils.roundUp(x); };
 $round = function(x,y) { return idev.utils.round(x,y); };
-$ec = function(text) { return idev.utils.scrypt(text,idev.rkey,true) };
-$dc = function(text) { return idev.utils.scrypt(text,idev.rkey,false) };
+$ec = function(text) { return idev.utils.scrypt(text,idev.rkey,true); };
+$dc = function(text) { return idev.utils.scrypt(text,idev.rkey,false); };
 
 ////////////////////////////////////////////////////////////////////////////////
 // Executions point for the framework
@@ -13377,4 +13451,3 @@ else
 		idev.internal.loadDependants();
 }
 ////////////////////////////////////////////////////////////////////////////////
-

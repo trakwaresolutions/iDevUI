@@ -2,8 +2,8 @@
 
 #  iDevUI Web 2.0 Framework #
     
-Version: 1.1.1
-Build  : 130731.1
+Version: 1.2
+Build  : 140124.1
     
 Copyright 2011-2013 Trakware Solutions Ltd, All rights reserved.
 

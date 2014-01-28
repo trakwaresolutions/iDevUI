@@ -4,7 +4,7 @@ idev.ui.widgetSideMenu = baseWidget.extend(
     {
         this._super( config );
         this.wtype = "sidemenu";
-        
+        this.autoScroll = config.autoScroll == null ? false : config.autoScroll;
         this.items = config.items || [];
         this.itemHeight = config.itemHeight || 25;
         if (this.cls == "") this.cls = "ui-sidemenu";
@@ -31,6 +31,11 @@ idev.ui.widgetSideMenu = baseWidget.extend(
         var style = this.style;
 
         if (this.events.click) style += "cursor:pointer;"; 
+        if (this.autoScroll)
+        {
+            style += "overflow-y:auto;overflow-x:hidden";
+            this.width -= 16;
+        }
 
         var data = new Array();
         
